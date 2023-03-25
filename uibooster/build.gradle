@@ -2,24 +2,16 @@ plugins {
     id 'java'
 }
 
-group 'pl.edu.pwr.student'
+group 'uibooster'
 version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
-jar {
-    manifest {
-        attributes 'Main-Class': 'pl.edu.pwr.student.Simulation'
-    }
-}
-
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-    implementation 'org.jetbrains:annotations:23.0.0'
-    implementation project(":uibooster")
     implementation(fileTree("libs") { include("*.jar") })
 }
 

@@ -12,9 +12,9 @@ public class SRLatch {
 
         Switch R;/*─────→*/NOR norUp;/*─┬───→*/LED out;
         //                   ↑          │
-        //                 ┌─│──────────┘
-        //                 ↓ └───────────┐
-        Switch S;/*─────→*/NOR norDown;//┘
+        //                 ┌─│──────────|
+        //                 ↓ └───────────|
+        Switch S;/*─────→*/NOR norDown;//|
 
         R = new Switch();
         S = new Switch();

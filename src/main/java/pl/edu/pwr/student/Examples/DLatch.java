@@ -3,13 +3,13 @@ package pl.edu.pwr.student.Examples;
 import pl.edu.pwr.student.Gates.BasicGates.NAND;
 import pl.edu.pwr.student.Gates.BasicGates.NOT;
 import pl.edu.pwr.student.IO.Input.Switch;
-import pl.edu.pwr.student.IO.Output.LED;
+import pl.edu.pwr.student.IO.Output.Speaker;
 
 import static pl.edu.pwr.student.Simulation.simWait;
 
 public class DLatch {
     public static void simulate() {
-        Switch data; /*──────┬───→*/ NAND nandLU; /*───→*/ NAND nandRU; /*┬──→*/ LED Q;
+        Switch data; /*──────┬───→*/ NAND nandLU; /*───→*/ NAND nandRU; /*┬──→*/ Speaker Q;
         //                   │       ↑                        ↑           │
         //                   │  ┌────|                      ┌─│───────────|
         //                   │  │                           ↓ └────────────|
@@ -30,7 +30,7 @@ public class DLatch {
 
         System.out.println("D LATCH\n");
 
-        Q = new LED("D Latch", 1000);
+        Q = new Speaker("D Latch", 1000);
 
         data.connection(nandLU);
         data.connection(not);
