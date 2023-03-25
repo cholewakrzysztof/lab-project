@@ -94,6 +94,9 @@ public class Simulation {
         R2.connection(gate2.input("R"));
         S2.connection(gate2.input("S"));
 
+        R1.press(10);
+        R2.press(10);
+
         LED out1 = new LED("out1", 1000);
         gate1.output("Out").connection(out1);
 
@@ -102,13 +105,15 @@ public class Simulation {
 
         out1.toggle();
         out2.toggle();
+        simWait(3000);
+
+        S1.press(10);
+        System.out.println("Pressed S1");
         simWait(2000);
 
-        S1.press(100);
-        simWait(2000);
-
-        R1.press(100);
-        S2.press(100);
+        R1.press(10);
+        S2.press(10);
+        System.out.println("Pressed R1 and S2");
         simWait(2000);
 
         out1.toggle();
