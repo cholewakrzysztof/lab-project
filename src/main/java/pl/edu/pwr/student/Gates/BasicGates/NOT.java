@@ -4,9 +4,15 @@ import org.jetbrains.annotations.NotNull;
 import pl.edu.pwr.student.Gates.Compoundable;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
+import processing.core.PApplet;
+import processing.core.PVector;
 
 public class NOT extends SignalSender implements SignalReceiver, Compoundable {
     private SignalSender input = null;
+
+    public NOT(String type, PApplet s, PVector v) {
+        super(type, s, v);
+    }
 
     public boolean hasInputs() {
         return input != null;

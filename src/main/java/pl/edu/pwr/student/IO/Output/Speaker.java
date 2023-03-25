@@ -3,10 +3,12 @@ package pl.edu.pwr.student.IO.Output;
 import org.jetbrains.annotations.NotNull;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.Simulation;
+import pl.edu.pwr.student.UI.UiElement;
 import processing.core.PApplet;
+import processing.core.PVector;
 import processing.sound.SinOsc;
 
-public class Speaker extends PApplet implements SignalReceiver, Runnable {
+public class Speaker extends UiElement implements SignalReceiver, Runnable {
     private SignalSender input = null;
     private boolean state = false;
     private final String name;
@@ -52,6 +54,8 @@ public class Speaker extends PApplet implements SignalReceiver, Runnable {
         System.out.println(name + ": " + state);
     }
     public void run() {
+        super.run();
+
         while (power) {
             print();
             Simulation.simWait(milliseconds);
@@ -62,7 +66,8 @@ public class Speaker extends PApplet implements SignalReceiver, Runnable {
             }
         }
     }
-    public Speaker(String name, long updateMilliseconds) {
+    public Speaker(String name, long updateMilliseconds, String type, PApplet s, PVector v) {
+        super(type, s, v);
         this.name = name;
         milliseconds = updateMilliseconds;
 

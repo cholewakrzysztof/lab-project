@@ -1,12 +1,19 @@
 package pl.edu.pwr.student.IO.Input;
 
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
+import pl.edu.pwr.student.UI.UiElement;
+import processing.core.PApplet;
+import processing.core.PVector;
 
 import java.util.HashSet;
 
-public abstract class SignalSender {
+public abstract class SignalSender extends UiElement {
     private final HashSet<SignalReceiver> outputs = new HashSet<>();
     protected boolean state = false;
+
+    public SignalSender(String type, PApplet s, PVector v) {
+        super(type, s, v);
+    }
 
     public boolean getState() {
         return state;

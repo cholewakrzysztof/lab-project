@@ -3,11 +3,18 @@ package pl.edu.pwr.student.Gates;
 import org.jetbrains.annotations.NotNull;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
+import processing.core.PApplet;
+import processing.core.PVector;
 
 import java.util.HashSet;
 
 public abstract class BasicGate extends SignalSender implements SignalReceiver, Compoundable {
     private final HashSet<SignalSender> inputs = new HashSet<>();
+
+    public BasicGate(String type, PApplet s, PVector v) {
+        super(type, s, v);
+    }
+
     protected abstract boolean checkState(HashSet<SignalSender> inputs);
     public boolean hasInputs() {
         return !inputs.isEmpty();

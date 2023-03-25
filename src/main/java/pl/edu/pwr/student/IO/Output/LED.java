@@ -3,8 +3,12 @@ package pl.edu.pwr.student.IO.Output;
 import org.jetbrains.annotations.NotNull;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.Simulation;
+import pl.edu.pwr.student.UI.UiElement;
+import pl.edu.pwr.student.Utility.ShapeLoader;
+import processing.core.PApplet;
+import processing.core.PVector;
 
-public class LED implements SignalReceiver, Runnable {
+public class LED extends UiElement implements SignalReceiver, Runnable {
     private SignalSender input = null;
     private boolean state = false;
     private final String name;
@@ -48,12 +52,15 @@ public class LED implements SignalReceiver, Runnable {
         System.out.println(name + ": " + state);
     }
     public void run() {
+        super.run();
+
         while (power) {
             print();
             Simulation.simWait(milliseconds);
         }
     }
-    public LED(String name, long updateMilliseconds) {
+    public LED(String name, long updateMilliseconds, PApplet s, PVector v) {
+        super("AND", s, v);
         this.name = name;
         milliseconds = updateMilliseconds;
 
