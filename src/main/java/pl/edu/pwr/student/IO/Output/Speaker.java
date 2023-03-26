@@ -9,16 +9,14 @@ import processing.sound.SinOsc;
 public class Speaker extends PApplet implements SignalReceiver, Runnable {
     private SignalSender input = null;
     private boolean state = false;
+
     private final String name;
     private final long milliseconds;
     private boolean power = false;
+    private final Thread thread;
 
-    private SinOsc sine;
+    private final SinOsc sine;
 
-    public boolean toggle() {
-        power = !power;
-        return power;
-    }
 
     public boolean attemptConnect(SignalSender sender) {
         if (input != null)
@@ -45,23 +43,27 @@ public class Speaker extends PApplet implements SignalReceiver, Runnable {
             state = false;
             return;
         }
-
         state = input.getState();
     }
-    private void print() {
-        System.out.println(name + ": " + state);
-    }
+
     public void run() {
         while (power) {
-            print();
-            Simulation.simWait(milliseconds);
-            if (state){
+            System.out.println(name + ": " + state);
+            if (state)
                 sine.play();
-            } else {
+            else
                 sine.stop();
-            }
+            Simulation.simWait(milliseconds);
         }
+        sine.stop();
     }
+    public boolean toggle() {
+        power = !power;
+        if (power)
+            thread.start();
+        return power;
+    }
+
     public Speaker(String name, long updateMilliseconds) {
         this.name = name;
         milliseconds = updateMilliseconds;
@@ -70,7 +72,6 @@ public class Speaker extends PApplet implements SignalReceiver, Runnable {
         sine.amp(0.1f);
         sine.freq(250);
 
-        Thread thread = new Thread(this);
-        thread.start();
+        thread = new Thread(this);
     }
 }

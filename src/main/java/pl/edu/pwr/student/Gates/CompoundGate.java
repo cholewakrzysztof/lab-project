@@ -55,10 +55,14 @@ public class CompoundGate {
 
             VirtualIO ioGate = (VirtualIO) gate;
             if (!gate.hasInputs()) {
+                if (inputs.containsKey(ioGate.name))
+                    throw new RuntimeException("Compound gates cannot have multiple inputs with the same name");
                 inputs.put(ioGate.name, ioGate);
                 tempInputs.add(ioGate.name);
             }
-            else if (gate.getOutputs().size() == 0) {
+            if (gate.getOutputs().size() == 0) {
+                if (outputs.containsKey(ioGate.name))
+                    throw new RuntimeException("Compound gates cannot have multiple outputs with the same name");
                 outputs.put(ioGate.name, ioGate);
                 tempOutputs.add(ioGate.name);
             }
