@@ -61,6 +61,10 @@ public class Speaker extends PApplet implements SignalReceiver, Runnable {
         power = !power;
         if (power)
             thread.start();
+        else {
+            thread.interrupt();
+            sine.stop();
+        }
         return power;
     }
 

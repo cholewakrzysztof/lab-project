@@ -7,19 +7,19 @@ public class Clock extends SignalSender implements Runnable {
     private final long intervalOff;
 
     private final Thread thread = new Thread(this);
-    private boolean run = false;
+    private boolean power = false;
 
     public void toggle() {
-        run = !run;
+        power = !power;
 
-        if (run)
+        if (power)
             thread.start();
         else
             thread.interrupt();
     }
 
     public void run() {
-        while (run) {
+        while (power) {
             Simulation.simWait(intervalOff);
             state = true;
 

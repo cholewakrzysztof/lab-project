@@ -12,6 +12,8 @@ public class LED extends BasicReceiver implements Runnable {
         power = !power;
         if (power)
             thread.start();
+        else
+            thread.interrupt();
         return power;
     }
     public void run() {
