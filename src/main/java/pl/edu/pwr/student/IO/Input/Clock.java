@@ -1,8 +1,6 @@
 package pl.edu.pwr.student.IO.Input;
 
 import pl.edu.pwr.student.Simulation;
-import processing.core.PApplet;
-import processing.core.PVector;
 
 public class Clock extends SignalSender implements Runnable {
     private final long intervalOn;
@@ -21,7 +19,6 @@ public class Clock extends SignalSender implements Runnable {
     }
 
     public void run() {
-        super.run();
         while (run) {
             Simulation.simWait(intervalOff);
             state = true;
@@ -31,8 +28,7 @@ public class Clock extends SignalSender implements Runnable {
         }
     }
 
-    public Clock(long millisecondsOn, long millisecondsOff, String type, PApplet s, PVector v) {
-        super(type, s, v);
+    public Clock(long millisecondsOn, long millisecondsOff) {
         intervalOn = millisecondsOn;
         intervalOff = millisecondsOff;
     }

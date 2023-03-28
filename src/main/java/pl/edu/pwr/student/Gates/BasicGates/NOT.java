@@ -10,9 +10,7 @@ import processing.core.PVector;
 public class NOT extends SignalSender implements SignalReceiver, Compoundable {
     private SignalSender input = null;
 
-    public NOT(String type, PApplet s, PVector v) {
-        super(type, s, v);
-    }
+    public NOT() {}
 
     public boolean hasInputs() {
         return input != null;

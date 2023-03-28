@@ -9,9 +9,7 @@ import processing.core.PVector;
 import java.util.HashSet;
 
 public class XNOR extends BasicGate {
-    public XNOR(String type, PApplet s, PVector v) {
-        super(type, s, v);
-    }
+    public XNOR() {}
 
     protected boolean checkState(@NotNull HashSet<SignalSender> inputs) {
         long trues = 0;

@@ -9,9 +9,7 @@ import processing.core.PVector;
 import java.util.HashSet;
 
 public class AND extends BasicGate {
-    public AND(String type, PApplet s, PVector v) {
-        super(type, s, v);
-    }
+    public AND() {}
 
     protected boolean checkState(@NotNull HashSet<SignalSender> inputs) {
         for (SignalSender input : inputs)

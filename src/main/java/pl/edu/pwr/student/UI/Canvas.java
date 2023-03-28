@@ -13,7 +13,7 @@ public class Canvas extends PApplet {
 
     public Form form;
     public UiBooster booster;
-    public ArrayList<UiElement> gates = new ArrayList<UiElement>();
+    public ArrayList<UiElement> elements = new ArrayList<UiElement>();
     public void settings(){
         booster = new UiBooster();
         size(800, 800);
@@ -26,8 +26,8 @@ public class Canvas extends PApplet {
                 new ListElement("OR", null, ""),
                 new ListElement("NOR", null,""),
                 new ListElement("XOR", null,""),
-                new ListElement("XNOR", null,""),
-                new ListElement("NOT", null, "")
+                new ListElement("XNOR", null,"")
+//                new ListElement("NOT", null, "")
             ).run();
 
         booster.createNotification(
@@ -38,10 +38,10 @@ public class Canvas extends PApplet {
     public void draw(){
         background(255);
 
-        for (UiElement g : gates) {
+        for (UiElement g : elements) {
             g.run();
         }
-        if (gates.isEmpty()) {
+        if (elements.isEmpty()) {
             fill(0);
             textAlign(CENTER);
             textSize(32);
@@ -53,13 +53,13 @@ public class Canvas extends PApplet {
         ListElement selected = (ListElement) form.getByLabel("Select Gate").getValue();
         if(selected != null){
             switch (selected.getTitle()) {
-                case "AND" -> gates.add(new AND("AND", this, new PVector(mouseX, mouseY)));
-                case "NAND" -> gates.add(new NAND("NAND", this, new PVector(mouseX, mouseY)));
-                case "OR" -> gates.add(new OR("OR", this, new PVector(mouseX, mouseY)));
-                case "NOR" -> gates.add(new NOR("NOR", this, new PVector(mouseX, mouseY)));
-                case "XOR" -> gates.add(new XOR("XOR",  this, new PVector(mouseX, mouseY)));
-                case "XNOR" -> gates.add(new XNOR("XNOR",  this, new PVector(mouseX, mouseY)));
-                case "NOT" -> gates.add(new NOT("NOT",  this, new PVector(mouseX, mouseY)));
+                case "AND" -> elements.add(new UiElement("AND", this, new PVector(mouseX, mouseY), new AND()));
+                case "NAND" -> elements.add(new UiElement("NAND", this, new PVector(mouseX, mouseY), new NAND()));
+                case "OR" -> elements.add(new UiElement("OR", this, new PVector(mouseX, mouseY), new OR()));
+                case "NOR" -> elements.add(new UiElement("NOR", this, new PVector(mouseX, mouseY), new NOR()));
+                case "XOR" -> elements.add(new UiElement("XOR", this, new PVector(mouseX, mouseY), new XOR()));
+                case "XNOR" -> elements.add(new UiElement("XNOR", this, new PVector(mouseX, mouseY), new XNOR()));
+//                case "NOT" -> elements.add(new UiElement("NOT", this, new PVector(mouseX, mouseY), new NOT()));
             }
         }
     }

@@ -4,8 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import pl.edu.pwr.student.Gates.Compoundable;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
-import processing.core.PApplet;
-import processing.core.PVector;
 
 public class VirtualIO extends SignalSender implements SignalReceiver, Compoundable {
     public final String name;
@@ -47,11 +45,10 @@ public class VirtualIO extends SignalSender implements SignalReceiver, Compounda
         return true;
     }
 
-    public VirtualIO(String name, String type, PApplet s, PVector v) {
-        super(type, s, v);
+    public VirtualIO(String name) {
         this.name = name;
     }
-    public Compoundable getNewInstance(String type, PApplet s, PVector v) {
-        return new VirtualIO(name, type, s, v);
+    public Compoundable getNewInstance() {
+        return new VirtualIO(name);
     }
 }

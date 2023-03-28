@@ -2,7 +2,6 @@ package pl.edu.pwr.student.IO.Output;
 
 import org.jetbrains.annotations.NotNull;
 import pl.edu.pwr.student.IO.Input.SignalSender;
-import processing.core.PApplet;
 
 public class Printer implements SignalReceiver {
     private SignalSender input = null;

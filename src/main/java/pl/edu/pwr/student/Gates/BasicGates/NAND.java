@@ -9,9 +9,7 @@ import processing.core.PVector;
 import java.util.HashSet;
 
 public class NAND extends BasicGate {
-    public NAND(String type, PApplet s, PVector v) {
-        super(type, s, v);
-    }
+    public NAND() {}
 
     protected boolean checkState(@NotNull HashSet<SignalSender> inputs) {
         for (SignalSender input : inputs)
