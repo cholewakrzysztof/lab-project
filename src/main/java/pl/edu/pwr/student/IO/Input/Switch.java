@@ -3,6 +3,8 @@ package pl.edu.pwr.student.IO.Input;
 import pl.edu.pwr.student.Simulation;
 
 public class Switch extends SignalSender implements Runnable {
+    public Switch() {}
+
     public boolean toggle() {
         state = !state;
         sendUpdate();

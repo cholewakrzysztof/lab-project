@@ -8,6 +8,9 @@ import java.util.HashSet;
 
 public abstract class BasicGate extends SignalSender implements SignalReceiver, Compoundable {
     private final HashSet<SignalSender> inputs = new HashSet<>();
+
+    public BasicGate() {}
+
     protected abstract boolean checkState(HashSet<SignalSender> inputs);
     public boolean hasInputs() {
         return !inputs.isEmpty();

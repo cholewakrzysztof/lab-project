@@ -8,6 +8,8 @@ public abstract class SignalSender {
     private final HashSet<SignalReceiver> outputs = new HashSet<>();
     protected boolean state = false;
 
+    public SignalSender() {}
+
     public boolean getState() {
         return state;
     }
