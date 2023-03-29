@@ -7,10 +7,8 @@ import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.Gates.Compoundable;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
-import pl.edu.pwr.student.IO.VirtualIO;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.Utility.ShapeLoader;
-import processing.core.PApplet;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -22,12 +20,6 @@ public class Simulation {
     }
 
     public static void main(String[] args) {
-        String[] processingArgs = {"Gates-Simulation"};
-        Canvas Canvas = new Canvas();
-
-        PApplet.runSketch(processingArgs, Canvas);
-        ShapeLoader.loadShapes(Canvas);
-
         // All basic gates(AND OR XOR NAND NOR XNOR NOT)
         // are to be added to this collection when created by the user
         // and removed from it when deleted from the simulation
@@ -47,6 +39,9 @@ public class Simulation {
         // All outputs in the simulation are to be in this collection
         HashSet<SignalReceiver> systemOutputs = new HashSet<>();
 
+
+        Canvas Canvas = new Canvas(basicGates);
+        ShapeLoader.loadShapes(Canvas);
 
         // TESTING & EXAMPLES BELOW
 
