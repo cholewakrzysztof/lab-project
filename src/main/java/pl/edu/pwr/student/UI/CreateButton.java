@@ -1,6 +1,5 @@
 package pl.edu.pwr.student.UI;
 
-import processing.core.PApplet;
 import processing.core.PShape;
 import processing.core.PVector;
 
@@ -15,7 +14,7 @@ public class CreateButton extends UiElement {
      * Constructor
      * @param s Processing sketch
      */
-    public CreateButton(PApplet s) {
+    public CreateButton(Canvas s) {
         super("CREATE", s, new PVector(10,10), null);
         shape = sketch.loadShape("src/main/resources/buttons/CREATE.svg");
         shape.scale(3);

@@ -1,6 +1,5 @@
 package pl.edu.pwr.student.UI;
 
-import processing.core.PApplet;
 import processing.core.PShape;
 import processing.core.PVector;
 
@@ -15,7 +14,7 @@ public class EditButton extends UiElement {
      * Constructor
      * @param s Processing sketch
      */
-    public EditButton(PApplet s) {
+    public EditButton(Canvas s) {
         super("EDIT", s, new PVector(60,10), null);
         shape = sketch.loadShape("src/main/resources/buttons/EDIT.svg");
         shape.scale(3);

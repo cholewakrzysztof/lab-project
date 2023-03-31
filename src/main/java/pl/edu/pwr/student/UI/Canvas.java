@@ -2,14 +2,14 @@ package pl.edu.pwr.student.UI;
 
 import pl.edu.pwr.student.Gates.BasicGates.*;
 import pl.edu.pwr.student.Gates.Compoundable;
+import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import processing.core.PApplet;
 import processing.core.PVector;
 import uibooster.UiBooster;
 import uibooster.model.Form;
 import uibooster.model.ListElement;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * Class representing Processing canvas
@@ -25,8 +25,14 @@ public class Canvas extends PApplet {
      * 0 - interacting with elements
      * 1 - creating new elements
      * 2 - editing elements
+     * 4 - connecting elements
      */
     public int state;
+
+    /**
+     * Last state of canvas
+     */
+    public int lastState;
 
     /**
      * UiBooster object
@@ -36,7 +42,7 @@ public class Canvas extends PApplet {
     /**
      * List of all elements on canvas
      */
-    public ArrayList<UiElement> elements = new ArrayList<UiElement>();
+    public Set<UiElement> elements = new HashSet<UiElement>();
 
     /**
      * List of all basic gates
@@ -47,6 +53,11 @@ public class Canvas extends PApplet {
      * List of all buttons
      */
     private final ArrayList<UiElement> buttons = new ArrayList<>();
+
+    /**
+     * Selected element
+     */
+    public UiElement selectedElement = null;
 
     /**
      * Constructor
@@ -74,13 +85,13 @@ public class Canvas extends PApplet {
             super.exit();
         } else {
             new UiBooster().showConfirmDialog(
-                    "Do you want to save your work?",
-                    "Exiting",
-                    () -> {
-                        //TODO: saving
-                        super.exit();
-                    },
-                    super::exit);
+                "Do you want to save your work?",
+                "Exiting",
+                () -> {
+                    //TODO: saving
+                    super.exit();
+                },
+                super::exit);
         }
     }
 
@@ -101,8 +112,8 @@ public class Canvas extends PApplet {
             ).run().hide();
 
         booster.createNotification(
-                "Started",
-                "Gates-Simulation");
+            "Started",
+            "Gates-Simulation");
     }
 
     public void draw(){
@@ -130,18 +141,21 @@ public class Canvas extends PApplet {
     public void mousePressed() {
         if (mousePressed && (mouseButton == LEFT)) {
             if(buttons.get(0).over(new PVector(mouseX, mouseY))){
+                lastState = state;
                 state = 1;
                 form.show();
                 return;
             }
 
             if(buttons.get(1).over(new PVector(mouseX, mouseY))){
+                lastState = state;
                 state = 2;
                 form.hide();
                 return;
             }
 
             if(buttons.get(2).over(new PVector(mouseX, mouseY))){
+                lastState = state;
                 state = 0;
                 form.hide();
                 return;
@@ -189,6 +203,17 @@ public class Canvas extends PApplet {
                         }
                     }
                 }
+            } else if (state == 4) {
+                for (UiElement g : elements) {
+                    if(g.over(new PVector(mouseX, mouseY))){
+                        if(selectedElement != null){
+                            selectedElement.gate.connection((SignalReceiver) g.gate);
+                            selectedElement = null;
+                            state = lastState;
+                        }
+                        break;
+                    }
+                }
             }
         } else if (mousePressed && (mouseButton == RIGHT)) {
             for (UiElement g : elements) {
@@ -197,17 +222,16 @@ public class Canvas extends PApplet {
                         "",
                         "",
                         element -> {
-                            if (element.getTitle().equals("Add new output")){
-                                //TODO: add new output
-                            } else if (element.getTitle().equals( "Add new input")){
-                                //TODO: add new input
+                            if (element.getTitle().equals("Add/Remove new output")){
+                                lastState = state;
+                                state = 4;
+                                selectedElement = g;
                             } else if(element.getTitle().equals("Delete")){
                                 basicGates.remove(g.gate);
                                 elements.remove(g);
                             }
                         },
-                        new ListElement("Add new output", null),
-                        new ListElement("Add new input", null),
+                        new ListElement("Add/Remove new output", null),
                         new ListElement("Delete", null)
                     );
                     break;

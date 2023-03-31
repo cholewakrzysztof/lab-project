@@ -1,6 +1,5 @@
 package pl.edu.pwr.student.UI;
 
-import processing.core.PApplet;
 import processing.core.PShape;
 import processing.core.PVector;
 
@@ -15,7 +14,7 @@ public class InteractionButton extends UiElement {
      * Constructor
      * @param s Processing sketch
      */
-    public InteractionButton(PApplet s) {
+    public InteractionButton(Canvas s) {
         super("INTERACT", s, new PVector(120,10), null);
         shape = sketch.loadShape("src/main/resources/buttons/INTERACT.svg");
         shape.scale(3);
