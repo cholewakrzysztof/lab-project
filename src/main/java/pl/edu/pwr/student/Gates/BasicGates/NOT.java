@@ -4,18 +4,18 @@ import org.jetbrains.annotations.NotNull;
 import pl.edu.pwr.student.Gates.Compoundable;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
+import pl.edu.pwr.student.Simulation;
 import processing.core.PApplet;
 import processing.core.PVector;
 
 public class NOT extends SignalSender implements SignalReceiver, Compoundable {
     private SignalSender input = null;
 
-    public NOT() {}
-
     public boolean hasInputs() {
         return input != null;
     }
     public void update() {
+        Simulation.simWait(SignalSender.getDelay());
         if (input == null) {
             state = false;
             return;
@@ -45,4 +45,6 @@ public class NOT extends SignalSender implements SignalReceiver, Compoundable {
         input = null;
         return true;
     }
+
+    public NOT() {}
 }

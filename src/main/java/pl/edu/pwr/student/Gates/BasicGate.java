@@ -3,19 +3,18 @@ package pl.edu.pwr.student.Gates;
 import org.jetbrains.annotations.NotNull;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
+import pl.edu.pwr.student.Simulation;
 
 import java.util.HashSet;
 
 public abstract class BasicGate extends SignalSender implements SignalReceiver, Compoundable {
     private final HashSet<SignalSender> inputs = new HashSet<>();
-
-    public BasicGate() {}
-
     protected abstract boolean checkState(HashSet<SignalSender> inputs);
     public boolean hasInputs() {
         return !inputs.isEmpty();
     }
     public void update() {
+        Simulation.simWait(SignalSender.getDelay());
         if (inputs.isEmpty()) {
             state = false;
             return;
@@ -46,4 +45,6 @@ public abstract class BasicGate extends SignalSender implements SignalReceiver, 
         inputs.remove(sender);
         return true;
     }
+
+    public BasicGate() {}
 }
