@@ -1,61 +1,58 @@
-package pl.edu.pwr.student.Gates;
+package pl.edu.pwr.student.IO;
 
 import org.jetbrains.annotations.NotNull;
+import pl.edu.pwr.student.Gates.Compoundable;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.Simulation;
 
-import java.util.HashSet;
-
-public abstract class BasicGate extends SignalSender implements SignalReceiver, Compoundable {
-    private final HashSet<SignalSender> inputs = new HashSet<>();
-    protected abstract boolean checkState(HashSet<SignalSender> inputs);
+public abstract class BasicPassThrough extends SignalSender implements SignalReceiver, Compoundable {
+    private SignalSender input;
     public boolean hasInputs() {
-        return !inputs.isEmpty();
+        return input != null;
     }
     public void update() {
         Simulation.simWait(SignalSender.getDelay());
-
         boolean newState = false;
-        if (!inputs.isEmpty())
-            newState = checkState(inputs);
+
+        if (input != null)
+            newState = checkState(input.getState());
 
         if (state == newState)
             return;
 
         state = newState;
-
         sendUpdate();
     }
     public boolean attemptConnect(SignalSender sender) {
-        if (this == sender)
+        if (input != null)
             return false;
 
         if (!sender.isConnected(this))
             return false;
 
-        inputs.add(sender);
+        input = sender;
         return true;
     }
     public boolean attemptDisconnect(@NotNull SignalSender sender) {
+        if (input != sender)
+            return false;
+
         if (sender.isConnected(this))
             return false;
 
-        inputs.remove(sender);
+        input = null;
         return true;
     }
-
     public void disconnectInputs() {
-        HashSet<SignalSender> tempInputs = new HashSet<>(inputs);
-        for (SignalSender input : tempInputs)
+        if (input != null)
             input.connection(this);
-        if (!inputs.isEmpty())
-            throw new RuntimeException("Error disconnecting inputs");
+        if (input != null)
+            throw new RuntimeException("Error disconnecting input");
     }
     public void fullDisconnect() {
         super.disconnectOutputs();
-        this.disconnectInputs();
+        disconnectInputs();
     }
-
-    public BasicGate() {}
+    protected abstract boolean checkState(boolean inputState);
 }

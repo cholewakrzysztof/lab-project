@@ -39,11 +39,10 @@ public class Speaker extends PApplet implements SignalReceiver, Runnable {
         return true;
     }
     public void update() {
-        if (input == null) {
+        if (input == null)
             state = false;
-            return;
-        }
-        state = input.getState();
+        else
+            state = input.getState();
     }
 
     public void run() {
@@ -66,6 +65,16 @@ public class Speaker extends PApplet implements SignalReceiver, Runnable {
             sine.stop();
         }
         return power;
+    }
+
+    public void fullDisconnect() {
+        disconnectInputs();
+    }
+    public void disconnectInputs() {
+        if (input != null)
+            input.connection(this);
+        if (input != null)
+            throw new RuntimeException("Error disconnecting input");
     }
 
     public Speaker(String name, long updateMilliseconds) {

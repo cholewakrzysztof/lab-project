@@ -27,13 +27,25 @@ public abstract class BasicReceiver implements SignalReceiver {
         input = null;
         return true;
     }
+    public void fullDisconnect() {
+        disconnectInputs();
+    }
+    public void disconnectInputs() {
+        if (input != null)
+            input.connection(this);
+        if (input != null)
+            throw new RuntimeException("Error disconnecting input");
+    }
     public void update() {
-        if (input == null) {
-            state = false;
-            return;
-        }
+        boolean newState = false;
 
-        state = input.getState();
+        if (input != null)
+            newState = input.getState();
+
+        if (state == newState)
+            return;
+
+        state = newState;
         react();
     }
     protected abstract void react();

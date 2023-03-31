@@ -1,22 +1,15 @@
 package pl.edu.pwr.student;
 
-import pl.edu.pwr.student.Examples.CompGateSRLatch;
-import pl.edu.pwr.student.Examples.DLatch;
-import pl.edu.pwr.student.Examples.SRLatch;
-import pl.edu.pwr.student.Gates.BasicGates.AND;
-import pl.edu.pwr.student.Gates.BasicGates.NOT;
-import pl.edu.pwr.student.Gates.CompoundGate;
-import pl.edu.pwr.student.Gates.Compoundable;
-import pl.edu.pwr.student.IO.Input.SignalSender;
-import pl.edu.pwr.student.IO.Output.LED;
-import pl.edu.pwr.student.IO.Output.Printer;
-import pl.edu.pwr.student.IO.Output.SignalReceiver;
+import pl.edu.pwr.student.Examples.*;
+import pl.edu.pwr.student.Gates.*;
+import pl.edu.pwr.student.Gates.BasicGates.*;
+import pl.edu.pwr.student.IO.Input.*;
+import pl.edu.pwr.student.IO.Output.*;
 import pl.edu.pwr.student.IO.VirtualIO;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PApplet;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class Simulation {
     public static void simWait(long milliseconds) {
@@ -52,7 +45,7 @@ public class Simulation {
         HashSet<SignalReceiver> systemOutputs = new HashSet<>();
 
 
-        // TESTING & EXAMPLES BELOW
+        // CODE EXAMPLES BELOW
 
         // Synchronous
         DLatch.simulate();
