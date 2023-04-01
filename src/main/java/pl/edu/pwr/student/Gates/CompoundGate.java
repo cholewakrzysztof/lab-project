@@ -72,6 +72,14 @@ public class CompoundGate {
         outputKeys = tempOutputs.toArray(new String[0]);
     }
 
+    public void fullDisconnect() {
+        for (String inputKey : inputKeys)
+            inputs.get(inputKey).disconnectInputs();
+
+        for (String outputKey : outputKeys)
+            outputs.get(outputKey).disconnectOutputs();
+    }
+
     public CompoundGate(@NotNull CompoundGate gate) {
         create(gate.getGates());
     }

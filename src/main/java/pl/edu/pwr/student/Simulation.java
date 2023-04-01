@@ -43,7 +43,7 @@ public class Simulation {
         Canvas Canvas = new Canvas(basicGates);
         ShapeLoader.loadShapes(Canvas);
 
-        // TESTING & EXAMPLES BELOW
+        // CODE EXAMPLES BELOW
 
         // Synchronous
         DLatch.simulate();

@@ -6,4 +6,6 @@ public interface SignalReceiver {
     boolean attemptConnect(SignalSender sender);
     boolean attemptDisconnect(SignalSender sender);
     void update();
+    void fullDisconnect();
+    void disconnectInputs();
 }
