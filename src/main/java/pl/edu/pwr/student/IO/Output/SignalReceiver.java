@@ -7,4 +7,5 @@ public interface SignalReceiver {
     boolean attemptDisconnect(SignalSender sender);
     void update();
     void disconnectInputs();
+    void fullDisconnect();
 }
