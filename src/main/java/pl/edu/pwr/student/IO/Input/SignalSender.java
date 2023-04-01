@@ -58,6 +58,9 @@ public abstract class SignalSender {
         if (!outputs.isEmpty())
             throw new RuntimeException("Error disconnecting outputs");
     }
+    public void fullDisconnect() {
+        disconnectOutputs();
+    }
     public boolean isConnected(SignalReceiver receiver) {
         return outputs.contains(receiver);
     }

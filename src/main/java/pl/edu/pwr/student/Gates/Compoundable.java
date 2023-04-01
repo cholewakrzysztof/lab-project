@@ -17,6 +17,7 @@ public interface Compoundable {
         return null;
     }
     int connection(SignalReceiver receiver);
+    void fullDisconnect();
     default boolean isIO() {
         return false;
     }
