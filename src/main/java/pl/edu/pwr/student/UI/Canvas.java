@@ -3,6 +3,8 @@ package pl.edu.pwr.student.UI;
 import pl.edu.pwr.student.Gates.BasicGates.*;
 import pl.edu.pwr.student.Gates.Compoundable;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
+import pl.edu.pwr.student.UI.Buttons.*;
+import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PApplet;
 import processing.core.PVector;
 import uibooster.UiBooster;
@@ -24,8 +26,10 @@ public class Canvas extends PApplet {
      * State of canvas
      * 0 - interacting with elements
      * 1 - creating new elements
-     * 2 - editing elements
-     * 4 - connecting elements
+     * 2 - moving elements
+     * 3 - Add/Remove new output
+     * 4 - deleting elements
+     * 5 - connecting elements
      */
     public int state;
 
@@ -64,16 +68,17 @@ public class Canvas extends PApplet {
      * @param basicGates list of all basic gates
      */
     public Canvas (HashSet<Compoundable> basicGates) {
-        String[] processingArgs = {"Gates-Simulation"};
-        PApplet.runSketch(processingArgs, this);
-
         this.basicGates = basicGates;
 
+        String[] processingArgs = {"Gates-Simulation"};
+        this.runSketch(processingArgs);
 
         //TODO: throws Cannot parse "currentcolor".
+        buttons.add(new InteractionButton(this));
         buttons.add(new CreateButton(this));
         buttons.add(new EditButton(this));
-        buttons.add(new InteractionButton(this));
+        buttons.add(new ConnectButton(this));
+        buttons.add(new DeleteButton(this));
     }
 
     /**
@@ -95,10 +100,10 @@ public class Canvas extends PApplet {
         }
     }
 
-    public void settings(){
+    public void settings() {
         booster = new UiBooster();
-        size(800, 800);
-        //TODO: make id added automatically (created new gates by user are now a problem)
+        size(1000, 1000);
+        //TODO: make it added automatically (created new gates by user are now a problem)
         form = booster
             .createForm("Gates")
             .addList("Select Gate",
@@ -116,7 +121,7 @@ public class Canvas extends PApplet {
             "Gates-Simulation");
     }
 
-    public void draw(){
+    public void draw() {
         background(255);
 
         for (UiElement g : buttons) {
@@ -140,31 +145,23 @@ public class Canvas extends PApplet {
      */
     public void mousePressed() {
         if (mousePressed && (mouseButton == LEFT)) {
-            if(buttons.get(0).over(new PVector(mouseX, mouseY))){
-                lastState = state;
-                state = 1;
-                form.show();
-                return;
-            }
-
-            if(buttons.get(1).over(new PVector(mouseX, mouseY))){
-                lastState = state;
-                state = 2;
-                form.hide();
-                return;
-            }
-
-            if(buttons.get(2).over(new PVector(mouseX, mouseY))){
-                lastState = state;
-                state = 0;
-                form.hide();
-                return;
+            for (int i = 0; i < buttons.size(); i++) {
+                if(buttons.get(i).over(new PVector(mouseX, mouseY))){
+                    lastState = state;
+                    state = i;
+                    if (state == 1) {
+                        form.show();
+                    } else {
+                        form.hide();
+                    }
+                    return;
+                }
             }
 
             if(state == 1){
                 ListElement selected = (ListElement) form.getByLabel("Select Gate").getValue();
                 if(selected != null){
-                    //TODO: make id added automatically (created new gates by user are now a problem)
+                    //TODO: make it added automatically (created new gates by user are now a problem)
                     switch (selected.getTitle()) {
                         case "AND" -> {
                             Compoundable temp = new AND();
@@ -203,7 +200,34 @@ public class Canvas extends PApplet {
                         }
                     }
                 }
+            } else if (state == 2) {
+                for (UiElement g : elements) {
+                    if(g.over(new PVector(mouseX, mouseY))){
+                        if(selectedElement != null){
+                            selectedElement = g;
+                        }
+                        break;
+                    }
+                }
+            } else if (state == 3) {
+                for (UiElement g : elements) {
+                    if(g.over(new PVector(mouseX, mouseY))){
+                        lastState = state;
+                        state = 5;
+                        selectedElement = g;
+                        break;
+                    }
+                }
             } else if (state == 4) {
+                for (UiElement g : elements) {
+                    if(g.over(new PVector(mouseX, mouseY))){
+                        g.gate.fullDisconnect();
+                        basicGates.remove(g.gate);
+                        elements.remove(g);
+                        break;
+                    }
+                }
+            } else if (state == 5) {
                 for (UiElement g : elements) {
                     if(g.over(new PVector(mouseX, mouseY))){
                         if(selectedElement != null){
@@ -215,26 +239,17 @@ public class Canvas extends PApplet {
                     }
                 }
             }
-        } else if (mousePressed && (mouseButton == RIGHT)) {
-            for (UiElement g : elements) {
-                if(g.over(new PVector(mouseX, mouseY))){
-                    booster.showList(
-                        "",
-                        "",
-                        element -> {
-                            if (element.getTitle().equals("Add/Remove new output")){
-                                lastState = state;
-                                state = 4;
-                                selectedElement = g;
-                            } else if(element.getTitle().equals("Delete")){
-                                basicGates.remove(g.gate);
-                                elements.remove(g);
-                            }
-                        },
-                        new ListElement("Add/Remove new output", null),
-                        new ListElement("Delete", null)
-                    );
-                    break;
+        }
+    }
+
+    public void mouseDragged() {
+        if (mousePressed && (mouseButton == LEFT)) {
+            if (state == 2) {
+                for (UiElement g : elements) {
+                    if(g.over(new PVector(mouseX, mouseY))){
+                        g.position = new PVector(mouseX - 256 * ShapeLoader.scale, mouseY- 256 * ShapeLoader.scale);
+                        break;
+                    }
                 }
             }
         }

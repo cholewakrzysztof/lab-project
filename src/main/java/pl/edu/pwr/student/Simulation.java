@@ -39,7 +39,6 @@ public class Simulation {
         // All outputs in the simulation are to be in this collection
         HashSet<SignalReceiver> systemOutputs = new HashSet<>();
 
-
         Canvas Canvas = new Canvas(basicGates);
         ShapeLoader.loadShapes(Canvas);
 

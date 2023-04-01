@@ -20,4 +20,7 @@ public interface Compoundable {
     default boolean isIO() {
         return false;
     }
+
+    void fullDisconnect();
+
 }

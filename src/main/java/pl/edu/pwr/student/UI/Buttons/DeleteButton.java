@@ -1,12 +1,14 @@
-package pl.edu.pwr.student.UI;
+package pl.edu.pwr.student.UI.Buttons;
 
+import pl.edu.pwr.student.UI.Canvas;
+import pl.edu.pwr.student.UI.UiElement;
 import processing.core.PShape;
 import processing.core.PVector;
 
 /**
  * Class representing button for creating new elements
  */
-public class CreateButton extends UiElement {
+public class DeleteButton extends UiElement {
 
     PShape shape;
 
@@ -14,9 +16,9 @@ public class CreateButton extends UiElement {
      * Constructor
      * @param s Processing sketch
      */
-    public CreateButton(Canvas s) {
-        super("CREATE", s, new PVector(10,10), null);
-        shape = sketch.loadShape("src/main/resources/buttons/CREATE.svg");
+    public DeleteButton(Canvas s) {
+        super("INTERACT", s, new PVector(240,10), null);
+        shape = sketch.loadShape("src/main/resources/buttons/DELETE.svg");
         shape.scale(3);
     }
 

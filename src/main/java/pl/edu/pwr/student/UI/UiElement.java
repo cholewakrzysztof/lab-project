@@ -1,6 +1,7 @@
 package pl.edu.pwr.student.UI;
 
 import pl.edu.pwr.student.Gates.Compoundable;
+import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PApplet;
@@ -14,7 +15,7 @@ public class UiElement extends PApplet {
     /**
      * Position of element
      */
-    public final PVector position;
+    public PVector position;
 
     /**
      * Name of element
@@ -53,6 +54,12 @@ public class UiElement extends PApplet {
         sketch.shape(ShapeLoader.getShape(elName), position.x, position.y);
 
         for (SignalReceiver s : gate.getOutputs()) {
+            if (((SignalSender) gate).getState()){
+                sketch.stroke(255, 0, 0);
+            } else {
+                sketch.stroke(0, 255, 0);
+            }
+
             for (UiElement u : sketch.elements){
                 if (u.gate.equals(s)) {
                     sketch.line(position.x + 512*ShapeLoader.scale, position.y + 256*ShapeLoader.scale, u.position.x, u.position.y + 256*ShapeLoader.scale);

@@ -1,12 +1,14 @@
-package pl.edu.pwr.student.UI;
+package pl.edu.pwr.student.UI.Buttons;
 
+import pl.edu.pwr.student.UI.Canvas;
+import pl.edu.pwr.student.UI.UiElement;
 import processing.core.PShape;
 import processing.core.PVector;
 
 /**
  * Class representing button for creating new elements
  */
-public class InteractionButton extends UiElement {
+public class EditButton extends UiElement {
 
     PShape shape;
 
@@ -14,9 +16,9 @@ public class InteractionButton extends UiElement {
      * Constructor
      * @param s Processing sketch
      */
-    public InteractionButton(Canvas s) {
-        super("INTERACT", s, new PVector(120,10), null);
-        shape = sketch.loadShape("src/main/resources/buttons/INTERACT.svg");
+    public EditButton(Canvas s) {
+        super("EDIT", s, new PVector(120,10), null);
+        shape = sketch.loadShape("src/main/resources/buttons/EDIT.svg");
         shape.scale(3);
     }
 
