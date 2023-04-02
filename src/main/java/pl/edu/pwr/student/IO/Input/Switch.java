@@ -1,8 +1,9 @@
 package pl.edu.pwr.student.IO.Input;
 
 import pl.edu.pwr.student.Simulation;
+import pl.edu.pwr.student.UI.UiAvailable;
 
-public class Switch extends SignalSender implements Runnable {
+public class Switch extends SignalSender implements Runnable, UiAvailable {
     public Switch() {}
 
     public boolean toggle() {
@@ -23,5 +24,10 @@ public class Switch extends SignalSender implements Runnable {
         toggle();
         Simulation.simWait(milliseconds);
         toggle();
+    }
+
+    @Override
+    public void fullDisconnect() {
+        disconnectOutputs();
     }
 }

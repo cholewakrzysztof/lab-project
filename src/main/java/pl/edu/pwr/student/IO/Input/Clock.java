@@ -1,8 +1,9 @@
 package pl.edu.pwr.student.IO.Input;
 
 import pl.edu.pwr.student.Simulation;
+import pl.edu.pwr.student.UI.UiAvailable;
 
-public class Clock extends SignalSender implements Runnable {
+public class Clock extends SignalSender implements Runnable, UiAvailable {
     private final long intervalOn;
     private final long intervalOff;
 
@@ -31,5 +32,10 @@ public class Clock extends SignalSender implements Runnable {
     public Clock(long millisecondsOn, long millisecondsOff) {
         intervalOn = millisecondsOn;
         intervalOff = millisecondsOff;
+    }
+
+    @Override
+    public void fullDisconnect() {
+        disconnectOutputs();
     }
 }

@@ -3,10 +3,13 @@ package pl.edu.pwr.student.IO.Output;
 import org.jetbrains.annotations.NotNull;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.Simulation;
+import pl.edu.pwr.student.UI.UiAvailable;
 import processing.core.PApplet;
 import processing.sound.SinOsc;
 
-public class Speaker extends PApplet implements SignalReceiver, Runnable {
+import java.util.HashSet;
+
+public class Speaker extends PApplet implements SignalReceiver, Runnable, UiAvailable {
     private SignalSender input = null;
     private boolean state = false;
 
@@ -56,6 +59,7 @@ public class Speaker extends PApplet implements SignalReceiver, Runnable {
         }
         sine.stop();
     }
+
     public boolean toggle() {
         power = !power;
         if (power)
@@ -67,9 +71,25 @@ public class Speaker extends PApplet implements SignalReceiver, Runnable {
         return power;
     }
 
+    @Override
+    public HashSet<SignalReceiver> getOutputs() {
+        return UiAvailable.super.getOutputs();
+    }
+
+    @Override
+    public boolean getState() {
+        return state;
+    }
+
     public void fullDisconnect() {
         disconnectInputs();
     }
+
+    @Override
+    public int connection(SignalReceiver receiver) {
+        return 0;
+    }
+
     public void disconnectInputs() {
         if (input != null)
             input.connection(this);

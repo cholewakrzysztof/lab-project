@@ -1,8 +1,11 @@
 package pl.edu.pwr.student.IO.Output;
 
 import pl.edu.pwr.student.Simulation;
+import pl.edu.pwr.student.UI.UiAvailable;
 
-public class LED extends BasicReceiver implements Runnable {
+import java.util.HashSet;
+
+public class LED extends BasicReceiver implements Runnable, UiAvailable {
     private final String name;
     private final long milliseconds;
     private boolean power = false;
@@ -29,4 +32,19 @@ public class LED extends BasicReceiver implements Runnable {
         thread = new Thread(this);
     }
     public void react() {}
+
+    @Override
+    public HashSet<SignalReceiver> getOutputs() {
+        return UiAvailable.super.getOutputs();
+    }
+
+    @Override
+    public boolean getState() {
+        return state;
+    }
+
+    @Override
+    public int connection(SignalReceiver receiver) {
+        return 0;
+    }
 }

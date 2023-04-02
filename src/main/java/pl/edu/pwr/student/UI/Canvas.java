@@ -2,6 +2,8 @@ package pl.edu.pwr.student.UI;
 
 import pl.edu.pwr.student.Gates.BasicGates.*;
 import pl.edu.pwr.student.Gates.Compoundable;
+import pl.edu.pwr.student.IO.Input.Clock;
+import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.UI.Buttons.*;
 import pl.edu.pwr.student.Utility.ShapeLoader;
