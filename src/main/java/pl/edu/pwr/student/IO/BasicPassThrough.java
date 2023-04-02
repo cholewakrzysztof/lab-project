@@ -4,25 +4,23 @@ import org.jetbrains.annotations.NotNull;
 import pl.edu.pwr.student.Gates.Compoundable;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
-import pl.edu.pwr.student.Simulation;
 
-public abstract class BasicPassThrough extends SignalSender implements SignalReceiver, Compoundable {
+public abstract class BasicPassThrough extends SignalSender implements SignalReceiver, Compoundable, Runnable {
     private SignalSender input;
     public boolean hasInputs() {
         return input != null;
     }
-    public void update() {
-        Simulation.simWait(SignalSender.getDelay());
-        boolean newState = false;
-
+    public void run() {
+        boolean oldState = state;
         if (input != null)
-            newState = checkState(input.getState());
+            state = checkState(input.getState());
 
-        if (state == newState)
-            return;
-
-        state = newState;
-        sendUpdate();
+        if (oldState != state)
+            sendUpdate();
+    }
+    public void update() {
+        Thread thread = new Thread(this);
+        thread.start();
     }
     public boolean attemptConnect(SignalSender sender) {
         if (input != null)

@@ -5,14 +5,6 @@ import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import java.util.HashSet;
 
 public abstract class SignalSender {
-    private static long delay = 20;
-    public static void setDelay(long ms) {
-        SignalSender.delay = ms;
-    }
-    public static long getDelay() {
-        return delay;
-    }
-
     private final HashSet<SignalReceiver> outputs = new HashSet<>();
     protected boolean state = false;
 

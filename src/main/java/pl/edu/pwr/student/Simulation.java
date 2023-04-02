@@ -57,5 +57,17 @@ public class Simulation {
 
         // Compound Gate SR Latch
         CompGateSRLatch.simulate();
+
+//        AND and = new AND();
+//        NOT not = new NOT();
+//
+//        LED printer = new LED("test", 500);
+//
+//        and.connection(not);
+//        not.connection(and);
+//
+//        and.connection(printer);
+//
+//        printer.toggle();
     }
 }
