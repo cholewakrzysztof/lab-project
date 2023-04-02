@@ -66,7 +66,7 @@ public class CompGateSRLatch {
 
         out1.toggle();
         out2.toggle();
-        simWait(3000);
+        simWait(2000);
 
         S1.press(10);
         System.out.println("Pressed S1");
@@ -75,7 +75,7 @@ public class CompGateSRLatch {
         R1.press(10);
         S2.press(10);
         System.out.println("Pressed R1 and S2");
-        simWait(2000);
+        simWait(3000);
 
         out1.toggle();
         out2.toggle();

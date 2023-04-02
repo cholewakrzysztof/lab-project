@@ -5,14 +5,6 @@ import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import java.util.HashSet;
 
 public abstract class SignalSender {
-    private static long delay = 20;
-    public static void setDelay(long ms) {
-        SignalSender.delay = ms;
-    }
-    public static long getDelay() {
-        return delay;
-    }
-
     private final HashSet<SignalReceiver> outputs = new HashSet<>();
     protected boolean state = false;
 
@@ -57,6 +49,9 @@ public abstract class SignalSender {
 
         if (!outputs.isEmpty())
             throw new RuntimeException("Error disconnecting outputs");
+    }
+    public void fullDisconnect() {
+        disconnectOutputs();
     }
     public boolean isConnected(SignalReceiver receiver) {
         return outputs.contains(receiver);
