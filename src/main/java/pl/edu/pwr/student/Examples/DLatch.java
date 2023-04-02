@@ -49,6 +49,9 @@ public class DLatch {
 
         nandRD.connection(nandRU);
 
+        enable.press(10);
+        simWait(100);
+
         Q.toggle();
 
         simWait(2000);

@@ -59,15 +59,15 @@ public class Simulation {
         CompGateSRLatch.simulate();
 
 //        AND and = new AND();
+//        Delay delay = new Delay(1000);
 //        NOT not = new NOT();
 //
-//        LED printer = new LED("test", 500);
+//        Printer printer = new Printer("real-time");
 //
-//        and.connection(not);
+//        and.connection(delay);
+//        delay.connection(not);
 //        not.connection(and);
 //
 //        and.connection(printer);
-//
-//        printer.toggle();
     }
 }

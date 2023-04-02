@@ -33,6 +33,9 @@ public class SRLatch {
         norUp.connection(norDown);
         norUp.connection(out);
 
+        R.press(10);
+        simWait(100);
+
         out.toggle();
 
         simWait(2000);
