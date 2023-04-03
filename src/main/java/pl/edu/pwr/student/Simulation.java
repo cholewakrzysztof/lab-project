@@ -58,16 +58,20 @@ public class Simulation {
         // Compound Gate SR Latch
         CompGateSRLatch.simulate();
 
-//        AND and = new AND();
-//        Delay delay = new Delay(1000);
-//        NOT not = new NOT();
-//
-//        Printer printer = new Printer("real-time");
-//
-//        and.connection(delay);
-//        delay.connection(not);
-//        not.connection(and);
-//
-//        and.connection(printer);
+        AND and = new AND();
+        Delay delay = new Delay(1000);
+        NOT not = new NOT();
+
+        Printer printer = new Printer("State");
+        Speaker newSpeaker = new Speaker();
+
+        and.connection(delay);
+        delay.connection(not);
+        not.connection(and);
+
+        and.connection(printer);
+
+        and.connection(newSpeaker);
+        newSpeaker.toggle();
     }
 }

@@ -30,7 +30,7 @@ public class DLatch {
 
         System.out.println("D LATCH\n");
 
-        Q = new Speaker("D Latch", 1000);
+        Q = new Speaker();
 
         data.connection(nandLU);
         data.connection(not);
