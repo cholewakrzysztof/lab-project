@@ -1,6 +1,7 @@
 package pl.edu.pwr.student.UI;
 
 import pl.edu.pwr.student.IO.Input.SignalSender;
+import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PApplet;
@@ -29,20 +30,20 @@ public class UiElement extends PApplet {
     /**
      * Gate represented by element
      */
-    public final UiAvailable gate;
+    public final UiAvailable uiElem;
 
     /**
      * Constructor
      * @param type name of element
      * @param s Processing sketch
      * @param v position of element
-     * @param gate gate represented by element
+     * @param uiElem gate represented by element
      */
-    public UiElement(String type, Canvas s, PVector v, UiAvailable gate) {
+    public UiElement(String type, Canvas s, PVector v, UiAvailable uiElem) {
         position = v.copy();
         elName = type;
         sketch = s;
-        this.gate = gate;
+        this.uiElem = uiElem;
     }
 
     /**
@@ -52,11 +53,16 @@ public class UiElement extends PApplet {
         sketch.fill(0);
         sketch.shape(ShapeLoader.getShape(elName), position.x, position.y);
 
-        for (SignalReceiver s : gate.getOutputs()) {
-            if (((SignalSender) gate).getState()){
+        for (SignalReceiver s : uiElem.getOutputs()) {
+            if (((SignalSender) uiElem).getState()){
                 sketch.stroke(0, 255, 0);
+                // Jak zacznie działać getstate to będzie printować
                 if (elName == "LED"){
                     System.out.println(1);
+                    sketch.circle(position.x, position.y,100);
+                }
+                if (elName == "SPEAKER"){
+                    System.out.println(2);
                     sketch.circle(position.x, position.y,100);
                 }
             } else {
@@ -64,7 +70,7 @@ public class UiElement extends PApplet {
             }
 
             for (UiElement u : sketch.elements){
-                if (u.gate.equals(s)) {
+                if (u.uiElem.equals(s)) {
                     sketch.line(position.x + 512*ShapeLoader.scale, position.y + 256*ShapeLoader.scale, u.position.x, u.position.y + 256*ShapeLoader.scale);
                 }
             }
