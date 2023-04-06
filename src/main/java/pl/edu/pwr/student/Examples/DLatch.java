@@ -52,8 +52,6 @@ public class DLatch {
         enable.press(10);
         simWait(100);
 
-        Q.toggle();
-
         simWait(2000);
 
         data.press(10);
@@ -72,7 +70,5 @@ public class DLatch {
         enable.press(10);
         System.out.println("Pressed enable with data off/low");
         simWait(2000);
-
-        Q.toggle();
     }
 }

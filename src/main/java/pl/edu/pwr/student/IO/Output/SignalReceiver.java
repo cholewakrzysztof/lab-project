@@ -8,4 +8,5 @@ public interface SignalReceiver {
     void update();
     void disconnectInputs();
     void fullDisconnect();
+    boolean getState();
 }

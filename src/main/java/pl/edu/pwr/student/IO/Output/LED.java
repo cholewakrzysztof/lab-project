@@ -4,11 +4,14 @@ import pl.edu.pwr.student.Simulation;
 
 public class LED extends BasicReceiver implements Runnable {
     private final String name;
-    private final long milliseconds;
+    private long milliseconds;
     private boolean power = false;
     private final Thread thread;
 
     public boolean toggle() {
+        if (milliseconds <= 0)
+            return false;
+
         power = !power;
         if (power)
             thread.start();
@@ -22,11 +25,16 @@ public class LED extends BasicReceiver implements Runnable {
             Simulation.simWait(milliseconds);
         }
     }
+    public void changeUpdateFreq(long updateMilliseconds) {
+        milliseconds = updateMilliseconds;
+
+        if (milliseconds < 1)
+            toggle();
+    }
     public LED(String name, long updateMilliseconds) {
         this.name = name;
         milliseconds = updateMilliseconds;
 
         thread = new Thread(this);
     }
-    public void react() {}
 }

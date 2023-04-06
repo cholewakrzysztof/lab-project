@@ -49,29 +49,22 @@ public class Simulation {
 
         // Synchronous
         DLatch.simulate();
+        simWait(1000);
         System.out.print("\n\n");
 
         // Asynchronous
         SRLatch.simulate();
+        simWait(1000);
         System.out.print("\n\n");
 
         // Compound Gate SR Latch
         CompGateSRLatch.simulate();
+        simWait(1000);
+        System.out.print("\n\n");
 
-        AND and = new AND();
-        Delay delay = new Delay(1000);
-        NOT not = new NOT();
-
-        Printer printer = new Printer("State");
-        Speaker newSpeaker = new Speaker();
-
-        and.connection(delay);
-        delay.connection(not);
-        not.connection(and);
-
-        and.connection(printer);
-
-        and.connection(newSpeaker);
-        newSpeaker.toggle();
+        // Feedback loop
+        CustomClock.simulate();
+        simWait(1000);
+        System.out.print("\n\n");
     }
 }
