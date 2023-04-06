@@ -6,7 +6,7 @@ import processing.sound.SinOsc;
 public class Speaker extends BasicReceiver {
     private final SinOsc sine;
 
-    public void react() {
+    protected void react() {
         if (state)
             sine.play();
         else
