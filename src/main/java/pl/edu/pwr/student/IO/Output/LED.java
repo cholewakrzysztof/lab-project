@@ -9,7 +9,7 @@ public class LED extends BasicReceiver implements Runnable {
     private final Thread thread;
 
     public boolean toggle() {
-        if (milliseconds <= 0) {
+        if (milliseconds < 1) {
             power = false;
             return false;
         }
