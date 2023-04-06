@@ -26,7 +26,7 @@ public class ShapeLoader {
      * @param sketch PApplet object
      */
     public static void loadShapes(PApplet sketch){
-        File dir = new File("src/main/resources/gates/");
+        File dir = new File("src/main/resources/elements/");
         File[] files = dir.listFiles();
 
         assert files != null;

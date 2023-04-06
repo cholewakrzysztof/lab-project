@@ -1,6 +1,5 @@
 package pl.edu.pwr.student.UI;
 
-import pl.edu.pwr.student.Gates.Compoundable;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.Utility.ShapeLoader;
@@ -30,7 +29,7 @@ public class UiElement extends PApplet {
     /**
      * Gate represented by element
      */
-    public final Compoundable gate;
+    public final UiAvailable gate;
 
     /**
      * Constructor
@@ -39,7 +38,7 @@ public class UiElement extends PApplet {
      * @param v position of element
      * @param gate gate represented by element
      */
-    public UiElement(String type, Canvas s, PVector v, Compoundable gate) {
+    public UiElement(String type, Canvas s, PVector v, UiAvailable gate) {
         position = v.copy();
         elName = type;
         sketch = s;
@@ -55,9 +54,13 @@ public class UiElement extends PApplet {
 
         for (SignalReceiver s : gate.getOutputs()) {
             if (((SignalSender) gate).getState()){
-                sketch.stroke(255, 0, 0);
-            } else {
                 sketch.stroke(0, 255, 0);
+                if (elName == "LED"){
+                    System.out.println(1);
+                    sketch.circle(position.x, position.y,100);
+                }
+            } else {
+                sketch.stroke(0, 0, 0);
             }
 
             for (UiElement u : sketch.elements){

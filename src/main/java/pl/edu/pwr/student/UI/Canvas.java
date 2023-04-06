@@ -1,17 +1,14 @@
 package pl.edu.pwr.student.UI;
 
-import pl.edu.pwr.student.Gates.BasicGates.*;
+import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.Gates.Compoundable;
-import pl.edu.pwr.student.IO.Input.Clock;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.UI.Buttons.*;
-import pl.edu.pwr.student.Utility.ShapeLoader;
+import pl.edu.pwr.student.UI.Handlers.*;
 import processing.core.PApplet;
-import processing.core.PVector;
 import uibooster.UiBooster;
 import uibooster.model.Form;
-import uibooster.model.ListElement;
 
 import java.util.*;
 
@@ -53,12 +50,17 @@ public class Canvas extends PApplet {
     /**
      * List of all basic gates
      */
-    private HashSet<Compoundable> basicGates = new HashSet<>();
+    public HashSet<Compoundable> basicGates;
+
+    private HashSet<CompoundGate> compoundGates;
+    private HashMap<String, CompoundGate> savedCompoundGates;
+    public HashSet<SignalSender> userInputs;
+    public HashSet<SignalReceiver> systemOutputs;
 
     /**
      * List of all buttons
      */
-    private final ArrayList<UiElement> buttons = new ArrayList<>();
+    public final ArrayList<UiElement> buttons = new ArrayList<>();
 
     /**
      * Selected element
@@ -69,8 +71,20 @@ public class Canvas extends PApplet {
      * Constructor
      * @param basicGates list of all basic gates
      */
-    public Canvas (HashSet<Compoundable> basicGates) {
+    public Canvas (
+        HashSet<Compoundable> basicGates,
+        HashSet<CompoundGate> compoundGates,
+        HashMap<String, CompoundGate> savedCompoundGates,
+        HashSet<SignalSender> userInputs,
+        HashSet<SignalReceiver> systemOutputs
+    ) {
         this.basicGates = basicGates;
+        this.compoundGates = compoundGates;
+        this.savedCompoundGates = savedCompoundGates;
+        this.userInputs = userInputs;
+        this.systemOutputs = systemOutputs;
+
+        booster = new UiBooster();
 
         String[] processingArgs = {"Gates-Simulation"};
         this.runSketch(processingArgs);
@@ -91,54 +105,23 @@ public class Canvas extends PApplet {
         if (elements.isEmpty()) {
             super.exit();
         } else {
-            new UiBooster().showConfirmDialog(
-                "Do you want to save your work?",
-                "Exiting",
-                () -> {
-                    //TODO: saving
-                    super.exit();
-                },
-                super::exit);
+            booster.showConfirmDialog(
+                    "Do you want to save your work?",
+                    "Exiting",
+                    () -> {
+                        //TODO: saving
+                        super.exit();
+                    },
+                    super::exit);
         }
     }
 
     public void settings() {
-        booster = new UiBooster();
-        size(1000, 1000);
-        //TODO: make it added automatically (created new gates by user are now a problem)
-        form = booster
-            .createForm("Gates")
-            .addList("Select Gate",
-                new ListElement("AND", null,""),
-                new ListElement("NAND", null,""),
-                new ListElement("OR", null, ""),
-                new ListElement("NOR", null,""),
-                new ListElement("XOR", null,""),
-                new ListElement("XNOR", null,""),
-                new ListElement("NOT", null, "")
-            ).run().hide();
-
-        booster.createNotification(
-            "Started",
-            "Gates-Simulation");
+        SettingsHandler.settings(this);
     }
 
     public void draw() {
-        background(255);
-
-        for (UiElement g : buttons) {
-            g.run();
-        }
-
-        for (UiElement g : elements) {
-            g.run();
-        }
-        if (elements.isEmpty()) {
-            fill(0);
-            textAlign(CENTER);
-            textSize(32);
-            text("Select gate and place it", width/2, height/2);
-        }
+        DrawHandler.draw(this);
     }
 
     /**
@@ -146,114 +129,10 @@ public class Canvas extends PApplet {
      * handles adding new gates
      */
     public void mousePressed() {
-        if (mousePressed && (mouseButton == LEFT)) {
-            for (int i = 0; i < buttons.size(); i++) {
-                if(buttons.get(i).over(new PVector(mouseX, mouseY))){
-                    lastState = state;
-                    state = i;
-                    if (state == 1) {
-                        form.show();
-                    } else {
-                        form.hide();
-                    }
-                    return;
-                }
-            }
-
-            if(state == 1){
-                ListElement selected = (ListElement) form.getByLabel("Select Gate").getValue();
-                if(selected != null){
-                    //TODO: make it added automatically (created new gates by user are now a problem)
-                    switch (selected.getTitle()) {
-                        case "AND" -> {
-                            Compoundable temp = new AND();
-                            basicGates.add(temp);
-                            elements.add(new UiElement("AND", this, new PVector(mouseX, mouseY), temp));
-                        }
-                        case "NAND" -> {
-                            Compoundable temp = new NAND();
-                            basicGates.add(temp);
-                            elements.add(new UiElement("NAND", this, new PVector(mouseX, mouseY), temp));
-                        }
-                        case "OR" -> {
-                            Compoundable temp = new OR();
-                            basicGates.add(temp);
-                            elements.add(new UiElement("OR", this, new PVector(mouseX, mouseY), temp));
-                        }
-                        case "NOR" -> {
-                            Compoundable temp = new NOR();
-                            basicGates.add(temp);
-                            elements.add(new UiElement("NOR", this, new PVector(mouseX, mouseY), temp));
-                        }
-                        case "XOR" -> {
-                            Compoundable temp = new XOR();
-                            basicGates.add(temp);
-                            elements.add(new UiElement("XOR", this, new PVector(mouseX, mouseY), temp));
-                        }
-                        case "XNOR" -> {
-                            Compoundable temp = new XNOR();
-                            basicGates.add(temp);
-                            elements.add(new UiElement("XNOR", this, new PVector(mouseX, mouseY), temp));
-                        }
-                        case "NOT" -> {
-                            Compoundable temp = new NOT();
-                            basicGates.add(temp);
-                            elements.add(new UiElement("NOT", this, new PVector(mouseX, mouseY), temp));
-                        }
-                    }
-                }
-            } else if (state == 2) {
-                for (UiElement g : elements) {
-                    if(g.over(new PVector(mouseX, mouseY))){
-                        if(selectedElement != null){
-                            selectedElement = g;
-                        }
-                        break;
-                    }
-                }
-            } else if (state == 3) {
-                for (UiElement g : elements) {
-                    if(g.over(new PVector(mouseX, mouseY))){
-                        lastState = state;
-                        state = 5;
-                        selectedElement = g;
-                        break;
-                    }
-                }
-            } else if (state == 4) {
-                for (UiElement g : elements) {
-                    if(g.over(new PVector(mouseX, mouseY))){
-                        g.gate.fullDisconnect();
-                        basicGates.remove(g.gate);
-                        elements.remove(g);
-                        break;
-                    }
-                }
-            } else if (state == 5) {
-                for (UiElement g : elements) {
-                    if(g.over(new PVector(mouseX, mouseY))){
-                        if(selectedElement != null){
-                            selectedElement.gate.connection((SignalReceiver) g.gate);
-                            selectedElement = null;
-                            state = lastState;
-                        }
-                        break;
-                    }
-                }
-            }
-        }
+        MousePressedHandler.mousePressed(this);
     }
 
     public void mouseDragged() {
-        if (mousePressed && (mouseButton == LEFT)) {
-            if (state == 2) {
-                for (UiElement g : elements) {
-                    if(g.over(new PVector(mouseX, mouseY))){
-                        g.position = new PVector(mouseX - 256 * ShapeLoader.scale, mouseY- 256 * ShapeLoader.scale);
-                        break;
-                    }
-                }
-            }
-        }
+        MouseDraggedHandler.mouseDragged(this);
     }
 }

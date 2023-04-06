@@ -22,6 +22,4 @@ public interface Compoundable {
         return false;
     }
 
-    void fullDisconnect();
-
 }

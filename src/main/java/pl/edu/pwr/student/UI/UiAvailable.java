@@ -9,7 +9,7 @@ public interface UiAvailable {
      * Gets all outputs from element
      */
     default HashSet<SignalReceiver> getOutputs() {
-        return null;
+        return new HashSet<SignalReceiver>();
     }
 
     /**
