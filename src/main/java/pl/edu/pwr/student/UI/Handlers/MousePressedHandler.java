@@ -13,23 +13,32 @@ import uibooster.model.ListElement;
 
 public class MousePressedHandler {
     public static void mousePressed(Canvas sketch){
-        if (sketch.mousePressed && (sketch.mouseButton == sketch.LEFT)) {
-            for (int i = 0; i < sketch.buttons.size(); i++) {
-                if(sketch.buttons.get(i).over(new PVector(sketch.mouseX, sketch.mouseY))){
-                    sketch.lastState = sketch.state;
-                    sketch.state = i;
-                    if (sketch.state == 1) {
-                        sketch.form.show();
-                    } else {
-                        sketch.form.hide();
+        for (int i = 0; i < sketch.buttons.size(); i++) {
+            if(sketch.buttons.get(i).over(new PVector(sketch.mouseX, sketch.mouseY))){
+                sketch.lastState = sketch.state;
+                sketch.state = i;
+                if (sketch.state == 1) {
+                    sketch.form.show();
+                } else {
+                    sketch.form.hide();
+                }
+                return;
+            }
+        }
+
+
+        switch (sketch.state) {
+            case 0 -> {
+                for (UiElement g : sketch.elements) {
+                    if (g.over(new PVector(sketch.mouseX, sketch.mouseY))) {
+                        sketch.selectedElement = g;
+                        break;
                     }
-                    return;
                 }
             }
-
-            if(sketch.state == 1){
+            case 1 -> {
                 ListElement selected = (ListElement) sketch.form.getByLabel("Select Gate").getValue();
-                if(selected != null){
+                if (selected != null) {
                     //TODO: make it added automatically (created new gates by user are now a problem)
                     switch (selected.getTitle()) {
                         case "AND" -> {
@@ -73,7 +82,7 @@ public class MousePressedHandler {
                             sketch.elements.add(new UiElement("SPEAKER", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
                         }
                         case "LED" -> {
-                            LED temp = new LED("",0);
+                            LED temp = new LED("", 0);
                             temp.toggle();
                             sketch.systemOutputs.add(temp);
                             sketch.elements.add(new UiElement("LED", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
@@ -85,52 +94,46 @@ public class MousePressedHandler {
                             sketch.elements.add(new UiElement("SWITCH", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
                         }
                         case "CLOCK" -> {
-                            Clock temp = new Clock(1000,1000);
+                            Clock temp = new Clock(1000, 1000);
                             temp.toggle();
                             sketch.userInputs.add(temp);
                             sketch.elements.add(new UiElement("CLOCK", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
                         }
                     }
                 }
-            } else if (sketch.state == 2) {
+            }
+            case 2 -> {
                 for (UiElement g : sketch.elements) {
-                    if(g.over(new PVector(sketch.mouseX, sketch.mouseY))){
-                        if(sketch.selectedElement != null){
-                            sketch.selectedElement = g;
-                        }
-                        break;
-                    }
-                }
-            } else if (sketch.state == 3) {
-                for (UiElement g : sketch.elements) {
-                    if(g.over(new PVector(sketch.mouseX, sketch.mouseY))){
+                    if (g.over(new PVector(sketch.mouseX, sketch.mouseY))) {
                         sketch.lastState = sketch.state;
-                        sketch.state = 5;
+                        sketch.state = 4;
                         sketch.selectedElement = g;
                         break;
                     }
                 }
-            } else if (sketch.state == 4) {
+            }
+            case 3 -> {
                 for (UiElement g : sketch.elements) {
-                    if(g.over(new PVector(sketch.mouseX, sketch.mouseY))){
+                    if (g.over(new PVector(sketch.mouseX, sketch.mouseY))) {
                         g.uiElem.fullDisconnect();
                         sketch.basicGates.remove(g.uiElem);
                         sketch.elements.remove(g);
                         break;
                     }
                 }
-            } else if (sketch.state == 5) {
+            }
+            case 4 -> {
                 for (UiElement g : sketch.elements) {
-                    if(g.over(new PVector(sketch.mouseX, sketch.mouseY))){
-                        if(sketch.selectedElement != null){
-                            try{
+                    if (g.over(new PVector(sketch.mouseX, sketch.mouseY))) {
+                        if (sketch.selectedElement != null) {
+                            try {
                                 sketch.selectedElement.uiElem.connection((SignalReceiver) g.uiElem);
                                 sketch.selectedElement = null;
                                 sketch.state = sketch.lastState;
-                            } catch (Exception e){
+                            } catch (Exception e) {
                                 sketch.booster.createNotification(
-                                    "You cannot connect this to that",
-                                    "Gates-Simulation");
+                                        "You cannot connect this to that",
+                                        "Gates-Simulation");
                             }
                         }
                         break;

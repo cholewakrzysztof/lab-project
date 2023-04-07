@@ -17,7 +17,7 @@ public class ConnectButton extends UiElement {
      * @param s Processing sketch
      */
     public ConnectButton(Canvas s) {
-        super("INTERACT", s, new PVector(180,10), null);
+        super("INTERACT", s, new PVector(120,10), null);
         shape = sketch.loadShape("src/main/resources/buttons/CONNECT.svg");
         shape.scale(3);
     }

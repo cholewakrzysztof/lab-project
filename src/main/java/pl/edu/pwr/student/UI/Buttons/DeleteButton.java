@@ -17,7 +17,7 @@ public class DeleteButton extends UiElement {
      * @param s Processing sketch
      */
     public DeleteButton(Canvas s) {
-        super("INTERACT", s, new PVector(240,10), null);
+        super("INTERACT", s, new PVector(180,10), null);
         shape = sketch.loadShape("src/main/resources/buttons/DELETE.svg");
         shape.scale(3);
     }

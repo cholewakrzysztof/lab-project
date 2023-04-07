@@ -43,26 +43,26 @@ public class Simulation {
         Canvas Canvas = new Canvas(basicGates, compoundGates, savedCompoundGates, userInputs, systemOutputs);
         ShapeLoader.loadShapes(Canvas);
 
-        // CODE EXAMPLES BELOW
-
-        // Synchronous
-        DLatch.simulate();
-        simWait(1000);
-        System.out.print("\n\n");
-
-        // Asynchronous
-        SRLatch.simulate();
-        simWait(1000);
-        System.out.print("\n\n");
-
-        // Compound Gate SR Latch
-        CompGateSRLatch.simulate();
-        simWait(1000);
-        System.out.print("\n\n");
-
-        // Feedback loop
-        CustomClock.simulate();
-        simWait(1000);
-        System.out.print("\n\n");
+//        // CODE EXAMPLES BELOW
+//
+//        // Synchronous
+//        DLatch.simulate();
+//        simWait(1000);
+//        System.out.print("\n\n");
+//
+//        // Asynchronous
+//        SRLatch.simulate();
+//        simWait(1000);
+//        System.out.print("\n\n");
+//
+//        // Compound Gate SR Latch
+//        CompGateSRLatch.simulate();
+//        simWait(1000);
+//        System.out.print("\n\n");
+//
+//        // Feedback loop
+//        CustomClock.simulate();
+//        simWait(1000);
+//        System.out.print("\n\n");
     }
 }

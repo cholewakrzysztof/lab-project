@@ -25,10 +25,9 @@ public class Canvas extends PApplet {
      * State of canvas
      * 0 - interacting with elements
      * 1 - creating new elements
-     * 2 - moving elements
-     * 3 - Add/Remove new output
-     * 4 - deleting elements
-     * 5 - connecting elements
+     * 2 - Add/Remove new output
+     * 3 - deleting elements
+     * 4 - connecting elements
      */
     public int state;
 
@@ -92,7 +91,6 @@ public class Canvas extends PApplet {
         //TODO: throws Cannot parse "currentcolor".
         buttons.add(new InteractionButton(this));
         buttons.add(new CreateButton(this));
-        buttons.add(new EditButton(this));
         buttons.add(new ConnectButton(this));
         buttons.add(new DeleteButton(this));
     }
@@ -132,7 +130,15 @@ public class Canvas extends PApplet {
         MousePressedHandler.mousePressed(this);
     }
 
+    public void mouseClicked(){
+        MouseClickedHandler.mouseClicked(this);
+    }
+
     public void mouseDragged() {
         MouseDraggedHandler.mouseDragged(this);
+    }
+
+    public void mouseReleased() {
+        MouseReleasedHandler.mouseReleased(this);
     }
 }
