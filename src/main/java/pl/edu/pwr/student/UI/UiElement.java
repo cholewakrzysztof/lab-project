@@ -56,15 +56,6 @@ public class UiElement extends PApplet {
         for (SignalReceiver s : uiElem.getOutputs()) {
             if (uiElem.getState()){
                 sketch.stroke(0, 255, 0);
-                // Jak zacznie działać getstate to będzie printować
-                if (elName == "LED"){
-                    System.out.println(1);
-                    sketch.circle(position.x, position.y,100);
-                }
-                if (elName == "SPEAKER"){
-                    System.out.println(2);
-                    sketch.circle(position.x, position.y,100);
-                }
             } else {
                 sketch.stroke(0, 0, 0);
             }
