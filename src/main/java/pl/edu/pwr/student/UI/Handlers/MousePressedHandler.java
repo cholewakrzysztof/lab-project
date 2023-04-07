@@ -68,13 +68,12 @@ public class MousePressedHandler {
                             sketch.elements.add(new UiElement("NOT", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
                         }
                         case "SPEAKER" -> {
-                            Speaker temp = new Speaker("",1000);
-                            temp.toggle();
+                            Speaker temp = new Speaker();
                             sketch.systemOutputs.add(temp);
                             sketch.elements.add(new UiElement("SPEAKER", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
                         }
                         case "LED" -> {
-                            LED temp = new LED("",1000);
+                            LED temp = new LED("",0);
                             temp.toggle();
                             sketch.systemOutputs.add(temp);
                             sketch.elements.add(new UiElement("LED", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));

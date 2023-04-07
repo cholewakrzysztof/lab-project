@@ -1,6 +1,7 @@
 package pl.edu.pwr.student;
 
 import pl.edu.pwr.student.Examples.CompGateSRLatch;
+import pl.edu.pwr.student.Examples.CustomClock;
 import pl.edu.pwr.student.Examples.DLatch;
 import pl.edu.pwr.student.Examples.SRLatch;
 import pl.edu.pwr.student.Gates.CompoundGate;
@@ -46,25 +47,22 @@ public class Simulation {
 
         // Synchronous
         DLatch.simulate();
+        simWait(1000);
         System.out.print("\n\n");
 
         // Asynchronous
         SRLatch.simulate();
+        simWait(1000);
         System.out.print("\n\n");
 
         // Compound Gate SR Latch
         CompGateSRLatch.simulate();
+        simWait(1000);
+        System.out.print("\n\n");
 
-//        AND and = new AND();
-//        NOT not = new NOT();
-//
-//        LED printer = new LED("test", 500);
-//
-//        and.connection(not);
-//        not.connection(and);
-//
-//        and.connection(printer);
-//
-//        printer.toggle();
+        // Feedback loop
+        CustomClock.simulate();
+        simWait(1000);
+        System.out.print("\n\n");
     }
 }

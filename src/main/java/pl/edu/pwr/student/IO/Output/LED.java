@@ -7,11 +7,16 @@ import java.util.HashSet;
 
 public class LED extends BasicReceiver implements Runnable, UiAvailable {
     private final String name;
-    private final long milliseconds;
+    private long milliseconds;
     private boolean power = false;
     private final Thread thread;
 
     public boolean toggle() {
+        if (milliseconds < 1) {
+            power = false;
+            return false;
+        }
+
         power = !power;
         if (power)
             thread.start();
@@ -25,6 +30,12 @@ public class LED extends BasicReceiver implements Runnable, UiAvailable {
             Simulation.simWait(milliseconds);
         }
     }
+    public void changeUpdateFreq(long updateMilliseconds) {
+        milliseconds = updateMilliseconds;
+
+        if (milliseconds < 1)
+            toggle();
+    }
     public LED(String name, long updateMilliseconds) {
         this.name = name;
         milliseconds = updateMilliseconds;
@@ -36,11 +47,6 @@ public class LED extends BasicReceiver implements Runnable, UiAvailable {
     @Override
     public HashSet<SignalReceiver> getOutputs() {
         return UiAvailable.super.getOutputs();
-    }
-
-    @Override
-    public boolean getState() {
-        return state;
     }
 
     @Override

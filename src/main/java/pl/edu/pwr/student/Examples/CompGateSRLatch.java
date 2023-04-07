@@ -55,16 +55,19 @@ public class CompGateSRLatch {
         R2.connection(gate2.input("R"));
         S2.connection(gate2.input("S"));
 
-        R1.press(10);
-        R2.press(10);
-
         LED out1 = new LED("out1", 1000);
         gate1.output("Out").connection(out1);
 
         LED out2 = new LED("out2", 1000);
         gate2.output("Out").connection(out2);
 
+        R1.press(100);
+        R2.press(100);
+
+        simWait(150);
+
         out1.toggle();
+        simWait(100);
         out2.toggle();
         simWait(2000);
 

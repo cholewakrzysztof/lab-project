@@ -30,7 +30,7 @@ public class DLatch {
 
         System.out.println("D LATCH\n");
 
-        Q = new Speaker("D Latch", 1000);
+        Q = new Speaker();
 
         data.connection(nandLU);
         data.connection(not);
@@ -49,7 +49,8 @@ public class DLatch {
 
         nandRD.connection(nandRU);
 
-        Q.toggle();
+        enable.press(10);
+        simWait(100);
 
         simWait(2000);
 
@@ -69,7 +70,5 @@ public class DLatch {
         enable.press(10);
         System.out.println("Pressed enable with data off/low");
         simWait(2000);
-
-        Q.toggle();
     }
 }

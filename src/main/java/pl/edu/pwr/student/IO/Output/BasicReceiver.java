@@ -48,5 +48,8 @@ public abstract class BasicReceiver implements SignalReceiver {
         state = newState;
         react();
     }
-    protected abstract void react();
+    protected void react() {}
+    public boolean getState() {
+        return state;
+    }
 }
