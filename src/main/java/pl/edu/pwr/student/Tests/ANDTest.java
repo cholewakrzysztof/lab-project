@@ -1,16 +1,32 @@
 package pl.edu.pwr.student.Tests;
 
-import static org.junit.jupiter.api.Assertions.*;
+import junit.framework.TestCase;
 import pl.edu.pwr.student.Gates.BasicGates.AND;
+import pl.edu.pwr.student.IO.Input.Switch;
 
-import org.junit.jupiter.api.Test;
+import static pl.edu.pwr.student.Simulation.simWait;
 
-class ANDTest {
-
-	@Test
-	void firstTest() {
-		AND gate = new AND();
-		assertTrue(gate.getState());
+public class ANDTest extends TestCase {
+	private Switch FirstInput = new Switch();
+	private Switch SecondInput = new Switch();
+	private AND gate = new AND();
+	
+	protected void setUp() {
+		FirstInput.connection(gate);
+		SecondInput.connection(gate);
 	}
-
+	
+	public void testTruthTableCase1() {
+		FirstInput.toggle();
+		
+	}
+	public void testTruthTableCase2() {
+		
+	}
+	public void testTruthTableCase3() {
+	
+	}
+	public void testTruthTableCase4() {
+	
+	}
 }
