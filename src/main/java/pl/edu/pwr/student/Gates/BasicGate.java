@@ -56,4 +56,8 @@ public abstract class BasicGate extends SignalSender implements SignalReceiver, 
     }
 
     public BasicGate() {}
+
+    public HashSet<SignalSender> getInputs() {
+        return inputs;
+    }
 }

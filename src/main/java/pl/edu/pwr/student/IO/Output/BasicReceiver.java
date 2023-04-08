@@ -3,6 +3,8 @@ package pl.edu.pwr.student.IO.Output;
 import org.jetbrains.annotations.NotNull;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 
+import java.util.HashSet;
+
 public abstract class BasicReceiver implements SignalReceiver {
     protected SignalSender input = null;
     protected boolean state = false;
@@ -51,5 +53,11 @@ public abstract class BasicReceiver implements SignalReceiver {
     protected void react() {}
     public boolean getState() {
         return state;
+    }
+
+    public HashSet<SignalSender> getInputs() {
+        HashSet<SignalSender> temp = new HashSet<SignalSender>();
+        temp.add(input);
+        return temp;
     }
 }

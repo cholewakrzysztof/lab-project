@@ -1,16 +1,16 @@
 package pl.edu.pwr.student.UI;
 
 import pl.edu.pwr.student.IO.Input.SignalSender;
-import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.Utility.ShapeLoader;
-import processing.core.PApplet;
 import processing.core.PVector;
+
+import java.util.HashSet;
 
 /**
  * Class representing every element on canvas
  */
-public class UiElement extends PApplet {
+public class UiElement {
 
     /**
      * Position of element
@@ -50,6 +50,11 @@ public class UiElement extends PApplet {
      * Draws element
      */
     public void run() {
+        if (over(new PVector(sketch.mouseX, sketch.mouseY))){
+            sketch.fill(0, 30);
+            sketch.square(position.x,position.y,512*ShapeLoader.scale);
+        }
+
         sketch.fill(0);
         sketch.shape(ShapeLoader.getShape(elName), position.x, position.y);
 
@@ -62,7 +67,43 @@ public class UiElement extends PApplet {
 
             for (UiElement u : sketch.elements){
                 if (u.uiElem.equals(s)) {
-                    sketch.line(position.x + 512*ShapeLoader.scale, position.y + 256*ShapeLoader.scale, u.position.x, u.position.y + 256*ShapeLoader.scale);
+                    HashSet<SignalSender> inputs = ((UiAvailable) s).getInputs();
+                    int i = 1;
+                    int pos = 1;
+                    for (SignalSender inp : inputs){
+                        if(inp.equals(uiElem)) {
+                            pos = i;
+                        }
+                        i++;
+                    }
+
+                    float startx = position.x + 512*ShapeLoader.scale;
+                    float starty = position.y + 256*ShapeLoader.scale;
+                    float endx = u.position.x;
+                    float endy = u.position.y + 512*ShapeLoader.scale*pos/i;
+                    if (startx <= endx){
+                        float midx = (startx+endx)/2 + 512*ShapeLoader.scale*pos/i;
+                        sketch.line(startx, starty, midx, starty);
+                        sketch.line(midx, starty, midx, endy);
+                        sketch.line(midx, endy, endx, endy);
+                    } else {
+                        float padding;
+                        float midy;
+                        if (starty <= u.position.y + 768*ShapeLoader.scale && starty >= u.position.y - 256*ShapeLoader.scale) {
+                            padding = 512*ShapeLoader.scale + 512*ShapeLoader.scale*pos/i;
+                            midy = (starty+endy)/2+padding;
+                        } else {
+                            midy = (starty+endy)/2;
+                            padding = 512*ShapeLoader.scale + 512*ShapeLoader.scale*pos/i;
+                        }
+
+                        sketch.line(startx, starty, startx+padding, starty);
+                        sketch.line(startx+padding, starty, startx+padding, midy);
+                        sketch.line(startx+padding, midy, endx-padding, midy);
+                        sketch.line(endx-padding, midy, endx-padding, endy);
+                        sketch.line(endx-padding, endy, endx, endy);
+                    }
+
                 }
             }
         }

@@ -17,7 +17,7 @@ public class ConnectButton extends UiElement {
      * @param s Processing sketch
      */
     public ConnectButton(Canvas s) {
-        super("INTERACT", s, new PVector(120,10), null);
+        super("CONNECT", s, new PVector(130,10), null);
         shape = sketch.loadShape("src/main/resources/buttons/CONNECT.svg");
         shape.scale(3);
     }
@@ -28,7 +28,22 @@ public class ConnectButton extends UiElement {
      */
     @Override
     public void run() {
-        sketch.fill(0);
+        sketch.stroke(0);
+        if (over(new PVector(sketch.mouseX, sketch.mouseY))){
+            if (sketch.state == 2 || sketch.state == 4){
+                sketch.fill(0,255,0,30);
+                sketch.square(position.x,position.y,48);
+            } else {
+                sketch.fill(0, 30);
+                sketch.square(position.x,position.y,48);
+            }
+        } else if(sketch.state == 2 || sketch.state == 4){
+            sketch.fill(0,255,0,20);
+            sketch.square(position.x,position.y,48);
+        } else {
+            sketch.fill(0, 20);
+            sketch.square(position.x,position.y,48);
+        }
         sketch.shape(shape, position.x, position.y);
     }
 }

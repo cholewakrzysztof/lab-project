@@ -17,7 +17,7 @@ public class CreateButton extends UiElement {
      * @param s Processing sketch
      */
     public CreateButton(Canvas s) {
-        super("CREATE", s, new PVector(60,10), null);
+        super("CREATE", s, new PVector(70,10), null);
         shape = sketch.loadShape("src/main/resources/buttons/CREATE.svg");
         shape.scale(3);
     }
@@ -28,7 +28,22 @@ public class CreateButton extends UiElement {
      */
     @Override
     public void run() {
-        sketch.fill(0);
+        sketch.stroke(0);
+        if (over(new PVector(sketch.mouseX, sketch.mouseY))){
+            if (sketch.state == 1){
+                sketch.fill(0,255,0,30);
+                sketch.square(position.x,position.y,48);
+            } else {
+                sketch.fill(0, 30);
+                sketch.square(position.x,position.y,48);
+            }
+        } else if(sketch.state == 1){
+            sketch.fill(0,255,0,20);
+            sketch.square(position.x,position.y,48);
+        } else {
+            sketch.fill(0, 20);
+            sketch.square(position.x,position.y,48);
+        }
         sketch.shape(shape, position.x, position.y);
     }
 }
