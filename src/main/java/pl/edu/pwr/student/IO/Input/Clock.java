@@ -7,7 +7,7 @@ public class Clock extends SignalSender implements Runnable, UiAvailable {
     private final long intervalOn;
     private final long intervalOff;
 
-    private final Thread thread = new Thread(this);
+    private final Thread thread;
     private boolean power = false;
 
     public void toggle() {
@@ -21,17 +21,21 @@ public class Clock extends SignalSender implements Runnable, UiAvailable {
 
     public void run() {
         while (power) {
-            Simulation.simWait(intervalOff);
             state = true;
-
+            sendUpdate();
             Simulation.simWait(intervalOn);
+
             state = false;
+            sendUpdate();
+            Simulation.simWait(intervalOff);
         }
     }
 
     public Clock(long millisecondsOn, long millisecondsOff) {
         intervalOn = millisecondsOn;
         intervalOff = millisecondsOff;
+
+        thread = new Thread(this);
     }
 
     @Override
