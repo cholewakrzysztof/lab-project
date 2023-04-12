@@ -39,6 +39,20 @@ public abstract class SignalSender {
         }
         return 0;
     }
+    public void disconnectOutputs() {
+        HashSet<SignalReceiver> tempOut = new HashSet<>(outputs);
+        for (SignalReceiver output : tempOut) {
+            outputs.remove(output);
+            output.attemptDisconnect(this);
+            output.update();
+        }
+
+        if (!outputs.isEmpty())
+            throw new RuntimeException("Error disconnecting outputs");
+    }
+    public void fullDisconnect() {
+        disconnectOutputs();
+    }
     public boolean isConnected(SignalReceiver receiver) {
         return outputs.contains(receiver);
     }

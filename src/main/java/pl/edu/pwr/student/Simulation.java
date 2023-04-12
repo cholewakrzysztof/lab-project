@@ -1,16 +1,15 @@
 package pl.edu.pwr.student;
 
 import pl.edu.pwr.student.Examples.CompGateSRLatch;
+import pl.edu.pwr.student.Examples.CustomClock;
 import pl.edu.pwr.student.Examples.DLatch;
 import pl.edu.pwr.student.Examples.SRLatch;
 import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.Gates.Compoundable;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
-import pl.edu.pwr.student.IO.VirtualIO;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.Utility.ShapeLoader;
-import processing.core.PApplet;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -22,12 +21,6 @@ public class Simulation {
     }
 
     public static void main(String[] args) {
-        String[] processingArgs = {"Gates-Simulation"};
-        Canvas Canvas = new Canvas();
-
-        PApplet.runSketch(processingArgs, Canvas);
-        ShapeLoader.loadShapes(Canvas);
-
         // All basic gates(AND OR XOR NAND NOR XNOR NOT)
         // are to be added to this collection when created by the user
         // and removed from it when deleted from the simulation
@@ -47,18 +40,29 @@ public class Simulation {
         // All outputs in the simulation are to be in this collection
         HashSet<SignalReceiver> systemOutputs = new HashSet<>();
 
+        Canvas Canvas = new Canvas(basicGates, compoundGates, savedCompoundGates, userInputs, systemOutputs);
+        ShapeLoader.loadShapes(Canvas);
 
-        // TESTING & EXAMPLES BELOW
-
-        // Synchronous
-        DLatch.simulate();
-        System.out.print("\n\n");
-
-        // Asynchronous
-        SRLatch.simulate();
-        System.out.print("\n\n");
-
-        // Compound Gate SR Latch
-        CompGateSRLatch.simulate();
+//        // CODE EXAMPLES BELOW
+//
+//        // Synchronous
+//        DLatch.simulate();
+//        simWait(1000);
+//        System.out.print("\n\n");
+//
+//        // Asynchronous
+//        SRLatch.simulate();
+//        simWait(1000);
+//        System.out.print("\n\n");
+//
+//        // Compound Gate SR Latch
+//        CompGateSRLatch.simulate();
+//        simWait(1000);
+//        System.out.print("\n\n");
+//
+//        // Feedback loop
+//        CustomClock.simulate();
+//        simWait(1000);
+//        System.out.print("\n\n");
     }
 }
