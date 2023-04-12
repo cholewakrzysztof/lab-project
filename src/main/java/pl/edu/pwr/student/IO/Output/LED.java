@@ -1,14 +1,22 @@
 package pl.edu.pwr.student.IO.Output;
 
 import pl.edu.pwr.student.Simulation;
+import pl.edu.pwr.student.UI.UiAvailable;
 
-public class LED extends BasicReceiver implements Runnable {
+import java.util.HashSet;
+
+public class LED extends BasicReceiver implements Runnable, UiAvailable {
     private final String name;
-    private final long milliseconds;
+    private long milliseconds;
     private boolean power = false;
     private final Thread thread;
 
     public boolean toggle() {
+        if (milliseconds < 1) {
+            power = false;
+            return false;
+        }
+
         power = !power;
         if (power)
             thread.start();
@@ -22,6 +30,12 @@ public class LED extends BasicReceiver implements Runnable {
             Simulation.simWait(milliseconds);
         }
     }
+    public void changeUpdateFreq(long updateMilliseconds) {
+        milliseconds = updateMilliseconds;
+
+        if (milliseconds < 1)
+            toggle();
+    }
     public LED(String name, long updateMilliseconds) {
         this.name = name;
         milliseconds = updateMilliseconds;
@@ -29,4 +43,14 @@ public class LED extends BasicReceiver implements Runnable {
         thread = new Thread(this);
     }
     public void react() {}
+
+    @Override
+    public HashSet<SignalReceiver> getOutputs() {
+        return UiAvailable.super.getOutputs();
+    }
+
+    @Override
+    public int connection(SignalReceiver receiver) {
+        return 0;
+    }
 }
