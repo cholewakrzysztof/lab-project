@@ -41,7 +41,6 @@ public class Simulation {
         HashSet<SignalReceiver> systemOutputs = new HashSet<>();
 
         Canvas Canvas = new Canvas(basicGates, compoundGates, savedCompoundGates, userInputs, systemOutputs);
-        ShapeLoader.loadShapes(Canvas);
 
 //        // CODE EXAMPLES BELOW
 //

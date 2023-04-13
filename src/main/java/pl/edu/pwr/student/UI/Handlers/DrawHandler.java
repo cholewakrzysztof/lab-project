@@ -7,8 +7,8 @@ public class DrawHandler {
     public static void draw(Canvas sketch) {
         sketch.background(255);
 
-        for (UiElement g : sketch.buttons) {
-            g.run();
+        for (int i = 0; i < sketch.buttons.size(); i++) {
+            sketch.buttons.get(i).run();
         }
 
         for (UiElement g : sketch.elements) {

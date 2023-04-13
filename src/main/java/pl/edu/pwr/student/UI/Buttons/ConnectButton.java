@@ -2,6 +2,7 @@ package pl.edu.pwr.student.UI.Buttons;
 
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.UiElement;
+import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PShape;
 import processing.core.PVector;
 
@@ -18,8 +19,7 @@ public class ConnectButton extends UiElement {
      */
     public ConnectButton(Canvas s) {
         super("CONNECT", s, new PVector(130,10), null);
-        shape = sketch.loadShape("src/main/resources/buttons/CONNECT.svg");
-        shape.scale(3);
+        shape = ShapeLoader.getShape("CONNECT");
     }
 
     /**

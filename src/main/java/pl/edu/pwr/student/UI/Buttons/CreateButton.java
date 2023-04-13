@@ -2,6 +2,7 @@ package pl.edu.pwr.student.UI.Buttons;
 
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.UiElement;
+import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PShape;
 import processing.core.PVector;
 
@@ -18,8 +19,7 @@ public class CreateButton extends UiElement {
      */
     public CreateButton(Canvas s) {
         super("CREATE", s, new PVector(70,10), null);
-        shape = sketch.loadShape("src/main/resources/buttons/CREATE.svg");
-        shape.scale(3);
+        shape = ShapeLoader.getShape("CREATE");
     }
 
     /**

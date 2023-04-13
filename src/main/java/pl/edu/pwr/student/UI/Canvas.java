@@ -6,6 +6,7 @@ import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.UI.Buttons.*;
 import pl.edu.pwr.student.UI.Handlers.*;
+import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PApplet;
 import uibooster.UiBooster;
 import uibooster.model.Form;
@@ -88,7 +89,8 @@ public class Canvas extends PApplet {
         String[] processingArgs = {"Gates-Simulation"};
         this.runSketch(processingArgs);
 
-        //TODO: throws Cannot parse "currentcolor".
+        ShapeLoader.loadShapes(this);
+
         buttons.add(new InteractionButton(this));
         buttons.add(new CreateButton(this));
         buttons.add(new ConnectButton(this));
@@ -123,7 +125,7 @@ public class Canvas extends PApplet {
     }
 
     /**
-     * Method called when user clicks mouse
+     * Method called when user presses mouse
      * handles adding new gates
      */
     public void mousePressed() {
