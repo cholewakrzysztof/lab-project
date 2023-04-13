@@ -3,7 +3,14 @@ package pl.edu.pwr.student.UI.Handlers;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.UiElement;
 
+/**
+ * Handles draw event
+ */
 public class DrawHandler {
+    /**
+     * Handles draw event
+     * @param sketch - sketch to handle draw event for
+     */
     public static void draw(Canvas sketch) {
         sketch.background(255);
 

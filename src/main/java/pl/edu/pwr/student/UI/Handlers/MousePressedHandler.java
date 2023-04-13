@@ -11,7 +11,14 @@ import pl.edu.pwr.student.UI.UiElement;
 import processing.core.PVector;
 import uibooster.model.ListElement;
 
+/**
+ * Handles mouse pressed event
+ */
 public class MousePressedHandler {
+    /**
+     * Handles mouse pressed event
+     * @param sketch - sketch to handle mouse pressed event for
+     */
     public static void mousePressed(Canvas sketch){
         for (int i = 0; i < sketch.buttons.size(); i++) {
             if(sketch.buttons.get(i).over(new PVector(sketch.mouseX, sketch.mouseY))){

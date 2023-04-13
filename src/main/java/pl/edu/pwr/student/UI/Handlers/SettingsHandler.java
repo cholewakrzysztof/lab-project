@@ -1,12 +1,16 @@
 package pl.edu.pwr.student.UI.Handlers;
 
-import pl.edu.pwr.student.UI.Buttons.*;
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.UI.UiElement;
-import uibooster.UiBooster;
 import uibooster.model.ListElement;
 
+/**
+ * Class responsible for handling settings of the application
+ */
 public class SettingsHandler {
+    /**
+     * Sets settings for the sketch
+     * @param sketch - sketch to set settings for
+     */
     public static void settings(Canvas sketch) {
         sketch.size(1000, 1000);
         //TODO: make it added automatically (created new gates by user are now a problem)

@@ -10,7 +10,9 @@ import processing.core.PVector;
  * Class representing button for creating new elements
  */
 public class DeleteButton extends UiElement {
-
+    /**
+     * Shape of button
+     */
     PShape shape;
 
     /**
@@ -23,7 +25,6 @@ public class DeleteButton extends UiElement {
     }
 
     /**
-     *
      * Draws element
      */
     @Override

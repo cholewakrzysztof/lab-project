@@ -11,6 +11,9 @@ import processing.core.PVector;
  */
 public class InteractionButton extends UiElement {
 
+    /**
+     * Shape of button
+     */
     PShape shape;
 
     /**
@@ -23,7 +26,6 @@ public class InteractionButton extends UiElement {
     }
 
     /**
-     *
      * Draws element
      */
     @Override

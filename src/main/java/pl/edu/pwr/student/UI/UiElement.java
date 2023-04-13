@@ -4,7 +4,6 @@ import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PVector;
-
 import java.util.HashSet;
 
 /**

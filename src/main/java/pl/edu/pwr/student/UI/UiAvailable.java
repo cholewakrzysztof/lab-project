@@ -5,6 +5,9 @@ import pl.edu.pwr.student.IO.Output.SignalReceiver;
 
 import java.util.HashSet;
 
+/**
+ * Interface representing every element on canvas
+ */
 public interface UiAvailable {
     /**
      * Gets all outputs from element

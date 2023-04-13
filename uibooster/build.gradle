@@ -16,7 +16,7 @@ dependencies {
 }
 
 tasks.withType(Javadoc).configureEach { enabled = false }
-
+tasks.withType(JavaCompile).configureEach { options.warnings = false }
 test {
     useJUnitPlatform()
 }

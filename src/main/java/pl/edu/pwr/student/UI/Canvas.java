@@ -52,9 +52,24 @@ public class Canvas extends PApplet {
      */
     public HashSet<Compoundable> basicGates;
 
+    /**
+     * List of all compound gates
+     */
     private HashSet<CompoundGate> compoundGates;
+
+    /**
+     * List of all saved compound gates
+     */
     private HashMap<String, CompoundGate> savedCompoundGates;
+
+    /**
+     * List of all user inputs
+     */
     public HashSet<SignalSender> userInputs;
+
+    /**
+     * List of all system outputs
+     */
     public HashSet<SignalReceiver> systemOutputs;
 
     /**
@@ -116,10 +131,16 @@ public class Canvas extends PApplet {
         }
     }
 
+    /**
+     * Method setting up canvas
+     */
     public void settings() {
         SettingsHandler.settings(this);
     }
 
+    /**
+     * Method called when canvas is ready and starts drawing
+     */
     public void draw() {
         DrawHandler.draw(this);
     }
@@ -132,14 +153,23 @@ public class Canvas extends PApplet {
         MousePressedHandler.mousePressed(this);
     }
 
+    /**
+     * Method called when user clicks mouse
+     */
     public void mouseClicked(){
         MouseClickedHandler.mouseClicked(this);
     }
 
+    /**
+     * Method called when user drags mouse
+     */
     public void mouseDragged() {
         MouseDraggedHandler.mouseDragged(this);
     }
 
+    /**
+     * Method called when user releases mouse
+     */
     public void mouseReleased() {
         MouseReleasedHandler.mouseReleased(this);
     }
