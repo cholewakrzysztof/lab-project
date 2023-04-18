@@ -12,7 +12,7 @@ public class NOTTest extends TestCase {
 	
 	protected void setUp() {
 		FirstInput.connection(gate);
-		LED.connection(gate);
+		gate.connection(LED);
 	}
 	
 	/*
@@ -48,5 +48,12 @@ public class NOTTest extends TestCase {
 	public void testFullDisconnect() {
 		gate.fullDisconnect();
 		assertFalse(gate.hasInputs());
+	}
+	/*
+	 * Test disconnect outputs
+	 */
+	public void testDisconnectOutputs() {
+		gate.disconnectOutputs();
+		assertEquals(LED.getInputs().size(),0);
 	}
 }
