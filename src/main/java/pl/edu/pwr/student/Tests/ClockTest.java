@@ -38,8 +38,8 @@ public class ClockTest extends TestCase {
 		c.run();
 		
 		simWait(101);
-		
 	    assertFalse(c.getState());
+	    
 	}
 	
 	/*
