@@ -1,7 +1,6 @@
 package pl.edu.pwr.student.Tests;
 
 import junit.framework.TestCase;
-import pl.edu.pwr.student.Gates.BasicGates.NOT;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.Printer;
 
