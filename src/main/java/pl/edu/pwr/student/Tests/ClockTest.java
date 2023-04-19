@@ -14,8 +14,6 @@ public class ClockTest extends TestCase {
 	 * Test clock state if no power
 	 */
 	public void testWitoutPower() {
-		c.run();
-		
 		simWait(99);
 	    assertFalse(c.getState());
 	}
@@ -24,7 +22,6 @@ public class ClockTest extends TestCase {
 	 */
 	public void testWithPower() {
 		c.toggle();
-		c.run();
 		
 		simWait(99);
 	    assertTrue(c.getState());
@@ -35,7 +32,6 @@ public class ClockTest extends TestCase {
 	 */
 	public void testTurnOffAfterTime() {
 		c.toggle();
-		c.run();
 		
 		simWait(101);
 	    assertFalse(c.getState());
@@ -47,7 +43,6 @@ public class ClockTest extends TestCase {
 	 */
 	public void testTurnOnAfterTime() {
 		c.toggle();
-		c.run();
 		
 		simWait(201);
 	    assertTrue(c.getState());

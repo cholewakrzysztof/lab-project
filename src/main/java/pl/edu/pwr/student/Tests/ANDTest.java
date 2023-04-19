@@ -72,6 +72,6 @@ public class ANDTest extends TestCase {
 	 */
 	public void testDisconnectOutputs() {
 		gate.disconnectOutputs();
-		assertEquals(LED.getInputs().size(),0);
+		assertEquals(LED.getOutputs().size(),0);
 	}
 }
