@@ -17,6 +17,7 @@ public class ClockTest extends TestCase {
 		simWait(99);
 	    assertFalse(c.getState());
 	}
+	
 	/*
 	 * Test clock state with power
 	 */
