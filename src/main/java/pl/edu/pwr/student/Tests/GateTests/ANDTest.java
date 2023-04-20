@@ -1,45 +1,50 @@
-package pl.edu.pwr.student.Tests;
+package pl.edu.pwr.student.Tests.GateTests;
 
 import junit.framework.TestCase;
-import pl.edu.pwr.student.Gates.BasicGates.XNOR;
+import pl.edu.pwr.student.Gates.BasicGates.AND;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
 
-public class XNORTest extends TestCase {
+public class ANDTest extends TestCase {
 	private Switch FirstInput = new Switch();
 	private Switch SecondInput = new Switch();
 	private LED LED = new LED("led",100);
-	private XNOR gate = new XNOR();
+	private AND gate = new AND();
 	
 	protected void setUp() {
+		if(FirstInput.getState())
+			FirstInput.toggle();
+		if(SecondInput.getState())
+			SecondInput.toggle();
+		
 		FirstInput.connection(gate);
 		SecondInput.connection(gate);
 		gate.connection(LED);
 	}
 	
 	/*
-	 *Test XNOR gate input 0 and 0
+	 *Test AND gate input 0 and 0
 	 */
 	public void testTruthTableCase1() {
-		assertTrue(gate.getState());
+		assertFalse(gate.getState());
 	}
 	
 	/*
-	 *Test XNOR gate input 1 and 0
+	 *Test AND gate input 1 and 0
 	 */
 	public void testTruthTableCase2() {
 		FirstInput.toggle();
 		assertFalse(gate.getState());
 	}
 	/*
-	 * Test XNOR gate input 0 and 1
+	 * Test AND gate input 0 and 1
 	 */
 	public void testTruthTableCase3() {
 		SecondInput.toggle();
 		assertFalse(gate.getState());
 	}
 	/*
-	 *Test XNOR gate input 1 and 1
+	 *Test AND gate input 1 and 1
 	 */
 	public void testTruthTableCase4() {
 		FirstInput.toggle();

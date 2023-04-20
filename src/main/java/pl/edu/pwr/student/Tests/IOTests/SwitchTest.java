@@ -1,4 +1,4 @@
-package pl.edu.pwr.student.Tests;
+package pl.edu.pwr.student.Tests.IOTests;
 
 import static pl.edu.pwr.student.Simulation.simWait;
 

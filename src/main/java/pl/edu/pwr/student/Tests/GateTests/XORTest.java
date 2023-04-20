@@ -1,45 +1,50 @@
-package pl.edu.pwr.student.Tests;
+package pl.edu.pwr.student.Tests.GateTests;
 
 import junit.framework.TestCase;
-import pl.edu.pwr.student.Gates.BasicGates.NAND;
+import pl.edu.pwr.student.Gates.BasicGates.XOR;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
 
-public class NANDTest extends TestCase {
+public class XORTest extends TestCase {
 	private Switch FirstInput = new Switch();
 	private Switch SecondInput = new Switch();
 	private LED LED = new LED("led",100);
-	private NAND gate = new NAND();
+	private XOR gate = new XOR();
 	
 	protected void setUp() {
+		if(FirstInput.getState())
+			FirstInput.toggle();
+		if(SecondInput.getState())
+			SecondInput.toggle();
+		
 		FirstInput.connection(gate);
 		SecondInput.connection(gate);
 		gate.connection(LED);
 	}
 	
 	/*
-	 *Test NAND gate input 0 and 0
+	 *Test XOR gate input 0 and 0
 	 */
 	public void testTruthTableCase1() {
-		assertTrue(gate.getState());
+		assertFalse(gate.getState());
 	}
 	
 	/*
-	 *Test NAND gate input 1 and 0
+	 *Test XOR gate input 1 and 0
 	 */
 	public void testTruthTableCase2() {
 		FirstInput.toggle();
 		assertTrue(gate.getState());
 	}
 	/*
-	 * Test NAND gate input 0 and 1
+	 * Test XOR gate input 0 and 1
 	 */
 	public void testTruthTableCase3() {
 		SecondInput.toggle();
 		assertTrue(gate.getState());
 	}
 	/*
-	 *Test NAND gate input 1 and 1
+	 *Test XOR gate input 1 and 1
 	 */
 	public void testTruthTableCase4() {
 		FirstInput.toggle();

@@ -1,4 +1,4 @@
-package pl.edu.pwr.student.Tests;
+package pl.edu.pwr.student.Tests.GateTests;
 
 import junit.framework.TestCase;
 import pl.edu.pwr.student.Gates.BasicGates.NOR;
