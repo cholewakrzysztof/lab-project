@@ -16,6 +16,11 @@ public class CompoundGateTest extends TestCase {
 	 * Create gate SRLatch from examples
 	 */
 	protected void setUp() {
+		if(R.getState())
+			R.toggle();
+		if(S.getState())
+			S.toggle();
+		
         R.connection(norUp);
         S.connection(norDown);
         norDown.connection(norUp);
@@ -24,18 +29,26 @@ public class CompoundGateTest extends TestCase {
 	}
 	
 	/*
-	 * Test gate work input 1 and 1
+	 * Test gate work input 0 and 0
 	 */
 	public void testWorkCase1() {
+		assertFalse(out.getState());
+	}
+	/*
+	 * Test gate work input 0 and 1
+	 */
+	public void testWorkCase2() {
 		R.toggle();
+		assertFalse(out.getState());
+	}
+	/*
+	 * Test gate work input 1 and 0
+	 */
+	public void testWorkCase3() {
 		S.toggle();
 		assertTrue(out.getState());
 	}
 	/*
-	 * Test gate work input 1 and 1
+	 * 
 	 */
-	public void testWorkCase2() {
-		S.toggle();
-		assertTrue(out.getState());
-	}
 }
