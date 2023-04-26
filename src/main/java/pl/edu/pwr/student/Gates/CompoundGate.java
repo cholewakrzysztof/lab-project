@@ -89,8 +89,9 @@ public class CompoundGate {
     }
 
     public CompoundGate(HashSet<Compoundable> basicGates, @NotNull HashSet<CompoundGate> compGates) {
+        HashSet<Compoundable> gates = new HashSet<>(basicGates);
         for (CompoundGate gate : compGates)
-            basicGates.addAll(gate.getGates());
-        create(basicGates);
+            gates.addAll(gate.getGates());
+        this.create(gates);
     }
 }

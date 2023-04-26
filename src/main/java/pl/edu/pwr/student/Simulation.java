@@ -66,5 +66,10 @@ public class Simulation {
         CustomClock.simulate();
         simWait(1000);
         System.out.print("\n\n");
+
+        // Compound Gate 4 bit register
+        Register.simulate();
+        simWait(1000);
+        System.out.println("\n\n");
     }
 }
