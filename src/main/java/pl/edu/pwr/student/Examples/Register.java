@@ -169,7 +169,7 @@ public class Register {
 
         // Testing complete 4 bit register
 
-        System.out.println("SR LATCH\n");
+        System.out.println("4 BIT REGISTER\n");
 
         Switch b0 = new Switch();
         Switch b1 = new Switch();
@@ -221,12 +221,22 @@ public class Register {
 
         b1.press(100);
         b3.press(100);
+        System.out.println("Pressed 1 & 3");
 
         store.press(50);
+        System.out.println("Pressed store");
+
+        Simulation.simWait(50);
+        System.out.println("Let go of store");
+        Simulation.simWait(50);
+        System.out.println("Let go of 1 & 3");
 
         Simulation.simWait(2000);
 
         store.press(50);
+        System.out.println("Pressed store");
+        Simulation.simWait(50);
+        System.out.println("Let go of store");
 
         Simulation.simWait(2000);
 
