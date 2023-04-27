@@ -45,6 +45,23 @@ public class CompoundGate {
         }
 
         logic = new HashSet<>(copiedGates.values());
+        HashSet<Compoundable> toRemove = new HashSet<>();
+
+        for (Compoundable gate : logic) {
+            for (SignalReceiver receiver : gate.getOutputs()) {
+                Compoundable compReceiver = (Compoundable) receiver;
+                if (compReceiver.isIO() && compReceiver.getOutputs().size() != 0) {
+                    HashSet<SignalReceiver> tempReceivers = new HashSet<>(compReceiver.getOutputs());
+                    compReceiver.fullDisconnect();
+                    toRemove.add(compReceiver);
+                    for (SignalReceiver tempReceiver : tempReceivers)
+                        gate.connection(tempReceiver);
+                }
+            }
+        }
+
+        for (Compoundable gate : toRemove)
+            logic.remove(gate);
 
         HashSet<String> tempInputs = new HashSet<>();
         HashSet<String> tempOutputs = new HashSet<>();
