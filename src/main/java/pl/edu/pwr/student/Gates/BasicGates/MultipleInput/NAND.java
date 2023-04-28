@@ -1,10 +1,7 @@
-package pl.edu.pwr.student.Gates.BasicGates;
+package pl.edu.pwr.student.Gates.BasicGates.MultipleInput;
 
 import org.jetbrains.annotations.NotNull;
-import pl.edu.pwr.student.Gates.BasicGate;
 import pl.edu.pwr.student.IO.Input.SignalSender;
-import processing.core.PApplet;
-import processing.core.PVector;
 
 import java.util.HashSet;
 

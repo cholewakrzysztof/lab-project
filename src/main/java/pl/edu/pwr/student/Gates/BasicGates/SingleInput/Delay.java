@@ -1,6 +1,5 @@
-package pl.edu.pwr.student.Gates;
+package pl.edu.pwr.student.Gates.BasicGates.SingleInput;
 
-import pl.edu.pwr.student.IO.BasicPassThrough;
 import pl.edu.pwr.student.Simulation;
 
 public class Delay extends BasicPassThrough {

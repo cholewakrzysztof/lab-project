@@ -2,6 +2,7 @@ package pl.edu.pwr.student.IO.Input;
 
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 
+import java.util.ConcurrentModificationException;
 import java.util.HashSet;
 
 public abstract class SignalSender {
@@ -14,8 +15,12 @@ public abstract class SignalSender {
         return state;
     }
     protected void sendUpdate() {
-        for (SignalReceiver output : outputs)
-            output.update();
+        try {
+            for (SignalReceiver output : outputs)
+                output.update();
+        } catch(ConcurrentModificationException e) {
+            this.sendUpdate();
+        }
     }
 
     public int connection(SignalReceiver receiver) {

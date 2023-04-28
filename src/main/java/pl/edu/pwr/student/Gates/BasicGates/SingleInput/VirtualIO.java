@@ -1,6 +1,6 @@
-package pl.edu.pwr.student.IO;
+package pl.edu.pwr.student.Gates.BasicGates.SingleInput;
 
-import pl.edu.pwr.student.Gates.Compoundable;
+import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 
 public class VirtualIO extends BasicPassThrough {
     public final String name;

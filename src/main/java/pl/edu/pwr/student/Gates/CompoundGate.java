@@ -1,9 +1,10 @@
 package pl.edu.pwr.student.Gates;
 
 import org.jetbrains.annotations.NotNull;
+import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
-import pl.edu.pwr.student.IO.VirtualIO;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,12 +38,10 @@ public class CompoundGate {
         for (Compoundable gate : gates)
             copiedGates.put(gate, gate.getNewInstance());
 
-        for (Compoundable gate : gates) {
-            HashSet<SignalReceiver> gateOutputs = gate.getOutputs();
-            for (SignalReceiver receiver : gateOutputs)
+        for (Compoundable gate : gates)
+            for (SignalReceiver receiver : gate.getOutputs())
                 //noinspection SuspiciousMethodCalls
                 copiedGates.get(gate).connection((SignalReceiver) copiedGates.get(receiver));
-        }
 
         logic = new HashSet<>(copiedGates.values());
         HashSet<Compoundable> toRemove = new HashSet<>();
@@ -71,7 +70,7 @@ public class CompoundGate {
                 continue;
 
             VirtualIO ioGate = (VirtualIO) gate;
-            if (!gate.hasInputs()) {
+            if (!ioGate.hasInputs()) {
                 if (inputs.containsKey(ioGate.name))
                     throw new RuntimeException("Compound gates cannot have multiple inputs with the same name");
                 inputs.put(ioGate.name, ioGate);

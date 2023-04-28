@@ -1,12 +1,15 @@
 package pl.edu.pwr.student.Examples;
 
-import pl.edu.pwr.student.Gates.BasicGates.*;
+import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.AND;
+import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.NOR;
+import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.OR;
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.NOT;
 import pl.edu.pwr.student.Gates.CompoundGate;
-import pl.edu.pwr.student.Gates.Compoundable;
+import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.IO.Input.Clock;
-import pl.edu.pwr.student.IO.Input.Switch;
+import pl.edu.pwr.student.IO.Input.DebugButton;
 import pl.edu.pwr.student.IO.Output.LED;
-import pl.edu.pwr.student.IO.VirtualIO;
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
 import pl.edu.pwr.student.Simulation;
 
 import java.util.HashSet;
@@ -14,8 +17,8 @@ import java.util.HashSet;
 public class Register {
     public static void simulate() {
 //        // Test SR Latch
-//        Switch set = new Switch();
-//        Switch reset = new Switch();
+//        Button set = new Button();
+//        Button reset = new Button();
 //        CompoundGate srLatch = createSRLatch();
 //        Printer printer = new Printer("SR Latch");
 //        set.connection(srLatch.input("set"));
@@ -51,8 +54,8 @@ public class Register {
 //        // WORKS
 
 //        // Testing D Latch
-//        Switch data = new Switch();
-//        Switch store = new Switch();
+//        Button data = new Button();
+//        Button store = new Button();
 //
 //        CompoundGate dLatch = createDLatch();
 //
@@ -85,7 +88,7 @@ public class Register {
 //        // Testing edge triggered d latch
 //        LED clockLED = new LED("Clock", 500);
 //        Clock clock = new Clock(1000, 1000);
-//        Switch data = new Switch();
+//        Button data = new Button();
 //        Printer printer = new Printer("======= ET D Latch =======");
 //        CompoundGate etDLatch = createETDFlipFlop();
 //
@@ -119,8 +122,8 @@ public class Register {
 
 //        // Testing complete 1 bit register
 //
-//        Switch data = new Switch();
-//        Switch store = new Switch();
+//        Button data = new Button();
+//        Button store = new Button();
 //        Clock clock = new Clock(10, 10);
 //
 //        CompoundGate register = createRegister();
@@ -171,12 +174,12 @@ public class Register {
 
         System.out.println("4 BIT REGISTER\n");
 
-        Switch b0 = new Switch();
-        Switch b1 = new Switch();
-        Switch b2 = new Switch();
-        Switch b3 = new Switch();
+        DebugButton b0 = new DebugButton();
+        DebugButton b1 = new DebugButton();
+        DebugButton b2 = new DebugButton();
+        DebugButton b3 = new DebugButton();
 
-        Switch store = new Switch();
+        DebugButton store = new DebugButton();
 
         Clock clock = new Clock(10, 10);
 

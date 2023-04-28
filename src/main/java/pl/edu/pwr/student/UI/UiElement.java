@@ -1,6 +1,6 @@
 package pl.edu.pwr.student.UI;
 
-import pl.edu.pwr.student.Gates.BasicGate;
+import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.BasicGate;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PApplet;
 import processing.core.PVector;

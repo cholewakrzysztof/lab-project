@@ -1,7 +1,7 @@
 package pl.edu.pwr.student.Examples;
 
-import pl.edu.pwr.student.Gates.BasicGates.NOT;
-import pl.edu.pwr.student.Gates.Delay;
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.NOT;
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.Delay;
 import pl.edu.pwr.student.IO.Output.Printer;
 import pl.edu.pwr.student.Simulation;
 

@@ -1,19 +1,20 @@
-package pl.edu.pwr.student.IO;
+package pl.edu.pwr.student.Gates.BasicGates.MultipleInput;
 
 import org.jetbrains.annotations.NotNull;
-import pl.edu.pwr.student.Gates.Compoundable;
+import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 
-public abstract class BasicPassThrough extends SignalSender implements SignalReceiver, Compoundable, Runnable {
-    private SignalSender input;
-    public boolean hasInputs() {
-        return input != null;
-    }
+import java.util.HashSet;
+
+public abstract class BasicGate extends SignalSender implements SignalReceiver, Compoundable, Runnable {
+    private final HashSet<SignalSender> inputs = new HashSet<>();
+    protected abstract boolean checkState(HashSet<SignalSender> inputs);
+
     public void run() {
         boolean oldState = state;
-        if (input != null)
-            state = checkState(input.getState());
+        if (!inputs.isEmpty())
+            state = checkState(inputs);
 
         if (oldState != state)
             sendUpdate();
@@ -23,34 +24,35 @@ public abstract class BasicPassThrough extends SignalSender implements SignalRec
         thread.start();
     }
     public boolean attemptConnect(SignalSender sender) {
-        if (input != null)
+        if (this == sender)
             return false;
 
         if (!sender.isConnected(this))
             return false;
 
-        input = sender;
+        inputs.add(sender);
         return true;
     }
     public boolean attemptDisconnect(@NotNull SignalSender sender) {
-        if (input != sender)
-            return false;
-
         if (sender.isConnected(this))
             return false;
 
-        input = null;
+        inputs.remove(sender);
         return true;
     }
+
     public void disconnectInputs() {
-        if (input != null)
+        HashSet<SignalSender> tempInputs = new HashSet<>(inputs);
+        for (SignalSender input : tempInputs)
             input.connection(this);
-        if (input != null)
-            throw new RuntimeException("Error disconnecting input");
+        if (!inputs.isEmpty())
+            throw new RuntimeException("Error disconnecting inputs");
     }
     public void fullDisconnect() {
         super.disconnectOutputs();
-        disconnectInputs();
+        this.disconnectInputs();
     }
-    protected abstract boolean checkState(boolean inputState);
+
+    public BasicGate() {}
 }
+
