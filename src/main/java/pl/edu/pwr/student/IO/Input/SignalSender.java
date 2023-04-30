@@ -15,7 +15,7 @@ public abstract class SignalSender {
     public SignalSender() {}
 
     /**
-     * The set of all SignalReceivers connected to this SignalSender.
+     * The set of all {@link SignalReceiver} connected to this SignalSender.
      */
     private final HashSet<SignalReceiver> outputs = new HashSet<>();
 
@@ -25,9 +25,9 @@ public abstract class SignalSender {
     protected boolean state = false;
 
     /**
-     * Returns a copy of the set of output receivers.
+     * Returns a copy of the set of output {@link SignalReceiver}.
      *
-     * @return the set of output receivers.
+     * @return the set of output {@link SignalReceiver}.
      */
     public HashSet<SignalReceiver> getOutputs() {
         return new HashSet<>(outputs);
@@ -43,10 +43,10 @@ public abstract class SignalSender {
     }
 
     /**
-     * Attempts to connect the given signal receiver to this signal sender if they aren't connect.
-     * Attempts to disconnect the given signal receiver from this signal sender if they had already been connected.
+     * Attempts to connect the given {@link SignalReceiver} to this signal sender if they aren't connect.
+     * Attempts to disconnect the given {@link SignalReceiver} from this signal sender if they had already been connected.
      *
-     * @param receiver the signal receiver to (dis)connect.
+     * @param receiver the {@link SignalReceiver} to (dis)connect.
      * @return 1 if the elements were successfully connected, 2 if the elements were successfully disconnected, and 0 otherwise.
      */
     public int connection(SignalReceiver receiver) {
