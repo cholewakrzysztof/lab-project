@@ -20,6 +20,7 @@ public interface SignalReceiver {
 
     /**
      * Attempts to connect the signal receiver to a given {@link SignalSender}.
+     * Should not be called manually - will not complete anything and return false.
      *
      * @param sender the {@link SignalSender} to connect to
      * @return {@code true} if the connection was successful, {@code false} otherwise
@@ -28,6 +29,7 @@ public interface SignalReceiver {
 
     /**
      * Attempts to disconnect the signal receiver from a given {@link SignalSender}.
+     * Should not be called manually - will not complete anything and return false.
      *
      * @param sender the {@link SignalSender} to disconnect from
      * @return {@code true} if the disconnection was successful, {@code false} otherwise
@@ -41,6 +43,7 @@ public interface SignalReceiver {
 
     /**
      * Fully disconnects the signal receiver from all inputs and outputs.
+     * Necessary to completely remove a gate from simulation and allow it to be collected by the garbage collector.
      */
     void fullDisconnect();
 }

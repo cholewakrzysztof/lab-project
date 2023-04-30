@@ -5,7 +5,6 @@ import processing.sound.SinOsc;
 
 /**
  * Class that makes a sound as long as its state is on.
- * Extends {@link BasicReceiver}.
  */
 public class Speaker extends BasicReceiver {
     /**

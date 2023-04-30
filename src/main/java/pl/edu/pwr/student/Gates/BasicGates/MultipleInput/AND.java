@@ -21,6 +21,7 @@ public class AND extends BasicGate {
      * @param inputs a set of signal senders connected to this gate's inputs
      * @return true if all input signals are true, false otherwise
      */
+    @Override
     protected boolean checkState(@NotNull HashSet<SignalSender> inputs) {
         for (SignalSender input : inputs)
             if (!input.getState())

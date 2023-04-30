@@ -6,12 +6,11 @@ import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 
 /**
- * An abstract class that represents a basic pass through with a single input and a single output.
- * Extends {@link SignalSender} and implements {@link SignalReceiver}, {@link Compoundable} and Runnable.
+ * Represents a basic pass through with a single input and a single output.
  */
 public abstract class BasicPassThrough extends SignalSender implements SignalReceiver, Compoundable, Runnable {
     /**
-     * Constructor for the BasicPassThrough class.
+     * Default constructor..
      */
     public BasicPassThrough() {}
 
@@ -22,7 +21,7 @@ public abstract class BasicPassThrough extends SignalSender implements SignalRec
     private SignalSender input;
 
     /**
-     * Method that checks if this gate has any inputs connected.
+     * Checks if this gate has any inputs connected.
      * @return true if any inputs are connected, false otherwise
      */
     public boolean hasInputs() {
@@ -30,7 +29,7 @@ public abstract class BasicPassThrough extends SignalSender implements SignalRec
     }
 
     /**
-     * Method that updates the state of the gate by running it in a new thread.
+     * Updates the state of the gate by running it in a new thread.
      */
     public void update() {
         Thread thread = new Thread(this);
@@ -71,7 +70,7 @@ public abstract class BasicPassThrough extends SignalSender implements SignalRec
     }
 
     /**
-     * Method that disconnects all input signals connected to this gate.
+     * Disconnects all input signals connected to this gate.
      */
     public void disconnectInputs() {
         if (input != null)
@@ -80,7 +79,8 @@ public abstract class BasicPassThrough extends SignalSender implements SignalRec
             throw new RuntimeException("Error disconnecting input");
     }
     /**
-     * Method that fully disconnects this gate by disconnecting all input and output signals.
+     * Fully disconnects this gate by disconnecting all input and output signals.
+     * Necessary to completely remove a gate from simulation and allow it to be collected by the garbage collector.
      */
     public void fullDisconnect() {
         super.disconnectOutputs();
@@ -88,7 +88,8 @@ public abstract class BasicPassThrough extends SignalSender implements SignalRec
     }
 
     /**
-     * Method that runs the gate logic to update the state and sends an update signal if the state has changed.
+     * Runs the gate logic to update the state and sends an update signal if the state has changed.
+     * NOT TO BE CALLED MANUALLY - Handled by the Thread class.
      */
     public void run() {
         boolean oldState = state;
@@ -100,7 +101,7 @@ public abstract class BasicPassThrough extends SignalSender implements SignalRec
     }
 
     /**
-     * Method that checks what the currect state of the gate should be.
+     * Checks what the currect state of the gate should be.
      *
      * @param inputState the input signal connected to this gate
      * @return new state of the gate

@@ -21,6 +21,7 @@ public class XOR extends BasicGate {
      * @param inputs a set of signal senders connected to this gate's inputs
      * @return true if the number of true inputs is odd, false otherwise
      */
+    @Override
     protected boolean checkState(@NotNull HashSet<SignalSender> inputs) {
         long trues = 0;
         for (SignalSender input : inputs)

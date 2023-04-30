@@ -4,7 +4,6 @@ import pl.edu.pwr.student.Simulation;
 
 /**
  * Class that represents a clock logical element with configurable high and low times.
- * Extends {@link SignalSender} and implements Runnable.
  */
 public class Clock extends SignalSender implements Runnable {
     /**
@@ -51,7 +50,8 @@ public class Clock extends SignalSender implements Runnable {
     }
 
     /**
-     * Method that switches the clock on and off.
+     * Switches the clock on and off.
+     * NOT TO BE CALLED MANUALLY - Handled by the Thread class.
      */
     public void run() {
         while (power) {

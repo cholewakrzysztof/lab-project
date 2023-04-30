@@ -8,12 +8,11 @@ import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import java.util.HashSet;
 
 /**
- * Abstract class that represents a basic gate with multiple inputs and a single output.
- * Extends {@link SignalSender} and implements {@link SignalReceiver}, {@link Compoundable} and Runnable.
+ * Represents a basic logic gate with multiple inputs and a single output.
  */
 public abstract class BasicGate extends SignalSender implements SignalReceiver, Compoundable, Runnable {
     /**
-     * Constructor for the BasicGate class.
+     * Default constructor.
      */
     public BasicGate() {}
 
@@ -23,7 +22,7 @@ public abstract class BasicGate extends SignalSender implements SignalReceiver, 
     private final HashSet<SignalSender> inputs = new HashSet<>();
 
     /**
-     * Method that updates the state of the gate by running it in a new thread.
+     * Updates the state of the gate by running it in a new thread.
      */
     public void update() {
         Thread thread = new Thread(this);
@@ -61,7 +60,7 @@ public abstract class BasicGate extends SignalSender implements SignalReceiver, 
     }
 
     /**
-     * Method that disconnects all input signals connected to this gate.
+     * Disconnects all input signals connected to this gate.
      */
     public void disconnectInputs() {
         HashSet<SignalSender> tempInputs = new HashSet<>(inputs);
@@ -72,7 +71,8 @@ public abstract class BasicGate extends SignalSender implements SignalReceiver, 
     }
 
     /**
-     * Method that fully disconnects this gate by disconnecting all input and output signals.
+     * Fully disconnects this gate by disconnecting all input and output signals.
+     * Necessary to completely remove a gate from simulation and allow it to be collected by the garbage collector.
      */
     public void fullDisconnect() {
         super.disconnectOutputs();
@@ -80,7 +80,8 @@ public abstract class BasicGate extends SignalSender implements SignalReceiver, 
     }
 
     /**
-     * Method that runs the gate logic to update the state and sends an update signal if the state has changed.
+     * Runs the gate logic to update the state and sends an update signal if the state has changed.
+     * NOT TO BE CALLED MANUALLY - Handled by the Thread class.
      */
     public void run() {
         boolean oldState = state;
@@ -92,7 +93,7 @@ public abstract class BasicGate extends SignalSender implements SignalReceiver, 
     }
 
     /**
-     * Method that checks what the current state of the gate should be.
+     * Checks what the current state of the gate should be.
      *
      * @param inputs the set of {@link SignalSender} connected to this gate
      * @return new state of the gate

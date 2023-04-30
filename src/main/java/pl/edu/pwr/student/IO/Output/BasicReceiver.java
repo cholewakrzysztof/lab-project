@@ -5,7 +5,6 @@ import pl.edu.pwr.student.IO.Input.SignalSender;
 
 /**
  * An abstract class that represents a basic receiver with a single input and no outputs.
- * Implements {@link SignalReceiver}.
  */
 public abstract class BasicReceiver implements SignalReceiver {
     /**
@@ -46,6 +45,7 @@ public abstract class BasicReceiver implements SignalReceiver {
 
     /**
      * Attempts to connect a {@link SignalSender} to this element.
+     * Should not be called manually - will not complete anything and return false.
      *
      * @param sender the {@link SignalSender} to connect
      * @return true if the connection was successful, false otherwise
@@ -62,6 +62,7 @@ public abstract class BasicReceiver implements SignalReceiver {
     }
     /**
      * Attempts to disconnect a {@link SignalSender} from this receiver.
+     * Should not be called manually - will not complete anything and return false.
      *
      * @param sender the {@link SignalSender} to disconnect
      * @return true if the disconnection was successful, false otherwise
@@ -87,6 +88,7 @@ public abstract class BasicReceiver implements SignalReceiver {
     }
     /**
      * Method that fully disconnects this gate by disconnecting all input and output signals.
+     * Necessary to completely remove a gate from simulation and allow it to be collected by the garbage collector.
      */
     public void fullDisconnect() {
         disconnectInputs();

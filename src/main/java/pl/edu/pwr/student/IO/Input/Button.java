@@ -1,8 +1,7 @@
 package pl.edu.pwr.student.IO.Input;
 
 /**
- * Class that represents a button that a user can press.
- * Extends {@link SignalSender}.
+ * Represents a button that a user can press.
  */
 public class Button extends SignalSender {
     /**

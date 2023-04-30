@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 /**
- * The CompoundGate class represents a gate that is composed of other gates.
- * It can be used to combine multiple gates into a single logical unit.
+ * Represents a gate that is composed of other gates.
+ * Can be used to combine multiple gates into a single logical unit.
  */
 public class CompoundGate {
     /**
-     * Creates a new CompoundGate that is a copy of the specified gate.
+     * Copy constructor.
      *
      * @param gate the gate to copy
      */
@@ -33,10 +33,10 @@ public class CompoundGate {
     }
 
     /**
-     * Creates a new CompoundGate that is composed of the specified basic gates that implement {@link Compoundable} and compound gates.
+     * Creates a new CompoundGate that is composed of the specified basic gates which implement {@link Compoundable} and compound gates.
      *
-     * @param basicGates the basic gates to include in the compound gate
-     * @param compGates the compound gates to include in the compound gate
+     * @param basicGates basic gates to include in the compound gate
+     * @param compGates compound gates to include in the compound gate
      */
     public CompoundGate(HashSet<Compoundable> basicGates, @NotNull HashSet<CompoundGate> compGates) {
         HashSet<Compoundable> gates = new HashSet<>(basicGates);
@@ -60,13 +60,13 @@ public class CompoundGate {
      */
     private final HashMap<String, SignalReceiver> inputs = new HashMap<>();
     /**
-     * Collection of outputs of this gate.
+     * Set of outputs of this gate.
      * {@link SignalSender}
      */
     private final HashMap<String, SignalSender> outputs = new HashMap<>();
 
     /**
-     * Collection of logic elements composing this compound gate.
+     * Set of logic elements composing this compound gate.
      * {@link Compoundable}
      */
     private HashSet<Compoundable> logic;
@@ -111,6 +111,7 @@ public class CompoundGate {
 
     /**
      * Disconnects all inputs and outputs of this compound gate.
+     * Allows the gate to be completely removed from the simulation and collected by the garbage collector.
      */
     public void fullDisconnect() {
         for (String inputKey : inputKeys)

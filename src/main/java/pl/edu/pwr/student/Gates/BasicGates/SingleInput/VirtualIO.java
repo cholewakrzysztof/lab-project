@@ -26,6 +26,7 @@ public class VirtualIO extends BasicPassThrough {
      *
      * @return true
      */
+    @Override
     public boolean isIO() {
         return true;
     }
@@ -35,6 +36,7 @@ public class VirtualIO extends BasicPassThrough {
      *
      * @return a new instance of VirtualIO with the same name
      */
+    @Override
     public Compoundable getNewInstance() {
         return new VirtualIO(name);
     }
@@ -45,6 +47,7 @@ public class VirtualIO extends BasicPassThrough {
      * @param inputState state of {@link pl.edu.pwr.student.IO.Input.SignalSender} connected to this gate's input
      * @return the state of the inputState
      */
+    @Override
     protected boolean checkState(boolean inputState) {
         return inputState;
     }

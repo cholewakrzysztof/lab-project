@@ -21,6 +21,7 @@ public class NOR extends BasicGate {
      * @param inputs a set of signal senders connected to this gate's inputs
      * @return false if any input signals are true, true otherwise
      */
+    @Override
     protected boolean checkState(@NotNull HashSet<SignalSender> inputs) {
         for (SignalSender input : inputs)
             if (input.getState())

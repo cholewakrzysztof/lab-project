@@ -4,7 +4,6 @@ import pl.edu.pwr.student.Simulation;
 
 /**
  * Debug class that combines switch and button functionalities into one and allows its use without the need of a GUI.
- * Extends {@link SignalSender} and implements Runnable.
  */
 public class DebugButton extends SignalSender implements Runnable {
     /**
@@ -18,7 +17,7 @@ public class DebugButton extends SignalSender implements Runnable {
     private long milliseconds;
 
     /**
-     * Method that changes the state the element and keeps it in that state for a specified amount of time.
+     * Changes the state the element and keeps it in that state for a specified amount of time.
      * @param milliseconds amount of time, in milliseconds, for which the button should stay change its state
      */
     public void press(long milliseconds) {
@@ -28,7 +27,7 @@ public class DebugButton extends SignalSender implements Runnable {
     }
 
     /**
-     * Method that changes the state of the button.
+     * Changes the state of the button.
      * @return new state of the button
      */
     public boolean toggle() {
@@ -38,7 +37,8 @@ public class DebugButton extends SignalSender implements Runnable {
     }
 
     /**
-     * Method that is used when the button's state is changed temporarily.
+     * Used when the button's state is changed temporarily.
+     * NOT TO BE CALLED MANUALLY - Handled by the Thread class.
      */
     public void run() {
         toggle();

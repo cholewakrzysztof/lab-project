@@ -2,7 +2,6 @@ package pl.edu.pwr.student.IO.Output;
 
 /**
  * Light emitting diode class
- * Extends {@link BasicReceiver}.
  */
 public class LED extends BasicReceiver {
     /**

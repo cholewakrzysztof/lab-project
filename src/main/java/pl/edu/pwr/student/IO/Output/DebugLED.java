@@ -4,11 +4,11 @@ import pl.edu.pwr.student.Simulation;
 
 /**
  * Debug class that prints the state of its input in regular intervals.
- * Extends {@link BasicReceiver} and implements Runnable.
  */
 public class DebugLED extends BasicReceiver implements Runnable {
     /**
      * Creates a new object of this class.
+     *
      * @param name the name of the created object - printed in regular intervals
      * @param updateMilliseconds how often(in milliseconds) the name and state of this element should be printed
      */
@@ -38,6 +38,7 @@ public class DebugLED extends BasicReceiver implements Runnable {
 
     /**
      * Method that toggles the power of the object.
+     *
      * @return whether the element is power after called the method or not
      */
     public boolean toggle() {
@@ -56,6 +57,7 @@ public class DebugLED extends BasicReceiver implements Runnable {
 
     /**
      * Method that prints the name and state in regular intervals.
+     * NOT TO BE CALLED MANUALLY - Handled by the Thread class.
      */
     public void run() {
         while (power) {
@@ -66,6 +68,7 @@ public class DebugLED extends BasicReceiver implements Runnable {
 
     /**
      * Method that changes how often the objects prints to the console.
+     *
      * @param updateMilliseconds new interval in milliseconds
      */
     public void changeUpdateFreq(long updateMilliseconds) {

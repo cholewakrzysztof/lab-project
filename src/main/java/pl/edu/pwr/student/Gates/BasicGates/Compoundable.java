@@ -38,13 +38,14 @@ public interface Compoundable {
 
     /**
      * Fully disconnects the gate.
+     * Necessary to completely remove a gate from simulation and allow it to be collected by the garbage collector.
      */
     void fullDisconnect();
 
     /**
      * Returns whether the gate is an input/output gate.
-     * {@link pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO}
      *
+     * @see pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO
      * @return true if the gate is an input/output gate, false otherwise.
      */
     default boolean isIO() {
