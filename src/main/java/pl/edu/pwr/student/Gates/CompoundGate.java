@@ -9,30 +9,133 @@ import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/**
+ * The CompoundGate class represents a gate that is composed of other gates.
+ * It can be used to combine multiple gates into a single logical unit.
+ */
 public class CompoundGate {
+    /**
+     * Creates a new CompoundGate that is a copy of the specified gate.
+     *
+     * @param gate the gate to copy
+     */
+    public CompoundGate(@NotNull CompoundGate gate) {
+        create(gate.getGates());
+    }
+
+    /**
+     * Creates a new CompoundGate that is composed of the specified gates that implement {@link Compoundable}.
+     *
+     * @param gates the gates to include in the compound gate
+     */
+    public CompoundGate(@NotNull HashSet<Compoundable> gates) {
+        create(gates);
+    }
+
+    /**
+     * Creates a new CompoundGate that is composed of the specified basic gates that implement {@link Compoundable} and compound gates.
+     *
+     * @param basicGates the basic gates to include in the compound gate
+     * @param compGates the compound gates to include in the compound gate
+     */
+    public CompoundGate(HashSet<Compoundable> basicGates, @NotNull HashSet<CompoundGate> compGates) {
+        HashSet<Compoundable> gates = new HashSet<>(basicGates);
+        for (CompoundGate gate : compGates)
+            gates.addAll(gate.getGates());
+        this.create(gates);
+    }
+
+    /**
+     * Array of the names of inputs of this gate.
+     */
     private String[] inputKeys;
+    /**
+     * Array of the names of outputs of this gate.
+     */
     private String[] outputKeys;
+
+    /**
+     * Collection of inputs of this gate.
+     * {@link SignalReceiver}
+     */
     private final HashMap<String, SignalReceiver> inputs = new HashMap<>();
+    /**
+     * Collection of outputs of this gate.
+     * {@link SignalSender}
+     */
     private final HashMap<String, SignalSender> outputs = new HashMap<>();
+
+    /**
+     * Collection of logic elements composing this compound gate.
+     * {@link Compoundable}
+     */
     private HashSet<Compoundable> logic;
 
+    /**
+     * Returns an array of the names of the inputs to this gate.
+     *
+     * @return an array of input names
+     */
     public String[] getInputs() {
         return inputKeys;
     }
+
+    /**
+     * Returns an array of the names of the outputs of this gate.
+     *
+     * @return an array of output names
+     */
     public String[] getOutputs() {
         return outputKeys;
     }
 
+    /**
+     * Returns the input with the specified name.
+     *
+     * @param name the name of the input to retrieve
+     * @return the {@link SignalReceiver} with the specified name
+     */
     public SignalReceiver input(String name) {
         return inputs.get(name);
     }
+
+    /**
+     * Returns the output with the specified name.
+     *
+     * @param name the name of the output to retrieve
+     * @return the {@link SignalSender} with the specified name
+     */
     public SignalSender output(String name) {
         return outputs.get(name);
     }
+
+    /**
+     * Disconnects all inputs and outputs of this compound gate.
+     */
+    public void fullDisconnect() {
+        for (String inputKey : inputKeys)
+            inputs.get(inputKey).disconnectInputs();
+
+        for (String outputKey : outputKeys)
+            outputs.get(outputKey).disconnectOutputs();
+    }
+
+    /**
+     * Returns a set of the gates that make up this compound gate.
+     * {@link Compoundable}
+     *
+     * @return a set of gates
+     */
     public HashSet<Compoundable> getGates() {
         return new HashSet<>(logic);
     }
 
+    /**
+     * Fully creates the logic and IO of this compound gate.
+     * Compound gates that should make up this gate are to be treated as separate connected gates that compose them(using CompoundGate.getGates() method) and implement {@link Compoundable}.
+     *
+     * @param gates logic elements that are to make up this compound gate
+     */
     private void create(@NotNull HashSet<Compoundable> gates) {
         HashMap<Compoundable, Compoundable> copiedGates = new HashMap<>();
         for (Compoundable gate : gates)
@@ -86,28 +189,5 @@ public class CompoundGate {
 
         inputKeys = tempInputs.toArray(new String[0]);
         outputKeys = tempOutputs.toArray(new String[0]);
-    }
-
-    public void fullDisconnect() {
-        for (String inputKey : inputKeys)
-            inputs.get(inputKey).disconnectInputs();
-
-        for (String outputKey : outputKeys)
-            outputs.get(outputKey).disconnectOutputs();
-    }
-
-    public CompoundGate(@NotNull CompoundGate gate) {
-        create(gate.getGates());
-    }
-
-    public CompoundGate(@NotNull HashSet<Compoundable> gates) {
-        create(gates);
-    }
-
-    public CompoundGate(HashSet<Compoundable> basicGates, @NotNull HashSet<CompoundGate> compGates) {
-        HashSet<Compoundable> gates = new HashSet<>(basicGates);
-        for (CompoundGate gate : compGates)
-            gates.addAll(gate.getGates());
-        this.create(gates);
     }
 }

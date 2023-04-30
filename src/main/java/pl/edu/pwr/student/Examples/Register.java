@@ -8,7 +8,7 @@ import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.IO.Input.Clock;
 import pl.edu.pwr.student.IO.Input.DebugButton;
-import pl.edu.pwr.student.IO.Output.LED;
+import pl.edu.pwr.student.IO.Output.DebugLED;
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
 import pl.edu.pwr.student.Simulation;
 
@@ -185,12 +185,12 @@ public class Register {
 
         CompoundGate register = create4bitRegister();
 
-        LED o0 = new LED("0", 1000);
-        LED o1 = new LED("1", 1000);
-        LED o2 = new LED("2", 1000);
-        LED o3 = new LED("3", 1000);
+        DebugLED o0 = new DebugLED("0", 1000);
+        DebugLED o1 = new DebugLED("1", 1000);
+        DebugLED o2 = new DebugLED("2", 1000);
+        DebugLED o3 = new DebugLED("3", 1000);
 
-        LED separator = new LED("=============================", 1000);
+        DebugLED separator = new DebugLED("=============================", 1000);
 
         b0.connection(register.input("input0"));
         b1.connection(register.input("input1"));

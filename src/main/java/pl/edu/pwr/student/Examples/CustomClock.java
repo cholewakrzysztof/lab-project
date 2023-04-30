@@ -2,7 +2,7 @@ package pl.edu.pwr.student.Examples;
 
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.NOT;
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.Delay;
-import pl.edu.pwr.student.IO.Output.Printer;
+import pl.edu.pwr.student.IO.Output.DebugPrinter;
 import pl.edu.pwr.student.Simulation;
 
 public class CustomClock {
@@ -15,7 +15,7 @@ public class CustomClock {
         not.connection(delay);
         delay.connection(not);
 
-        Printer printer = new Printer("Clock");
+        DebugPrinter printer = new DebugPrinter("Clock");
 
         not.connection(printer);
 
