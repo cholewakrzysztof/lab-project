@@ -91,20 +91,23 @@ public abstract class BasicPassThrough extends SignalSender implements SignalRec
      * Runs the gate logic to update the state and sends an update signal if the state has changed.
      * NOT TO BE CALLED MANUALLY - Handled by the Thread class.
      */
+    @Override
     public void run() {
         boolean oldState = state;
-        if (input != null)
-            state = checkState(input.getState());
+        state = checkState();
 
         if (oldState != state)
             sendUpdate();
     }
 
     /**
-     * Checks what the currect state of the gate should be.
+     * Checks what the current state of the gate should be.
      *
-     * @param inputState the input signal connected to this gate
      * @return new state of the gate
      */
-    protected abstract boolean checkState(boolean inputState);
+    protected boolean checkState() {
+        if (this.hasInputs())
+            return input.getState();
+        return false;
+    }
 }

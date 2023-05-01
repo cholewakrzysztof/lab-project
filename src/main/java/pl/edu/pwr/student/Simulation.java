@@ -1,10 +1,9 @@
 package pl.edu.pwr.student;
 
-import pl.edu.pwr.student.Examples.*;
-import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.*;
-import pl.edu.pwr.student.Gates.BasicGates.SingleInput.*;
 import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
+import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.*;
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.*;
 import pl.edu.pwr.student.IO.Input.*;
 import pl.edu.pwr.student.IO.Output.*;
 import pl.edu.pwr.student.UI.Canvas;
@@ -44,7 +43,6 @@ public class Simulation {
 
         // All outputs in the simulation are to be in this collection
         HashSet<SignalReceiver> systemOutputs = new HashSet<>();
-
 
 //        // CODE EXAMPLES BELOW
 //

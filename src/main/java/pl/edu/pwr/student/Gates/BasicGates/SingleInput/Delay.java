@@ -25,20 +25,12 @@ public class Delay extends BasicPassThrough {
      * Overrides the default method of {@link BasicPassThrough} class to add the delay to calculations.
      */
     @Override
-    public void update() {
+    public void run() {
+        boolean newState = checkState();
         Simulation.simWait(milliseconds);
-        Thread thread = new Thread(this);
-        thread.start();
-    }
-
-    /**
-     * Computes the output state of the 'Delay' element.
-     *
-     * @param inputState state of {@link pl.edu.pwr.student.IO.Input.SignalSender} connected to this gate's input
-     * @return the state of the inputState from the set amount of milliseconds ago
-     */
-    @Override
-    protected boolean checkState(boolean inputState) {
-        return inputState;
+        if (state != newState) {
+            state = newState;
+            this.sendUpdate();
+        }
     }
 }

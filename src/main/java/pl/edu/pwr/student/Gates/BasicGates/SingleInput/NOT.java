@@ -13,11 +13,10 @@ public class NOT extends BasicPassThrough {
     /**
      * Checks the state of the 'NOT' gate based on the input signals.
      *
-     * @param inputState state of {@link pl.edu.pwr.student.IO.Input.SignalSender} connected to this gate's input
      * @return true if the input is false, false otherwise
      */
     @Override
-    protected boolean checkState(boolean inputState) {
-        return !inputState;
+    protected boolean checkState() {
+        return !super.checkState();
     }
 }

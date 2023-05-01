@@ -40,15 +40,4 @@ public class VirtualIO extends BasicPassThrough {
     public Compoundable getNewInstance() {
         return new VirtualIO(name);
     }
-
-    /**
-     * Computes the output state of the 'VirtualIO' element.
-     *
-     * @param inputState state of {@link pl.edu.pwr.student.IO.Input.SignalSender} connected to this gate's input
-     * @return the state of the inputState
-     */
-    @Override
-    protected boolean checkState(boolean inputState) {
-        return inputState;
-    }
 }
