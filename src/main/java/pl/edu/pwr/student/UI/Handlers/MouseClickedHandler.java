@@ -1,5 +1,6 @@
 package pl.edu.pwr.student.UI.Handlers;
 
+import pl.edu.pwr.student.Gates.Delay;
 import pl.edu.pwr.student.IO.Input.Clock;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.UI.Canvas;
@@ -30,6 +31,14 @@ public class MouseClickedHandler {
                             ((Clock) g.uiElem).setIntervals(
                                     temp.getByLabel("On time").asInt(),
                                     temp.getByLabel("Off time").asInt()
+                            );
+                        }
+                        case "DELAY" -> {
+                            Form temp = sketch.booster.createForm("Delay")
+                                    .addSlider("Delay time", 100, 10000, 1000, 10000, 1000)
+                                    .show();
+                            ((Delay) g.uiElem).setDelay(
+                                    temp.getByLabel("Delay time").asInt()
                             );
                         }
                     }

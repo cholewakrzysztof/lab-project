@@ -27,7 +27,8 @@ public class SettingsHandler {
                         new ListElement("SPEAKER", null, ""),
                         new ListElement("LED", null, ""),
                         new ListElement("SWITCH", null, ""),
-                        new ListElement("CLOCK", null, "")
+                        new ListElement("CLOCK", null, ""),
+                        new ListElement("DELAY", null, "")
                 ).run().hide();
 
         sketch.booster.createNotification(

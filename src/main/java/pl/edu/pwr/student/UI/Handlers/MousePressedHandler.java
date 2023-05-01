@@ -1,6 +1,7 @@
 package pl.edu.pwr.student.UI.Handlers;
 
 import pl.edu.pwr.student.Gates.BasicGates.*;
+import pl.edu.pwr.student.Gates.Delay;
 import pl.edu.pwr.student.IO.Input.Clock;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
@@ -99,6 +100,11 @@ public class MousePressedHandler {
                             temp.toggle();
                             sketch.userInputs.add(temp);
                             sketch.elements.add(new UiElement("CLOCK", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
+                        }
+                        case "DELAY" -> {
+                            Delay temp = new Delay(1000);
+                            sketch.userInputs.add(temp);
+                            sketch.elements.add(new UiElement("DELAY", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
                         }
                     }
                 }

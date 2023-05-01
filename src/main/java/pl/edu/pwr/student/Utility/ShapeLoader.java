@@ -12,7 +12,7 @@ public class ShapeLoader {
     /**
      * Map of all shapes
      */
-    private static HashMap<String, PShape> shapes = new HashMap<String, PShape>();
+    private static final HashMap<String, PShape> shapes = new HashMap<String, PShape>();
 
     /**
      * Scale of all shapes
@@ -44,6 +44,7 @@ public class ShapeLoader {
         shapes.put("SWITCH-TRUE", sketch.loadShape("elements/SWITCH-TRUE.svg"));
         shapes.put("SWITCH-FALSE", sketch.loadShape("elements/SWITCH-FALSE.svg"));
         shapes.put("SPEAKER", sketch.loadShape("elements/SPEAKER.svg"));
+        shapes.put("DELAY", sketch.loadShape("elements/DELAY.svg"));
 
         resize(scale);
     }
