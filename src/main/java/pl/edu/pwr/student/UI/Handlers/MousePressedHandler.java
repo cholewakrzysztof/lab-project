@@ -21,14 +21,8 @@ public class MousePressedHandler {
      */
     public static void mousePressed(Canvas sketch){
         for (int i = 0; i < sketch.buttons.size(); i++) {
-            if(sketch.buttons.get(i).over(new PVector(sketch.mouseX, sketch.mouseY))){
-                sketch.lastState = sketch.state;
-                sketch.state = i;
-                if (sketch.state == 1) {
-                    sketch.form.show();
-                } else {
-                    sketch.form.hide();
-                }
+            if(sketch.buttons.get(i).over(new PVector(sketch.mouseX, sketch.mouseY))) {
+                sketch.buttons.get(i).click();
                 return;
             }
         }

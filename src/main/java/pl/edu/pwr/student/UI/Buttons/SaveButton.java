@@ -9,13 +9,13 @@ import processing.core.PVector;
 /**
  * Class representing button for creating new elements
  */
-public class InteractionButton extends Button {
+public class SaveButton extends Button {
     /**
      * Constructor
      * @param s Processing sketch
      */
-    public InteractionButton(Canvas s) {
-        super(s, "INTERACT", new PVector(10,10));
+    public SaveButton(Canvas s) {
+        super(s, "SAVE", new PVector(250,10));
     }
 
     /**
@@ -25,15 +25,7 @@ public class InteractionButton extends Button {
     public void run() {
         sketch.stroke(0);
         if (over(new PVector(sketch.mouseX, sketch.mouseY))){
-            if (sketch.state == 0){
-                sketch.fill(0,255,0,30);
-                sketch.square(position.x,position.y,48);
-            } else {
-                sketch.fill(0, 30);
-                sketch.square(position.x,position.y,48);
-            }
-        } else if(sketch.state == 0){
-            sketch.fill(0,255,0,20);
+            sketch.fill(0, 30);
             sketch.square(position.x,position.y,48);
         } else {
             sketch.fill(0, 20);
@@ -44,8 +36,6 @@ public class InteractionButton extends Button {
 
     @Override
     public void click() {
-        sketch.lastState = sketch.state;
-        sketch.state = 0;
-        sketch.form.hide();
+        //TODO: save
     }
 }

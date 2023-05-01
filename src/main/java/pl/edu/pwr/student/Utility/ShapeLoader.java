@@ -24,19 +24,14 @@ public class ShapeLoader {
      * @param sketch PApplet object
      */
     public static void loadShapes(PApplet sketch){
-        //dumb way cus its working in JAR file
+        //dumb way cus it's working in JAR file
 
         shapes.put("CONNECT", sketch.loadShape("buttons/CONNECT.svg"));
         shapes.put("CREATE", sketch.loadShape("buttons/CREATE.svg"));
         shapes.put("DELETE", sketch.loadShape("buttons/DELETE.svg"));
         shapes.put("INTERACT", sketch.loadShape("buttons/INTERACT.svg"));
-//        shapes.put("SAVE", sketch.loadShape("buttons/SAVE.svg"));
-//        shapes.put("LOAD", sketch.loadShape("buttons/LOAD.svg"));
-//        shapes.put("RESET", sketch.loadShape("buttons/RESET.svg"));
-//        shapes.put("START", sketch.loadShape("buttons/START.svg"));
-//        shapes.put("STOP", sketch.loadShape("buttons/STOP.svg"));
-//        shapes.put("SPEEDUP", sketch.loadShape("buttons/SPEED.svg"));
-//        shapes.put("SPEEDDOWN", sketch.loadShape("buttons/SPEED2.svg"));
+        shapes.put("SAVE", sketch.loadShape("buttons/SAVE.svg"));
+        shapes.put("LOAD", sketch.loadShape("buttons/LOAD.svg"));
         shapes.put("AND", sketch.loadShape("elements/AND.svg"));
         shapes.put("OR", sketch.loadShape("elements/OR.svg"));
         shapes.put("XOR", sketch.loadShape("elements/XOR.svg"));
@@ -46,7 +41,6 @@ public class ShapeLoader {
         shapes.put("XNOR", sketch.loadShape("elements/XNOR.svg"));
         shapes.put("CLOCK", sketch.loadShape("elements/CLOCK.svg"));
         shapes.put("LED", sketch.loadShape("elements/LED.svg"));
-        shapes.put("SWITCH", sketch.loadShape("elements/SWITCH.svg"));
         shapes.put("SWITCH-TRUE", sketch.loadShape("elements/SWITCH-TRUE.svg"));
         shapes.put("SWITCH-FALSE", sketch.loadShape("elements/SWITCH-FALSE.svg"));
         shapes.put("SPEAKER", sketch.loadShape("elements/SPEAKER.svg"));

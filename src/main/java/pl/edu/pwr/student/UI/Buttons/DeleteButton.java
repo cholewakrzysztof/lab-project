@@ -9,19 +9,13 @@ import processing.core.PVector;
 /**
  * Class representing button for creating new elements
  */
-public class DeleteButton extends UiElement {
-    /**
-     * Shape of button
-     */
-    PShape shape;
-
+public class DeleteButton extends Button {
     /**
      * Constructor
      * @param s Processing sketch
      */
     public DeleteButton(Canvas s) {
-        super("DELETE", s, new PVector(190,10), null);
-        shape = ShapeLoader.getShape("DELETE");
+        super(s, "DELETE", new PVector(190,10));
     }
 
     /**
@@ -46,5 +40,12 @@ public class DeleteButton extends UiElement {
             sketch.square(position.x,position.y,48);
         }
         sketch.shape(shape, position.x, position.y);
+    }
+
+    @Override
+    public void click() {
+        sketch.lastState = sketch.state;
+        sketch.state = 3;
+        sketch.form.hide();
     }
 }

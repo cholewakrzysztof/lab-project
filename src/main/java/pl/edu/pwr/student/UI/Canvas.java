@@ -75,7 +75,7 @@ public class Canvas extends PApplet {
     /**
      * List of all buttons
      */
-    public final ArrayList<UiElement> buttons = new ArrayList<>();
+    public final ArrayList<Button> buttons = new ArrayList<>();
 
     /**
      * Selected element
@@ -110,6 +110,8 @@ public class Canvas extends PApplet {
         buttons.add(new CreateButton(this));
         buttons.add(new ConnectButton(this));
         buttons.add(new DeleteButton(this));
+        buttons.add(new SaveButton(this));
+        buttons.add(new LoadButton(this));
     }
 
     /**

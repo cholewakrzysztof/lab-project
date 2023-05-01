@@ -9,20 +9,15 @@ import processing.core.PVector;
 /**
  * Class representing button for creating new elements
  */
-public class ConnectButton extends UiElement {
+public class ConnectButton extends Button {
 
-    /**
-     * Shape of button
-     */
-    PShape shape;
 
     /**
      * Constructor
      * @param s Processing sketch
      */
     public ConnectButton(Canvas s) {
-        super("CONNECT", s, new PVector(130,10), null);
-        shape = ShapeLoader.getShape("CONNECT");
+        super(s,"CONNECT", new PVector(130,10));
     }
 
     /**
@@ -47,5 +42,12 @@ public class ConnectButton extends UiElement {
             sketch.square(position.x,position.y,48);
         }
         sketch.shape(shape, position.x, position.y);
+    }
+
+    @Override
+    public void click() {
+        sketch.lastState = sketch.state;
+        sketch.state = 2;
+        sketch.form.hide();
     }
 }
