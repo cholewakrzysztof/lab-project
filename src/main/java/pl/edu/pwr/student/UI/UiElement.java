@@ -1,9 +1,12 @@
 package pl.edu.pwr.student.UI;
 
 import pl.edu.pwr.student.IO.Input.SignalSender;
+import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PVector;
+
+import java.awt.*;
 import java.util.HashSet;
 
 /**
@@ -31,6 +34,9 @@ public class UiElement {
      */
     public final UiAvailable uiElem;
 
+    public Color color = new Color(0, 255, 0);
+
+
     /**
      * Constructor
      * @param type name of element
@@ -56,6 +62,14 @@ public class UiElement {
 
         sketch.fill(0);
         sketch.shape(ShapeLoader.getShape(elName), position.x, position.y);
+
+        if (uiElem.getState()){
+            // tutaj rysowanie kolorowego koła żarówki
+            if (uiElem instanceof LED) {
+                sketch.fill(color.getRGB());
+                sketch.circle(position.x + 512*(ShapeLoader.scale)/2, position.y + 400*ShapeLoader.scale/2, 512*ShapeLoader.scale/2);
+            }
+        }
 
         for (SignalReceiver s : uiElem.getOutputs()) {
             if (uiElem.getState()){
@@ -102,7 +116,6 @@ public class UiElement {
                         sketch.line(endx-padding, midy, endx-padding, endy);
                         sketch.line(endx-padding, endy, endx, endy);
                     }
-
                 }
             }
         }

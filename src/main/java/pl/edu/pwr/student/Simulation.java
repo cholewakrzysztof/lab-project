@@ -9,7 +9,8 @@ import pl.edu.pwr.student.Gates.Compoundable;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.Utility.ShapeLoader;
+import uibooster.UiBooster;
+
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -40,7 +41,17 @@ public class Simulation {
         // All outputs in the simulation are to be in this collection
         HashSet<SignalReceiver> systemOutputs = new HashSet<>();
 
-        Canvas Canvas = new Canvas(basicGates, compoundGates, savedCompoundGates, userInputs, systemOutputs);
+
+        try {
+            Canvas Canvas = new Canvas(basicGates, compoundGates, savedCompoundGates, userInputs, systemOutputs);
+        } catch (Exception e) {
+            new UiBooster().showException(
+                    "An error occurred",
+                    "Exception message",
+                    e
+            );
+        }
+
 
 //        // CODE EXAMPLES BELOW
 //

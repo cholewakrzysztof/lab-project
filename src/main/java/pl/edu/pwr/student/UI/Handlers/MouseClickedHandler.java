@@ -17,10 +17,14 @@ public class MouseClickedHandler {
         if (sketch.state == 0) {
             for (UiElement g : sketch.elements) {
                 if(g.over(new PVector(sketch.mouseX, sketch.mouseY))){
-                    if (g.elName == "SWITCH"){
-                        ((Switch)g.uiElem).toggle();
+                    switch (g.elName) {
+                        case "SWITCH":
+                            ((Switch)g.uiElem).toggle();
+                            break;
+                        case "LED":
+                            g.color = sketch.booster.showColorPicker("Choose color of LED", "Color picking");
+                            break;
                     }
-                    break;
                 }
             }
         }
