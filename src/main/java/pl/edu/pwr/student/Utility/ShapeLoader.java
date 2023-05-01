@@ -47,6 +47,8 @@ public class ShapeLoader {
         shapes.put("CLOCK", sketch.loadShape("elements/CLOCK.svg"));
         shapes.put("LED", sketch.loadShape("elements/LED.svg"));
         shapes.put("SWITCH", sketch.loadShape("elements/SWITCH.svg"));
+        shapes.put("SWITCH-TRUE", sketch.loadShape("elements/SWITCH-TRUE.svg"));
+        shapes.put("SWITCH-FALSE", sketch.loadShape("elements/SWITCH-FALSE.svg"));
         shapes.put("SPEAKER", sketch.loadShape("elements/SPEAKER.svg"));
 
         resize(scale);

@@ -1,6 +1,7 @@
 package pl.edu.pwr.student.UI;
 
 import pl.edu.pwr.student.IO.Input.SignalSender;
+import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.Utility.ShapeLoader;
@@ -61,10 +62,17 @@ public class UiElement {
         }
 
         sketch.fill(0);
-        sketch.shape(ShapeLoader.getShape(elName), position.x, position.y);
+        if (uiElem instanceof Switch) {
+            if (uiElem.getState()){
+                sketch.shape(ShapeLoader.getShape("SWITCH-TRUE"), position.x, position.y);
+            } else {
+                sketch.shape(ShapeLoader.getShape("SWITCH-FALSE"), position.x, position.y);
+            }
+        } else {
+            sketch.shape(ShapeLoader.getShape(elName), position.x, position.y);
+        }
 
         if (uiElem.getState()){
-            // tutaj rysowanie kolorowego koła żarówki
             if (uiElem instanceof LED) {
                 sketch.fill(color.getRGB());
                 sketch.circle(position.x + 512*(ShapeLoader.scale)/2, position.y + 400*ShapeLoader.scale/2, 512*ShapeLoader.scale/2);
