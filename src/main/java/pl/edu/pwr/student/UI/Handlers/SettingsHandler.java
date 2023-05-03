@@ -7,6 +7,12 @@ import uibooster.model.ListElement;
  * Class responsible for handling settings of the application
  */
 public class SettingsHandler {
+
+    /**
+     * Private constructor to prevent creating instances of this class
+     */
+    private SettingsHandler() {}
+
     /**
      * Sets settings for the sketch
      * @param sketch - sketch to set settings for

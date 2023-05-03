@@ -6,35 +6,46 @@ import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import java.util.HashSet;
 
 /**
- * Interface representing every element on canvas
+ * The UiAvailable interface defines methods for any element that can be placed on a canvas.
+ * This interface is implemented by classes representing logic gates, and other components.
  */
 public interface UiAvailable {
     /**
-     * Gets all outputs from element
+     * Returns all outputs from this element.
+     *
+     * @return a HashSet of SignalReceiver objects representing the outputs of this element.
      */
     default HashSet<SignalReceiver> getOutputs() {
         return new HashSet<SignalReceiver>();
     }
 
     /**
-     * Gets all inputs from element
+     * Returns all inputs for this element.
+     *
+     * @return a HashSet of SignalSender objects representing the inputs of this element.
      */
     default HashSet<SignalSender> getInputs() {
         return new HashSet<SignalSender>();
     }
 
     /**
-     * Gets state of element
+     * Returns the current state of this element.
+     *
+     * @return true if the element is "on" or "active", false if it is "off" or "inactive".
      */
     boolean getState();
 
     /**
-     * Gets if element has inputs
+     * Disconnects all inputs from this element.
+     * This is useful for resetting the state of the element.
      */
     void fullDisconnect();
 
     /**
-     * Gets if element has inputs
+     * Connects an input to this element.
+     *
+     * @param receiver the SignalReceiver object representing the input to be connected.
+     * @return the number of inputs that are currently connected to this element.
      */
     int connection(SignalReceiver receiver);
 }

@@ -13,6 +13,12 @@ import uibooster.model.Form;
  * Handles mouse clicked event
  */
 public class MouseClickedHandler {
+
+    /**
+     * Private constructor to prevent creating instances of this class
+     */
+    private MouseClickedHandler() {}
+
     /**
      * Handles mouse clicked event
      * @param sketch - sketch to handle mouse clicked event for

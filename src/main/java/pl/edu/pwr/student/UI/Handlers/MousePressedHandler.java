@@ -17,6 +17,12 @@ import uibooster.model.ListElement;
  * Handles mouse pressed event
  */
 public class MousePressedHandler {
+
+    /**
+     * Private constructor to prevent creating instances of this class
+     */
+    private MousePressedHandler() {}
+
     /**
      * Handles mouse pressed event
      * @param sketch - sketch to handle mouse pressed event for

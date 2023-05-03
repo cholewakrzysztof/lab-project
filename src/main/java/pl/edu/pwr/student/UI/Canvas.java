@@ -14,77 +14,82 @@ import uibooster.model.Form;
 import java.util.*;
 
 /**
- * Class representing Processing canvas
+ * Class representing the Processing canvas.
+ * Handles drawing and interactions with elements.
  */
 public class Canvas extends PApplet {
     /**
-     * Form with list of gates
+     * Form with the list of gates.
      */
     public Form form;
 
     /**
-     * State of canvas
+     * The state of the canvas. It can have the following values:
      * 0 - interacting with elements
      * 1 - creating new elements
-     * 2 - Add/Remove new output
+     * 2 - adding or removing a new output
      * 3 - deleting elements
-     * 4 - connecting elements
+     * 4 - connecting elements.
      */
     public int state;
 
     /**
-     * Last state of canvas
+     * The last state of the canvas.
      */
     public int lastState;
 
     /**
-     * UiBooster object
+     * The UiBooster object used for UI interactions.
      */
     public UiBooster booster;
 
     /**
-     * List of all elements on canvas
+     * The set of all elements on the canvas.
      */
     public Set<UiElement> elements = new HashSet<>();
 
     /**
-     * List of all basic gates
+     * The set of all basic gates.
      */
     public HashSet<Compoundable> basicGates;
 
     /**
-     * List of all compound gates
+     * The set of all compound gates.
      */
     private final HashSet<CompoundGate> compoundGates;
 
     /**
-     * List of all saved compound gates
+     * The map of all saved compound gates.
      */
     private final HashMap<String, CompoundGate> savedCompoundGates;
 
     /**
-     * List of all user inputs
+     * The set of all user inputs.
      */
     public HashSet<SignalSender> userInputs;
 
     /**
-     * List of all system outputs
+     * The set of all system outputs.
      */
     public HashSet<SignalReceiver> systemOutputs;
 
     /**
-     * List of all buttons
+     * The list of all buttons.
      */
     public final ArrayList<Button> buttons = new ArrayList<>();
 
     /**
-     * Selected element
+     * The selected element on the canvas.
      */
     public UiElement selectedElement = null;
 
     /**
      * Constructor
      * @param basicGates list of all basic gates
+     * @param compoundGates list of all compound gates
+     * @param savedCompoundGates list of all saved compound gates
+     * @param userInputs list of all user inputs
+     * @param systemOutputs list of all system outputs
      */
     public Canvas (
         HashSet<Compoundable> basicGates,
@@ -101,11 +106,13 @@ public class Canvas extends PApplet {
 
         booster = new UiBooster();
 
+        // Set up the canvas
         String[] processingArgs = {"Gates-Simulation"};
         this.runSketch(processingArgs);
 
         ShapeLoader.loadShapes(this);
 
+        // Initialize the list of buttons
         buttons.add(new InteractionButton(this));
         buttons.add(new CreateButton(this));
         buttons.add(new ConnectButton(this));
@@ -115,7 +122,8 @@ public class Canvas extends PApplet {
     }
 
     /**
-     * Method called when user wants to exit
+     * Method called when user wants to exit.
+     * Displays a dialog asking if the user wants to save their work.
      */
     @Override
     public void exit() {
@@ -149,7 +157,6 @@ public class Canvas extends PApplet {
 
     /**
      * Method called when user presses mouse
-     * handles adding new gates
      */
     public void mousePressed() {
         MousePressedHandler.mousePressed(this);

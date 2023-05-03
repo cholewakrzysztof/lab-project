@@ -8,6 +8,12 @@ import processing.core.PVector;
  * Handles mouse dragged event
  */
 public class MouseDraggedHandler {
+
+    /**
+     * Private constructor to prevent creating instances of this class
+     */
+    private MouseDraggedHandler() {}
+
     /**
      * Handles mouse dragged event
      * @param sketch - sketch to handle mouse dragged event for

@@ -11,40 +11,53 @@ import java.awt.*;
 import java.util.HashSet;
 
 /**
- * Class representing every element on canvas
+ * This is a class definition for a UiElement class, which represents every element on a canvas.
  */
 public class UiElement {
 
     /**
-     * Position of element
+     * The position of this element.
      */
     public PVector position;
 
     /**
-     * Name of element
+     * The name of this element.
      */
     public final String elName;
 
     /**
-     * Processing sketch
+     * The Processing sketch associated with this element.
      */
     public final Canvas sketch;
 
     /**
-     * Gate represented by element
+     * The gate represented by this element.
      */
     public final UiAvailable uiElem;
 
+    /**
+     * The color associated with this element.
+     */
     public Color color = new Color(0, 255, 0);
 
 
 
     /**
-     * Constructor
-     * @param type name of element
-     * @param s Processing sketch
-     * @param v position of element
-     * @param uiElem gate represented by element
+     * Creates a new UI element object with the specified parameters.
+     *
+     * @param type The name of the UI element.
+     * @param s The Processing sketch used to render the UI element.
+     * @param v The position of the UI element on the canvas, specified as a PVector object.
+     * @param uiElem The gate represented by the UI element, specified as a UiAvailable object.
+     *
+     * <p>
+     * The {@code UiElement} constructor creates a new UI element object with the specified
+     * properties. The {@code type} parameter specifies the name of the UI element, such as
+     * "button" or "checkbox". The {@code s} parameter specifies the Processing sketch used to
+     * render the UI element. The {@code v} parameter specifies the position of the UI element
+     * on the canvas, as a PVector object with x and y coordinates. The {@code uiElem} parameter
+     * specifies the gate represented by the UI element, as a UiAvailable object.
+     * </p>
      */
     public UiElement(String type, Canvas s, PVector v, UiAvailable uiElem) {
         position = v.copy();
@@ -54,13 +67,30 @@ public class UiElement {
     }
 
     /**
-     * Draws element
+     * Renders the UI element on the canvas and displays any connected signals.
+     *
+     * <p>
+     * The {@code run} method is responsible for rendering the UI element on the canvas
+     * and displaying any connected signals. First, it checks whether the mouse is currently
+     * hovering over the element and, if so, fills the element with a dark color to indicate
+     * that it is active. Next, it renders the shape of the element using the {@link ShapeLoader}
+     * class. If the element is a {@link Switch}, it displays either the "true" or "false" state
+     * of the switch using a specific shape for each state. If the element is an {@link LED}
+     * and its state is "on", it displays a circle in the specified color. Finally, it iterates
+     * through each of the element's output signals and draws a line to each connected element
+     * to indicate the signal flow.
+     * </p>
      */
     public void run() {
+        // Code for drawing the element shape and mouse hover effects
+
         if (over(new PVector(sketch.mouseX, sketch.mouseY))){
             sketch.fill(0, 30);
             sketch.square(position.x,position.y,512*ShapeLoader.scale);
         }
+
+
+        // Code for displaying the state of Switch and LED elements
 
         sketch.fill(0);
         if (uiElem instanceof Switch) {
@@ -79,6 +109,8 @@ public class UiElement {
                 sketch.circle(position.x + 512*(ShapeLoader.scale)/2, position.y + 400*ShapeLoader.scale/2, 512*ShapeLoader.scale/2);
             }
         }
+
+        // Code for drawing signal lines to connected elements
 
         for (SignalReceiver s : uiElem.getOutputs()) {
             if (uiElem.getState()){
@@ -131,7 +163,10 @@ public class UiElement {
     }
 
     /**
-     * Returns true if mouse over element
+     * Determines whether the mouse is currently over the element.
+     *
+     * @param v the mouse position as a PVector
+     * @return true if the mouse is over the element, false otherwise
      */
     public boolean over(PVector v)  {
         return position.x <= v.x &&

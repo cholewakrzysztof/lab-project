@@ -10,13 +10,31 @@ import uibooster.UiBooster;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/**
+ * Main class of the application
+ */
 public class Simulation {
+
+    /**
+     * Private constructor to prevent creating instances of this class
+     */
+    private Simulation(){}
+
+    /**
+     * Private constructor to prevent creating instances of this class
+     *
+     * @param milliseconds - time to wait in milliseconds
+     */
     public static void simWait(long milliseconds) {
         try {
             Thread.sleep(milliseconds);
         } catch (InterruptedException ignored) {}
     }
 
+    /**
+     * Main method of the application
+     * @param args - arguments passed to the application
+     */
     public static void main(String[] args) {
         // All basic gates(AND OR XOR NAND NOR XNOR NOT)
         // are to be added to this collection when created by the user
