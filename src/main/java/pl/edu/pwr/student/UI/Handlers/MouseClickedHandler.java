@@ -4,6 +4,7 @@ package pl.edu.pwr.student.UI.Handlers;
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.Delay;
 import pl.edu.pwr.student.IO.Input.Clock;
 import pl.edu.pwr.student.IO.Input.Switch;
+import pl.edu.pwr.student.IO.Output.Speaker;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.UiElement;
 import processing.core.PVector;
@@ -46,6 +47,14 @@ public class MouseClickedHandler {
                                     .show();
                             ((Delay) g.uiElem).setDelay(
                                     temp.getByLabel("Delay time").asInt()
+                            );
+                        }
+                        case "SPEAKER" -> {
+                            Form temp = sketch.booster.createForm("SPEAKER")
+                                    .addSlider("Frequency", 100, 10000, 200, 10000, 1000)
+                                    .show();
+                            ((Speaker) g.uiElem).setFrequency(
+                                    temp.getByLabel("Frequency").asInt()
                             );
                         }
                     }

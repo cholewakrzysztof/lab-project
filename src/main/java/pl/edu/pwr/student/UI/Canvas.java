@@ -9,7 +9,9 @@ import pl.edu.pwr.student.UI.Handlers.*;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PApplet;
 import uibooster.UiBooster;
+import uibooster.components.Splashscreen;
 import uibooster.model.Form;
+import uibooster.model.UiBoosterOptions;
 
 import java.util.*;
 
@@ -98,13 +100,13 @@ public class Canvas extends PApplet {
         HashSet<SignalSender> userInputs,
         HashSet<SignalReceiver> systemOutputs
     ) {
+        booster = new UiBooster(UiBoosterOptions.Theme.DARK_THEME);
+
         this.basicGates = basicGates;
         this.compoundGates = compoundGates;
         this.savedCompoundGates = savedCompoundGates;
         this.userInputs = userInputs;
         this.systemOutputs = systemOutputs;
-
-        booster = new UiBooster();
 
         // Set up the canvas
         String[] processingArgs = {"Gates-Simulation"};

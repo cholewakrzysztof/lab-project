@@ -38,4 +38,8 @@ public class Speaker extends BasicReceiver implements UiAvailable {
         if (input != null)
             throw new RuntimeException("Error disconnecting input");
     }
+
+    public void setFrequency(Integer frequency) {
+        sine.freq(frequency);
+    }
 }
