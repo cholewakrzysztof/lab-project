@@ -1,5 +1,6 @@
 package pl.edu.pwr.student.IO.Input;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,14 +10,22 @@ class ClockTest {
     /*
      * Creating clock working 100ms On, 100ms Off
      */
-    private Clock c = new Clock(100,100);
+    private Clock c;
+
+
+    @BeforeEach
+    protected void setUp() {
+        c = new Clock(100, 100);
+    }
 
     /*
      * Test clock state if no power
      */
     @Test
     public void testWitoutPower() {
-        simWait(99);
+        simWait(75);
+        assertFalse(c.getState());
+        simWait(75);
         assertFalse(c.getState());
     }
 
@@ -26,32 +35,18 @@ class ClockTest {
     @Test
     public void testWithPower() {
         c.toggle();
-
         simWait(99);
         assertTrue(c.getState());
-    }
-
-    /*
-     * Test state after one change
-     */
-    @Test
-    public void testTurnOffAfterTime() {
-        c.toggle();
-
-        simWait(101);
+        simWait(99);
         assertFalse(c.getState());
-
-    }
-
-    /*
-     * Test state after two changes
-     */
-    @Test
-    public void testTurnOnAfterTime() {
-        c.toggle();
-
-        simWait(201);
+        simWait(99);
         assertTrue(c.getState());
+        simWait(99);
+        assertFalse(c.getState());
+        simWait(99);
+        assertTrue(c.getState());
+        simWait(99);
+        assertFalse(c.getState());
     }
 }
 

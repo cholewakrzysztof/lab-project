@@ -1,17 +1,20 @@
-package pl.edu.pwr.student.Gates.BasicGates;
+package pl.edu.pwr.student.Gates.BasicGates.MultipleInput;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static pl.edu.pwr.student.Simulation.simWait;
 
-class NANDTest {
+class NORTest {
     private Switch FirstInput = new Switch();
     private Switch SecondInput = new Switch();
     private pl.edu.pwr.student.IO.Output.LED LED = new LED("led",100);
-    private NAND gate = new NAND();
+    private NOR gate = new NOR();
 
+    @BeforeEach
     protected void setUp() {
         if(FirstInput.getState())
             FirstInput.toggle();
@@ -21,10 +24,11 @@ class NANDTest {
         FirstInput.connection(gate);
         SecondInput.connection(gate);
         gate.connection(LED);
+        simWait(50);
     }
 
     /*
-     *Test NAND gate input 0 and 0
+     *Test NOR gate input 0 and 0
      */
     @Test
     public void testTruthTableCase1() {
@@ -32,28 +36,31 @@ class NANDTest {
     }
 
     /*
-     *Test NAND gate input 1 and 0
+     *Test NOR gate input 1 and 0
      */
     @Test
     public void testTruthTableCase2() {
         FirstInput.toggle();
-        assertTrue(gate.getState());
+        simWait(50);
+        assertFalse(gate.getState());
     }
     /*
-     * Test NAND gate input 0 and 1
+     * Test NOR gate input 0 and 1
      */
     @Test
     public void testTruthTableCase3() {
         SecondInput.toggle();
-        assertTrue(gate.getState());
+        simWait(50);
+        assertFalse(gate.getState());
     }
     /*
-     *Test NAND gate input 1 and 1
+     *Test NOR gate input 1 and 1
      */
     @Test
     public void testTruthTableCase4() {
         FirstInput.toggle();
         SecondInput.toggle();
+        simWait(50);
 
         assertFalse(gate.getState());
     }
@@ -62,7 +69,7 @@ class NANDTest {
      */
     @Test
     public void testGateHasInputs() {
-        assertTrue(gate.hasInputs());
+        assertFalse(gate.getInputs().isEmpty());
     }
     /*
      * Test disconnect inputs
@@ -70,7 +77,8 @@ class NANDTest {
     @Test
     public void testDisconnectInputs() {
         gate.disconnectInputs();
-        assertFalse(gate.hasInputs());
+        simWait(50);
+        assertTrue(gate.getInputs().isEmpty());
     }
     /*
      * Test full disconnection
@@ -78,7 +86,8 @@ class NANDTest {
     @Test
     public void testFullDisconnect() {
         gate.fullDisconnect();
-        assertFalse(gate.hasInputs());
+        simWait(50);
+        assertTrue(gate.getInputs().isEmpty());
     }
     /*
      * Test disconnect outputs
@@ -86,6 +95,7 @@ class NANDTest {
     @Test
     public void testDisconnectOutputs() {
         gate.disconnectOutputs();
+        simWait(50);
         assertEquals(LED.getOutputs().size(),0);
     }
 }

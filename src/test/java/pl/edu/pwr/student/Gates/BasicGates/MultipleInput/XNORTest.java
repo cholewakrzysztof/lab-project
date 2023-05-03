@@ -1,59 +1,66 @@
-package pl.edu.pwr.student.Gates.BasicGates;
+package pl.edu.pwr.student.Gates.BasicGates.MultipleInput;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static pl.edu.pwr.student.Simulation.simWait;
 
-class ORTest {
+class XNORTest {
     private Switch FirstInput = new Switch();
     private Switch SecondInput = new Switch();
     private pl.edu.pwr.student.IO.Output.LED LED = new LED("led",100);
-    private OR gate = new OR();
+    private XNOR gate = new XNOR();
 
+    @BeforeEach
     protected void setUp() {
+        FirstInput.connection(gate);
+        SecondInput.connection(gate);
+        gate.connection(LED);
+
         if(FirstInput.getState())
             FirstInput.toggle();
         if(SecondInput.getState())
             SecondInput.toggle();
-
-        FirstInput.connection(gate);
-        SecondInput.connection(gate);
-        gate.connection(LED);
+        simWait(50);
     }
 
     /*
-     *Test OR gate input 0 and 0
+     *Test XNOR gate input 0 and 0
      */
     @Test
     public void testTruthTableCase1() {
-        assertFalse(gate.getState());
+        assertTrue(gate.getState());
     }
 
     /*
-     *Test OR gate input 1 and 0
+     *Test XNOR gate input 1 and 0
      */
     @Test
     public void testTruthTableCase2() {
         FirstInput.toggle();
-        assertTrue(gate.getState());
+        simWait(50);
+        assertFalse(gate.getState());
     }
     /*
-     * Test OR gate input 0 and 1
+     * Test XNOR gate input 0 and 1
      */
     @Test
     public void testTruthTableCase3() {
         SecondInput.toggle();
-        assertTrue(gate.getState());
+        simWait(50);
+        assertFalse(gate.getState());
     }
     /*
-     *Test OR gate input 1 and 1
+     *Test XNOR gate input 1 and 1
      */
     @Test
     public void testTruthTableCase4() {
         FirstInput.toggle();
         SecondInput.toggle();
+        simWait(50);
 
         assertTrue(gate.getState());
     }
@@ -62,7 +69,7 @@ class ORTest {
      */
     @Test
     public void testGateHasInputs() {
-        assertTrue(gate.hasInputs());
+        assertFalse(gate.getInputs().isEmpty());
     }
     /*
      * Test disconnect inputs
@@ -70,7 +77,8 @@ class ORTest {
     @Test
     public void testDisconnectInputs() {
         gate.disconnectInputs();
-        assertFalse(gate.hasInputs());
+        simWait(50);
+        assertTrue(gate.getInputs().isEmpty());
     }
     /*
      * Test full disconnection
@@ -78,7 +86,8 @@ class ORTest {
     @Test
     public void testFullDisconnect() {
         gate.fullDisconnect();
-        assertFalse(gate.hasInputs());
+        simWait(50);
+        assertTrue(gate.getInputs().isEmpty());
     }
     /*
      * Test disconnect outputs
@@ -86,6 +95,7 @@ class ORTest {
     @Test
     public void testDisconnectOutputs() {
         gate.disconnectOutputs();
+        simWait(50);
         assertEquals(LED.getOutputs().size(),0);
     }
 }

@@ -1,14 +1,16 @@
 package pl.edu.pwr.student.IO.Output;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.edu.pwr.student.IO.Input.Switch;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PrinterTest {
+class DebugPrinterTest {
     private Switch FirstInput = new Switch();
-    private Printer printer = new Printer("printer");
+    private DebugPrinter printer = new DebugPrinter("printer");
 
+    @BeforeEach
     protected void setUp() {
         FirstInput.connection(printer);
     }

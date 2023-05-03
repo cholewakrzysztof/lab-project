@@ -1,5 +1,6 @@
-package pl.edu.pwr.student.Gates;
+package pl.edu.pwr.student.Gates.BasicGates.SingleInput;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.edu.pwr.student.IO.Input.Switch;
 
@@ -10,11 +11,13 @@ class DelayTest {
     protected Switch FirstInput = new Switch();
     protected Delay delay = new Delay(100);
 
+    @BeforeEach
     protected void setUp() {
         if(FirstInput.getState())
             FirstInput.toggle();
 
         FirstInput.connection(delay);
+        simWait(50);
     }
 
     /*
@@ -34,8 +37,9 @@ class DelayTest {
     @Test
     public void testStateAfterUpdate() {
         FirstInput.toggle();
-
-        simWait(150);
+        simWait(75);
         assertFalse(delay.getState());
+        simWait(75);
+        assertTrue(delay.getState());
     }
 }

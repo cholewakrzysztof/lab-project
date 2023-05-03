@@ -1,5 +1,6 @@
 package pl.edu.pwr.student.IO.Input;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.edu.pwr.student.IO.Output.Speaker;
 
@@ -9,6 +10,7 @@ class SwitchTest {
     private Switch FirstInput = new Switch();
     private pl.edu.pwr.student.IO.Output.Speaker Speaker = new Speaker();
 
+    @BeforeEach
     protected void setUp() {
         FirstInput.connection(Speaker);
     }
