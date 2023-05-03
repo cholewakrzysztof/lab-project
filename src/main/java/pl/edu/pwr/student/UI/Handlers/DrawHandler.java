@@ -7,6 +7,12 @@ import pl.edu.pwr.student.UI.UiElement;
  * Handles draw event
  */
 public class DrawHandler {
+
+    /**
+     * Private constructor to prevent creating instances of this class
+     */
+    private DrawHandler() {}
+
     /**
      * Handles draw event
      * @param sketch - sketch to handle draw event for

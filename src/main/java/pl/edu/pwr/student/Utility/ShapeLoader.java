@@ -10,9 +10,14 @@ import java.util.HashMap;
 public class ShapeLoader {
 
     /**
+     * Private constructor to prevent creating instances of this class
+     */
+    private ShapeLoader() {}
+
+    /**
      * Map of all shapes
      */
-    private static final HashMap<String, PShape> shapes = new HashMap<String, PShape>();
+    private static final HashMap<String, PShape> shapes = new HashMap<>();
 
     /**
      * Scale of all shapes

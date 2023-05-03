@@ -6,6 +6,12 @@ import pl.edu.pwr.student.UI.Canvas;
  * Handles mouse released event
  */
 public class MouseReleasedHandler {
+
+    /**
+     * Private constructor to prevent creating instances of this class
+     */
+    private MouseReleasedHandler() {}
+
     /**
      * Handles mouse released event
      * @param sketch - sketch to handle mouse released event for
