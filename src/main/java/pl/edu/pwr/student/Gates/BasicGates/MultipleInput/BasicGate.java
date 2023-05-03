@@ -1,3 +1,69 @@
+// package pl.edu.pwr.student.Gates.BasicGates.MultipleInput;
+
+// import org.jetbrains.annotations.NotNull;
+// import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
+// import pl.edu.pwr.student.IO.Input.SignalSender;
+// import pl.edu.pwr.student.IO.Output.SignalReceiver;
+// import pl.edu.pwr.student.UI.UiAvailable;
+
+// import java.util.HashSet;
+
+// public abstract class BasicGate extends SignalSender implements SignalReceiver, Compoundable, Runnable, UiAvailable {
+//     private final HashSet<SignalSender> inputs = new HashSet<>();
+//     protected abstract boolean checkState(HashSet<SignalSender> inputs);
+
+//     public boolean hasInputs() {
+//         return !inputs.isEmpty();
+//     }
+//     public void run() {
+//         boolean oldState = state;
+//         if (!inputs.isEmpty())
+//             state = checkState(inputs);
+
+//         if (oldState != state)
+//             sendUpdate();
+//     }
+//     public void update() {
+//         Thread thread = new Thread(this);
+//         thread.start();
+//     }
+//     public boolean attemptConnect(SignalSender sender) {
+//         if (this == sender)
+//             return false;
+
+//         if (!sender.isConnected(this))
+//             return false;
+
+//         inputs.add(sender);
+//         return true;
+//     }
+//     public boolean attemptDisconnect(@NotNull SignalSender sender) {
+//         if (sender.isConnected(this))
+//             return false;
+
+//         inputs.remove(sender);
+//         return true;
+//     }
+
+//     public void disconnectInputs() {
+//         HashSet<SignalSender> tempInputs = new HashSet<>(inputs);
+//         for (SignalSender input : tempInputs)
+//             input.connection(this);
+//         if (!inputs.isEmpty())
+//             throw new RuntimeException("Error disconnecting inputs");
+//     }
+//     public void fullDisconnect() {
+//         super.disconnectOutputs();
+//         this.disconnectInputs();
+//     }
+
+//     public BasicGate() {}
+
+//     public HashSet<SignalSender> getInputs() {
+//         return inputs;
+//     }
+// }
+
 package pl.edu.pwr.student.Gates.BasicGates.MultipleInput;
 
 import org.jetbrains.annotations.NotNull;
@@ -8,25 +74,43 @@ import pl.edu.pwr.student.UI.UiAvailable;
 
 import java.util.HashSet;
 
+/**
+ * Represents a basic logic gate with multiple inputs and a single output.
+ */
 public abstract class BasicGate extends SignalSender implements SignalReceiver, Compoundable, Runnable, UiAvailable {
+    /**
+     * Default constructor.
+     */
+    public BasicGate() {}
+
+    /**
+     * Set of {@link SignalSender} connected to this gate.
+     */
     private final HashSet<SignalSender> inputs = new HashSet<>();
-    protected abstract boolean checkState(HashSet<SignalSender> inputs);
 
-    public boolean hasInputs() {
-        return !inputs.isEmpty();
+    /**
+     * Returns the inputs(of type {@link SignalSender}) to this element.
+     *
+     * @return Set of inputs(of type {@link SignalSender}) to this element
+     */
+    public HashSet<SignalSender> getInputs() {
+        return new HashSet<SignalSender>(inputs);
     }
-    public void run() {
-        boolean oldState = state;
-        if (!inputs.isEmpty())
-            state = checkState(inputs);
-
-        if (oldState != state)
-            sendUpdate();
-    }
+    
+    /**
+     * Updates the state of the gate by running it in a new thread.
+     */
     public void update() {
         Thread thread = new Thread(this);
         thread.start();
     }
+
+    /**
+     * Attempts to connect a {@link SignalSender} to this gate.
+     *
+     * @param sender the {@link SignalSender} to connect
+     * @return true if the connection was successful, false otherwise
+     */
     public boolean attemptConnect(SignalSender sender) {
         if (this == sender)
             return false;
@@ -37,6 +121,12 @@ public abstract class BasicGate extends SignalSender implements SignalReceiver, 
         inputs.add(sender);
         return true;
     }
+    /**
+     * Attempts to disconnect a {@link SignalSender} from this gate.
+     *
+     * @param sender the {@link SignalSender} to disconnect
+     * @return true if the disconnection was successful, false otherwise
+     */
     public boolean attemptDisconnect(@NotNull SignalSender sender) {
         if (sender.isConnected(this))
             return false;
@@ -45,6 +135,9 @@ public abstract class BasicGate extends SignalSender implements SignalReceiver, 
         return true;
     }
 
+    /**
+     * Disconnects all input signals connected to this gate.
+     */
     public void disconnectInputs() {
         HashSet<SignalSender> tempInputs = new HashSet<>(inputs);
         for (SignalSender input : tempInputs)
@@ -52,14 +145,34 @@ public abstract class BasicGate extends SignalSender implements SignalReceiver, 
         if (!inputs.isEmpty())
             throw new RuntimeException("Error disconnecting inputs");
     }
+
+    /**
+     * Fully disconnects this gate by disconnecting all input and output signals.
+     * Necessary to completely remove a gate from simulation and allow it to be collected by the garbage collector.
+     */
     public void fullDisconnect() {
         super.disconnectOutputs();
         this.disconnectInputs();
     }
 
-    public BasicGate() {}
+    /**
+     * Runs the gate logic to update the state and sends an update signal if the state has changed.
+     * NOT TO BE CALLED MANUALLY - Handled by the Thread class.
+     */
+    public void run() {
+        boolean oldState = state;
+        if (!inputs.isEmpty())
+            state = checkState(inputs);
 
-    public HashSet<SignalSender> getInputs() {
-        return inputs;
+        if (oldState != state)
+            sendUpdate();
     }
+
+    /**
+     * Checks what the current state of the gate should be.
+     *
+     * @param inputs the set of {@link SignalSender} connected to this gate
+     * @return new state of the gate
+     */
+    protected abstract boolean checkState(HashSet<SignalSender> inputs);
 }
