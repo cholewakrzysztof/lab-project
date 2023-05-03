@@ -18,7 +18,7 @@ public class Delay extends BasicPassThrough {
     /**
      * Amount of delay this element adds.
      */
-    private final long milliseconds;
+    private long milliseconds;
 
     /**
      * Updates the state of the element by running it in a new thread.
@@ -32,5 +32,9 @@ public class Delay extends BasicPassThrough {
             state = newState;
             this.sendUpdate();
         }
+    }
+
+    public void setDelay(long delayMilliseconds) {
+        milliseconds = delayMilliseconds;
     }
 }

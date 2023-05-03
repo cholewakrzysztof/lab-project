@@ -1,15 +1,14 @@
 package pl.edu.pwr.student;
 
 import pl.edu.pwr.student.Gates.CompoundGate;
+import pl.edu.pwr.student.IO.Input.SignalSender;
+import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
-import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.*;
-import pl.edu.pwr.student.Gates.BasicGates.SingleInput.*;
-import pl.edu.pwr.student.IO.Input.*;
-import pl.edu.pwr.student.IO.Output.*;
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.Utility.ShapeLoader;
-import processing.core.PApplet;
-import java.util.*;
+import uibooster.UiBooster;
+
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class Simulation {
     public static void simWait(long milliseconds) {
@@ -19,12 +18,6 @@ public class Simulation {
     }
 
     public static void main(String[] args) {
-        String[] processingArgs = {"Gates-Simulation"};
-        Canvas Canvas = new Canvas();
-
-        PApplet.runSketch(processingArgs, Canvas);
-        ShapeLoader.loadShapes(Canvas);
-
         // All basic gates(AND OR XOR NAND NOR XNOR NOT)
         // are to be added to this collection when created by the user
         // and removed from it when deleted from the simulation
@@ -43,6 +36,17 @@ public class Simulation {
 
         // All outputs in the simulation are to be in this collection
         HashSet<SignalReceiver> systemOutputs = new HashSet<>();
+
+        try {
+            Canvas Canvas = new Canvas(basicGates, compoundGates, savedCompoundGates, userInputs, systemOutputs);
+        } catch (Exception e) {
+            new UiBooster().showException(
+                    "An error occurred",
+                    "Exception message",
+                    e
+            );
+        }
+
 
 //        // CODE EXAMPLES BELOW
 //

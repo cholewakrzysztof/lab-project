@@ -4,11 +4,12 @@ import org.jetbrains.annotations.NotNull;
 import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
+import pl.edu.pwr.student.UI.UiAvailable;
 
 /**
  * Represents a basic pass through with a single input and a single output.
  */
-public abstract class BasicPassThrough extends SignalSender implements SignalReceiver, Compoundable, Runnable {
+public abstract class BasicPassThrough extends SignalSender implements SignalReceiver, Compoundable, Runnable, UiAvailable {
     /**
      * Default constructor..
      */
