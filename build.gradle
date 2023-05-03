@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group 'pl.edu.pwr.student'
@@ -9,9 +11,18 @@ repositories {
     mavenCentral()
 }
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+application {
+    mainClass = 'pl.edu.pwr.student.Simulation'
+}
+
 jar {
     manifest {
-        attributes 'Main-Class': 'pl.edu.pwr.student.Simulation'
+        attributes 'Main-Class': application.mainClass
     }
 }
 
@@ -20,7 +31,7 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     implementation 'org.jetbrains:annotations:23.0.0'
     implementation project(":uibooster")
-    implementation(fileTree("libs") { include("*.jar") })
+    implementation(fileTree("src/main/resources/libs") { include("*.jar") })
 }
 
 test {

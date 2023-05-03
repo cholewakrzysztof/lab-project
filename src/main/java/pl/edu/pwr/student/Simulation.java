@@ -1,25 +1,44 @@
 package pl.edu.pwr.student;
 
-import pl.edu.pwr.student.Examples.CompGateSRLatch;
 import pl.edu.pwr.student.Examples.CustomClock;
 import pl.edu.pwr.student.Examples.DLatch;
+import pl.edu.pwr.student.Examples.Register;
 import pl.edu.pwr.student.Examples.SRLatch;
 import pl.edu.pwr.student.Gates.CompoundGate;
-import pl.edu.pwr.student.Gates.Compoundable;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
+import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.Utility.ShapeLoader;
+import uibooster.UiBooster;
+
 import java.util.HashMap;
 import java.util.HashSet;
 
+/**
+ * Main class of the application
+ */
 public class Simulation {
+
+    /**
+     * Private constructor to prevent creating instances of this class
+     */
+    private Simulation(){}
+
+    /**
+     * Private constructor to prevent creating instances of this class
+     *
+     * @param milliseconds - time to wait in milliseconds
+     */
     public static void simWait(long milliseconds) {
         try {
             Thread.sleep(milliseconds);
         } catch (InterruptedException ignored) {}
     }
 
+    /**
+     * Main method of the application
+     * @param args - arguments passed to the application
+     */
     public static void main(String[] args) {
         // All basic gates(AND OR XOR NAND NOR XNOR NOT)
         // are to be added to this collection when created by the user
@@ -40,8 +59,18 @@ public class Simulation {
         // All outputs in the simulation are to be in this collection
         HashSet<SignalReceiver> systemOutputs = new HashSet<>();
 
-        Canvas Canvas = new Canvas(basicGates, compoundGates, savedCompoundGates, userInputs, systemOutputs);
-        ShapeLoader.loadShapes(Canvas);
+        Canvas canvas;
+
+        try {
+            canvas = new Canvas(basicGates, compoundGates, savedCompoundGates, userInputs, systemOutputs);
+        } catch (Exception e) {
+            new UiBooster().showException(
+                    "An error occurred",
+                    "Exception message",
+                    e
+            );
+        }
+
 
 //        // CODE EXAMPLES BELOW
 //
@@ -55,14 +84,14 @@ public class Simulation {
 //        simWait(1000);
 //        System.out.print("\n\n");
 //
-//        // Compound Gate SR Latch
-//        CompGateSRLatch.simulate();
-//        simWait(1000);
-//        System.out.print("\n\n");
-//
 //        // Feedback loop
 //        CustomClock.simulate();
 //        simWait(1000);
 //        System.out.print("\n\n");
+//
+//        // Compound Gate 4 bit register
+//        Register.simulate();
+//        simWait(1000);
+//        System.out.println("\n\n");
     }
 }

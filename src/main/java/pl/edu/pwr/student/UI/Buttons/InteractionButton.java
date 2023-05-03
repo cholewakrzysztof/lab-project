@@ -2,29 +2,28 @@ package pl.edu.pwr.student.UI.Buttons;
 
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.UiElement;
+import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PShape;
 import processing.core.PVector;
 
 /**
- * Class representing button for creating new elements
+ * Represents a button for creating new elements on the canvas.
+ * Extends the abstract Button class.
  */
-public class InteractionButton extends UiElement {
-
-    PShape shape;
+public class InteractionButton extends Button {
 
     /**
-     * Constructor
-     * @param s Processing sketch
+     * Constructs a new InteractionButton object.
+     *
+     * @param s The Processing sketch that this button is a part of.
      */
     public InteractionButton(Canvas s) {
-        super("INTERACT", s, new PVector(10,10), null);
-        shape = sketch.loadShape("src/main/resources/buttons/INTERACT.svg");
-        shape.scale(3);
+        super(s, "INTERACT", new PVector(10,10));
     }
 
     /**
-     *
-     * Draws element
+     * Draws the InteractionButton element on the canvas.
+     * Overrides the run method of the UiElement class.
      */
     @Override
     public void run() {
@@ -45,5 +44,16 @@ public class InteractionButton extends UiElement {
             sketch.square(position.x,position.y,48);
         }
         sketch.shape(shape, position.x, position.y);
+    }
+
+    /**
+     * Handles the click event of the InteractionButton element.
+     * Overrides the click method of the Button class.
+     */
+    @Override
+    public void click() {
+        sketch.lastState = sketch.state;
+        sketch.state = 0;
+        sketch.form.hide();
     }
 }

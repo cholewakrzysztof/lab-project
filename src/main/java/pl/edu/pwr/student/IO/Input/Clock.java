@@ -4,8 +4,8 @@ import pl.edu.pwr.student.Simulation;
 import pl.edu.pwr.student.UI.UiAvailable;
 
 public class Clock extends SignalSender implements Runnable, UiAvailable {
-    private final long intervalOn;
-    private final long intervalOff;
+    private long intervalOn;
+    private long intervalOff;
 
     private final Thread thread;
     private boolean power = false;
@@ -38,8 +38,8 @@ public class Clock extends SignalSender implements Runnable, UiAvailable {
         thread = new Thread(this);
     }
 
-    @Override
-    public void fullDisconnect() {
-        disconnectOutputs();
+    public void setIntervals(long millisecondsOn, long millisecondsOff) {
+        intervalOn = millisecondsOn;
+        intervalOff = millisecondsOff;
     }
 }

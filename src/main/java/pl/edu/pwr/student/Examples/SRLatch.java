@@ -1,8 +1,8 @@
 package pl.edu.pwr.student.Examples;
 
-import pl.edu.pwr.student.Gates.BasicGates.NOR;
-import pl.edu.pwr.student.IO.Input.Switch;
-import pl.edu.pwr.student.IO.Output.LED;
+import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.NOR;
+import pl.edu.pwr.student.IO.Input.DebugButton;
+import pl.edu.pwr.student.IO.Output.DebugLED;
 
 import static pl.edu.pwr.student.Simulation.simWait;
 
@@ -10,19 +10,20 @@ public class SRLatch {
     public static void simulate() {
         System.out.println("SR LATCH\n");
 
-        Switch R;/*─────→*/NOR norUp;/*─┬───→*/LED out;
+        DebugButton R;/*─────→*/NOR norUp;/*─┬───→*/
+        DebugLED out;
         //                   ↑          │
         //                 ┌─│──────────|
         //                 ↓ └───────────|
-        Switch S;/*─────→*/NOR norDown;//|
+        DebugButton S;/*─────→*/NOR norDown;//|
 
-        R = new Switch();
-        S = new Switch();
+        R = new DebugButton();
+        S = new DebugButton();
 
         norUp = new NOR();
         norDown = new NOR();
 
-        out = new LED("SR Latch", 1000);
+        out = new DebugLED("SR Latch", 1000);
 
         R.connection(norUp);
 

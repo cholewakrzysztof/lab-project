@@ -1,6 +1,8 @@
 package pl.edu.pwr.student.UI.Handlers;
 
-import pl.edu.pwr.student.Gates.BasicGates.*;
+import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.*;
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.Delay;
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.NOT;
 import pl.edu.pwr.student.IO.Input.Clock;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
@@ -11,17 +13,24 @@ import pl.edu.pwr.student.UI.UiElement;
 import processing.core.PVector;
 import uibooster.model.ListElement;
 
+/**
+ * Handles mouse pressed event
+ */
 public class MousePressedHandler {
+
+    /**
+     * Private constructor to prevent creating instances of this class
+     */
+    private MousePressedHandler() {}
+
+    /**
+     * Handles mouse pressed event
+     * @param sketch - sketch to handle mouse pressed event for
+     */
     public static void mousePressed(Canvas sketch){
         for (int i = 0; i < sketch.buttons.size(); i++) {
-            if(sketch.buttons.get(i).over(new PVector(sketch.mouseX, sketch.mouseY))){
-                sketch.lastState = sketch.state;
-                sketch.state = i;
-                if (sketch.state == 1) {
-                    sketch.form.show();
-                } else {
-                    sketch.form.hide();
-                }
+            if(sketch.buttons.get(i).over(new PVector(sketch.mouseX, sketch.mouseY))) {
+                sketch.buttons.get(i).click();
                 return;
             }
         }
@@ -98,6 +107,11 @@ public class MousePressedHandler {
                             temp.toggle();
                             sketch.userInputs.add(temp);
                             sketch.elements.add(new UiElement("CLOCK", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
+                        }
+                        case "DELAY" -> {
+                            Delay temp = new Delay(1000);
+                            sketch.userInputs.add(temp);
+                            sketch.elements.add(new UiElement("DELAY", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
                         }
                     }
                 }
