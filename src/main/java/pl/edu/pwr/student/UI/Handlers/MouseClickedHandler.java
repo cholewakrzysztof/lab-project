@@ -1,6 +1,7 @@
 package pl.edu.pwr.student.UI.Handlers;
 
-import pl.edu.pwr.student.Gates.Delay;
+
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.Delay;
 import pl.edu.pwr.student.IO.Input.Clock;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.UI.Canvas;

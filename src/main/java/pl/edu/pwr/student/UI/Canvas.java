@@ -1,7 +1,7 @@
 package pl.edu.pwr.student.UI;
 
+import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.Gates.CompoundGate;
-import pl.edu.pwr.student.Gates.Compoundable;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.UI.Buttons.*;
@@ -45,7 +45,7 @@ public class Canvas extends PApplet {
     /**
      * List of all elements on canvas
      */
-    public Set<UiElement> elements = new HashSet<UiElement>();
+    public Set<UiElement> elements = new HashSet<>();
 
     /**
      * List of all basic gates
@@ -55,12 +55,12 @@ public class Canvas extends PApplet {
     /**
      * List of all compound gates
      */
-    private HashSet<CompoundGate> compoundGates;
+    private final HashSet<CompoundGate> compoundGates;
 
     /**
      * List of all saved compound gates
      */
-    private HashMap<String, CompoundGate> savedCompoundGates;
+    private final HashMap<String, CompoundGate> savedCompoundGates;
 
     /**
      * List of all user inputs

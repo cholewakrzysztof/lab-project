@@ -1,12 +1,14 @@
-package pl.edu.pwr.student.Gates;
+package pl.edu.pwr.student.Gates.BasicGates.MultipleInput;
 
 import org.jetbrains.annotations.NotNull;
+import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
+import pl.edu.pwr.student.UI.UiAvailable;
 
 import java.util.HashSet;
 
-public abstract class BasicGate extends SignalSender implements SignalReceiver, Compoundable, Runnable {
+public abstract class BasicGate extends SignalSender implements SignalReceiver, Compoundable, Runnable, UiAvailable {
     private final HashSet<SignalSender> inputs = new HashSet<>();
     protected abstract boolean checkState(HashSet<SignalSender> inputs);
 

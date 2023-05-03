@@ -1,24 +1,24 @@
 package pl.edu.pwr.student.Examples;
 
-import pl.edu.pwr.student.Gates.BasicGates.NAND;
-import pl.edu.pwr.student.Gates.BasicGates.NOT;
-import pl.edu.pwr.student.IO.Input.Switch;
+import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.NAND;
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.NOT;
+import pl.edu.pwr.student.IO.Input.DebugButton;
 import pl.edu.pwr.student.IO.Output.Speaker;
 
 import static pl.edu.pwr.student.Simulation.simWait;
 
 public class DLatch {
     public static void simulate() {
-        Switch data; /*──────┬───→*/ NAND nandLU; /*───→*/ NAND nandRU; /*┬──→*/ Speaker Q;
+        DebugButton data; /*──────┬───→*/ NAND nandLU; /*───→*/ NAND nandRU; /*┬──→*/ Speaker Q;
         //                   │       ↑                        ↑           │
         //                   │  ┌────|                      ┌─│───────────|
         //                   │  │                           ↓ └────────────|
-        Switch enable; /*────│──┴→*/ NAND nandLD; /*───→*/ NAND nandRD; //─|
+        DebugButton enable; /*────│──┴→*/ NAND nandLD; /*───→*/ NAND nandRD; //─|
         //                   ↓       ↑
                         NOT not; //──|
 
-        data = new Switch();
-        enable = new Switch();
+        data = new DebugButton();
+        enable = new DebugButton();
 
         nandLU = new NAND();
         nandLD = new NAND();

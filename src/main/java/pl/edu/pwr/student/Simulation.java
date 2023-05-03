@@ -1,13 +1,9 @@
 package pl.edu.pwr.student;
 
-import pl.edu.pwr.student.Examples.CompGateSRLatch;
-import pl.edu.pwr.student.Examples.CustomClock;
-import pl.edu.pwr.student.Examples.DLatch;
-import pl.edu.pwr.student.Examples.SRLatch;
 import pl.edu.pwr.student.Gates.CompoundGate;
-import pl.edu.pwr.student.Gates.Compoundable;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
+import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.UI.Canvas;
 import uibooster.UiBooster;
 
@@ -41,7 +37,6 @@ public class Simulation {
         // All outputs in the simulation are to be in this collection
         HashSet<SignalReceiver> systemOutputs = new HashSet<>();
 
-
         try {
             Canvas Canvas = new Canvas(basicGates, compoundGates, savedCompoundGates, userInputs, systemOutputs);
         } catch (Exception e) {
@@ -65,14 +60,14 @@ public class Simulation {
 //        simWait(1000);
 //        System.out.print("\n\n");
 //
-//        // Compound Gate SR Latch
-//        CompGateSRLatch.simulate();
-//        simWait(1000);
-//        System.out.print("\n\n");
-//
 //        // Feedback loop
 //        CustomClock.simulate();
 //        simWait(1000);
 //        System.out.print("\n\n");
+//
+//        // Compound Gate 4 bit register
+//        Register.simulate();
+//        simWait(1000);
+//        System.out.println("\n\n");
     }
 }
