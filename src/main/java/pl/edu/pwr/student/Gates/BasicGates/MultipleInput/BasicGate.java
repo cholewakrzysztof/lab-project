@@ -70,8 +70,10 @@ import org.jetbrains.annotations.NotNull;
 import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
+import pl.edu.pwr.student.Simulation;
 import pl.edu.pwr.student.UI.UiAvailable;
 
+import java.util.ConcurrentModificationException;
 import java.util.HashSet;
 
 /**
@@ -91,10 +93,10 @@ public abstract class BasicGate extends SignalSender implements SignalReceiver, 
     /**
      * Returns the inputs(of type {@link SignalSender}) to this element.
      *
-     * @return Set of inputs(of type {@link SignalSender}) to this element
+     * @return set of inputs(of type {@link SignalSender}) to this element
      */
     public HashSet<SignalSender> getInputs() {
-        return new HashSet<SignalSender>(inputs);
+        return new HashSet<>(inputs);
     }
     
     /**
@@ -162,7 +164,12 @@ public abstract class BasicGate extends SignalSender implements SignalReceiver, 
     public void run() {
         boolean oldState = state;
         if (!inputs.isEmpty())
-            state = checkState(inputs);
+            try {
+                state = checkState(inputs);
+            } catch (ConcurrentModificationException e) {
+                Simulation.simWait(100);
+                state = checkState(inputs);
+            }
 
         if (oldState != state)
             sendUpdate();
