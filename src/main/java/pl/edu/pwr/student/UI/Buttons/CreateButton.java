@@ -7,19 +7,22 @@ import processing.core.PShape;
 import processing.core.PVector;
 
 /**
- * Class representing button for creating new elements
+ * Represents a button for creating new elements on the canvas.
+ * Extends the abstract Button class.
  */
 public class CreateButton extends Button {
     /**
-     * Constructor
-     * @param s Processing sketch
+     * Constructs a new CreateButton object.
+     *
+     * @param s The Processing sketch that this button is a part of.
      */
     public CreateButton(Canvas s) {
         super(s, "CREATE", new PVector(70,10));
     }
 
     /**
-     * Draws element
+     * Draws the CreateButton element on the canvas.
+     * Overrides the run method of the UiElement class.
      */
     @Override
     public void run() {
@@ -42,6 +45,10 @@ public class CreateButton extends Button {
         sketch.shape(shape, position.x, position.y);
     }
 
+    /**
+     * Handles the click event of the CreateButton element.
+     * Overrides the click method of the Button class.
+     */
     @Override
     public void click() {
         sketch.lastState = sketch.state;

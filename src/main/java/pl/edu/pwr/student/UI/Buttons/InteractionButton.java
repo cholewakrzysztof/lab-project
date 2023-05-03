@@ -7,19 +7,23 @@ import processing.core.PShape;
 import processing.core.PVector;
 
 /**
- * Class representing button for creating new elements
+ * Represents a button for creating new elements on the canvas.
+ * Extends the abstract Button class.
  */
 public class InteractionButton extends Button {
+
     /**
-     * Constructor
-     * @param s Processing sketch
+     * Constructs a new InteractionButton object.
+     *
+     * @param s The Processing sketch that this button is a part of.
      */
     public InteractionButton(Canvas s) {
         super(s, "INTERACT", new PVector(10,10));
     }
 
     /**
-     * Draws element
+     * Draws the InteractionButton element on the canvas.
+     * Overrides the run method of the UiElement class.
      */
     @Override
     public void run() {
@@ -42,6 +46,10 @@ public class InteractionButton extends Button {
         sketch.shape(shape, position.x, position.y);
     }
 
+    /**
+     * Handles the click event of the InteractionButton element.
+     * Overrides the click method of the Button class.
+     */
     @Override
     public void click() {
         sketch.lastState = sketch.state;

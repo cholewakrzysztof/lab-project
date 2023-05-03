@@ -7,21 +7,24 @@ import processing.core.PShape;
 import processing.core.PVector;
 
 /**
- * Class representing button for creating new elements
+ * Represents a button for creating new elements on the canvas.
+ * Extends the abstract Button class.
  */
 public class ConnectButton extends Button {
 
 
     /**
-     * Constructor
-     * @param s Processing sketch
+     * Constructs a new ConnectButton object.
+     *
+     * @param s The Processing sketch that this button is a part of.
      */
     public ConnectButton(Canvas s) {
         super(s,"CONNECT", new PVector(130,10));
     }
 
     /**
-     * Draws element
+     * Draws the ConnectButton element on the canvas.
+     * Overrides the run method of the UiElement class.
      */
     @Override
     public void run() {
@@ -44,6 +47,10 @@ public class ConnectButton extends Button {
         sketch.shape(shape, position.x, position.y);
     }
 
+    /**
+     * Handles the click event of the ConnectButton element.
+     * Overrides the click method of the Button class.
+     */
     @Override
     public void click() {
         sketch.lastState = sketch.state;
