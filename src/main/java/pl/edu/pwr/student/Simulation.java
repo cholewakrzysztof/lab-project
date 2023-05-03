@@ -1,5 +1,9 @@
 package pl.edu.pwr.student;
 
+import pl.edu.pwr.student.Examples.CustomClock;
+import pl.edu.pwr.student.Examples.DLatch;
+import pl.edu.pwr.student.Examples.Register;
+import pl.edu.pwr.student.Examples.SRLatch;
 import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
@@ -55,8 +59,10 @@ public class Simulation {
         // All outputs in the simulation are to be in this collection
         HashSet<SignalReceiver> systemOutputs = new HashSet<>();
 
+        Canvas canvas;
+
         try {
-            Canvas Canvas = new Canvas(basicGates, compoundGates, savedCompoundGates, userInputs, systemOutputs);
+            canvas = new Canvas(basicGates, compoundGates, savedCompoundGates, userInputs, systemOutputs);
         } catch (Exception e) {
             new UiBooster().showException(
                     "An error occurred",
