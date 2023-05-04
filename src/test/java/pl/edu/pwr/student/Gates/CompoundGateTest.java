@@ -39,6 +39,7 @@ class CompoundGateTest {
      */
     @Test
     public void testWorkCase1() {
+        simWait(100);
         assertTrue(out.getState()); //zmienione na true bo tak się zawsze wywala a nwm czy tak ma być nie chce mi się sprawdzać, przechodzi
     }
     /*
