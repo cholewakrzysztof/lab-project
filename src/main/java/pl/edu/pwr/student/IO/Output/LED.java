@@ -5,6 +5,10 @@ import pl.edu.pwr.student.UI.UiAvailable;
 
 import java.util.HashSet;
 
+/**
+ * OBSOLETE - SHOULD BE CHANGED TO BE USED IN THE UI
+ * OLD FUNCTIONALITY MOVED TO {@link DebugLED}
+ */
 public class LED extends BasicReceiver implements Runnable, UiAvailable {
     private final String name;
     private long milliseconds;

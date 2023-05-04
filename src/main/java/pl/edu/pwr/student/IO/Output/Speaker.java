@@ -76,7 +76,7 @@ public class Speaker extends BasicReceiver implements UiAvailable {
     
     /**
      * Connects speaker's output(there isn't one) to another object's input.
-     * @param recevier Object that would receive the output from the speaker
+     * @param receiver Object that would receive the output from the speaker
      * @return 0 since the speaker class has no output
      */
     @Override

@@ -22,7 +22,7 @@ class ClockTest {
      * Test clock state if no power
      */
     @Test
-    public void testWitoutPower() {
+    public void testWithoutPower() {
         simWait(75);
         assertFalse(c.getState());
         simWait(75);
