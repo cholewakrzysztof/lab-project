@@ -8,8 +8,8 @@ import pl.edu.pwr.student.UI.Buttons.*;
 import pl.edu.pwr.student.UI.Handlers.*;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PApplet;
+import processing.event.MouseEvent;
 import uibooster.UiBooster;
-import uibooster.components.Splashscreen;
 import uibooster.model.Form;
 import uibooster.model.UiBoosterOptions;
 
@@ -183,5 +183,16 @@ public class Canvas extends PApplet {
      */
     public void mouseReleased() {
         MouseReleasedHandler.mouseReleased(this);
+    }
+
+    /**
+     * Method called when user rotates mouse wheel
+     */
+    public void mouseWheel(MouseEvent event) {
+        if (event.getCount() > 0) {
+            ShapeLoader.decrementScale();
+        } else {
+            ShapeLoader.incrementScale();
+        }
     }
 }

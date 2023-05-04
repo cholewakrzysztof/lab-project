@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   viewBox="0 0 341.33333 341.33333"
+   viewBox="0 0 50 50"
    version="1.1"
    id="svg279"
    sodipodi:docname="NAND.svg"
-   width="512"
-   height="512"
+   width="50"
+   height="50"
    inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -23,23 +23,24 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
      showgrid="false"
-     inkscape:zoom="1.84375"
-     inkscape:cx="205.01695"
-     inkscape:cy="236.74576"
-     inkscape:window-width="1276"
-     inkscape:window-height="1481"
-     inkscape:window-x="1271"
-     inkscape:window-y="0"
-     inkscape:window-maximized="0"
+     inkscape:zoom="16"
+     inkscape:cx="49.375"
+     inkscape:cy="19.25"
+     inkscape:window-width="2560"
+     inkscape:window-height="1494"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
      inkscape:current-layer="g277" />
   <g
      class=""
      id="g277">
     <path
-       d="M 2.378531,18.898305 V 320.89831 H 153.37853 c 148,0 148,-302.000005 0,-302.000005 z M 313.37853,146.89831 c -12.8,0 -23,10.2 -23,23 0,12.8 10.2,23 23,23 12.8,0 23,-10.2 23,-23 0,-12.8 -10.2,-23 -23,-23 z"
+       d="M 0.02143958,2.3997639 V 47.538939 H 22.591028 c 22.121184,0 22.121184,-45.1391751 0,-45.1391751 z M 46.505822,21.5316 c -1.913184,0 -3.437752,1.524569 -3.437752,3.437753 0,1.913183 1.524568,3.437751 3.437752,3.437751 1.913184,0 3.437752,-1.524568 3.437752,-3.437751 0,-1.913184 -1.524568,-3.437753 -3.437752,-3.437753 z"
        fill="#000000"
        fill-opacity="1"
        id="path275"
-       sodipodi:nodetypes="ccsscsssss" />
+       sodipodi:nodetypes="ccsscsssss"
+       style="stroke-width:0.149467" />
   </g>
 </svg>

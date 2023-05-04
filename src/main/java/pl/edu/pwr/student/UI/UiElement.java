@@ -86,7 +86,7 @@ public class UiElement {
 
         if (over(new PVector(sketch.mouseX, sketch.mouseY))){
             sketch.fill(0, 30);
-            sketch.square(position.x,position.y,512*ShapeLoader.scale);
+            sketch.square(position.x*ShapeLoader.scale,position.y*ShapeLoader.scale,ShapeLoader.size*ShapeLoader.scale);
         }
 
 
@@ -95,18 +95,22 @@ public class UiElement {
         sketch.fill(0);
         if (uiElem instanceof Switch) {
             if (uiElem.getState()){
-                sketch.shape(ShapeLoader.getShape("SWITCH-TRUE"), position.x, position.y);
+                sketch.shape(ShapeLoader.getShape("SWITCH-TRUE"), position.x*ShapeLoader.scale, position.y*ShapeLoader.scale);
             } else {
-                sketch.shape(ShapeLoader.getShape("SWITCH-FALSE"), position.x, position.y);
+                sketch.shape(ShapeLoader.getShape("SWITCH-FALSE"), position.x*ShapeLoader.scale, position.y*ShapeLoader.scale);
             }
         } else {
-            sketch.shape(ShapeLoader.getShape(elName), position.x, position.y);
+            sketch.shape(ShapeLoader.getShape(elName),
+                    position.x*ShapeLoader.scale,
+                    position.y*ShapeLoader.scale);
         }
 
         if (uiElem.getState()){
             if (uiElem instanceof LED) {
                 sketch.fill(color.getRGB());
-                sketch.circle(position.x + 512*(ShapeLoader.scale)/2, position.y + 400*ShapeLoader.scale/2, 512*ShapeLoader.scale/2);
+                sketch.circle(position.x*ShapeLoader.scale + ShapeLoader.size *(ShapeLoader.scale)/2,
+                        position.y*ShapeLoader.scale + (ShapeLoader.size-10)*ShapeLoader.scale/2,
+                        ShapeLoader.size*ShapeLoader.scale/2);
             }
         }
 
@@ -131,24 +135,24 @@ public class UiElement {
                         i++;
                     }
 
-                    float startx = position.x + 512*ShapeLoader.scale;
-                    float starty = position.y + 256*ShapeLoader.scale;
-                    float endx = u.position.x;
-                    float endy = u.position.y + 512*ShapeLoader.scale*pos/i;
+                    float startx = position.x*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale;
+                    float starty = position.y*ShapeLoader.scale + ShapeLoader.size/2f*ShapeLoader.scale;
+                    float endx = u.position.x*ShapeLoader.scale;
+                    float endy = u.position.y*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
                     if (startx <= endx){
-                        float midx = (startx+endx)/2 + 512*ShapeLoader.scale*pos/i;
+                        float midx = (startx+endx)/2 + ShapeLoader.size*ShapeLoader.scale*pos/i;
                         sketch.line(startx, starty, midx, starty);
                         sketch.line(midx, starty, midx, endy);
                         sketch.line(midx, endy, endx, endy);
                     } else {
                         float padding;
                         float midy;
-                        if (starty <= u.position.y + 768*ShapeLoader.scale && starty >= u.position.y - 256*ShapeLoader.scale) {
-                            padding = 512*ShapeLoader.scale + 512*ShapeLoader.scale*pos/i;
+                        if (starty <= u.position.y + ShapeLoader.size*1.5f*ShapeLoader.scale && starty >= u.position.y - ShapeLoader.size/2f*ShapeLoader.scale) {
+                            padding = ShapeLoader.size*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
                             midy = (starty+endy)/2+padding;
                         } else {
                             midy = (starty+endy)/2;
-                            padding = 512*ShapeLoader.scale + 512*ShapeLoader.scale*pos/i;
+                            padding = ShapeLoader.size*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
                         }
 
                         sketch.line(startx, starty, startx+padding, starty);
@@ -169,9 +173,9 @@ public class UiElement {
      * @return true if the mouse is over the element, false otherwise
      */
     public boolean over(PVector v)  {
-        return position.x <= v.x &&
-                position.x + 512*ShapeLoader.scale >=v.x &&
-                position.y <= v.y &&
-                position.y + 512*ShapeLoader.scale >=v.y;
+        return position.x*ShapeLoader.scale <= v.x &&
+                (position.x + ShapeLoader.size)*ShapeLoader.scale >= v.x &&
+                position.y*ShapeLoader.scale <= v.y &&
+                (position.y + ShapeLoader.size)*ShapeLoader.scale >= v.y;
     }
 }
