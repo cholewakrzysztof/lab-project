@@ -35,16 +35,31 @@ public abstract class Button extends UiElement {
      */
     public Button(Canvas s, String name, PVector position) {
         super(name, s, position, null);
-        shape = ShapeLoader.getShape(name);
+        shape = ShapeLoader.getButton(name);
     }
 
     /**
      * Method to be executed when the button is clicked
      */
+    @Override
     public abstract void run();
 
     /**
      * Method to be executed when the button is clicked
      */
     public abstract void click();
+
+    /**
+     * Determines whether the mouse is currently over the element.
+     *
+     * @param v the mouse position as a PVector
+     * @return true if the mouse is over the element, false otherwise
+     */
+    @Override
+    public boolean over(PVector v)  {
+        return position.x <= v.x &&
+                position.x + ShapeLoader.size >=v.x &&
+                position.y <= v.y &&
+                position.y + ShapeLoader.size >=v.y;
+    }
 }

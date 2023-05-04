@@ -10,6 +10,7 @@ import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.IO.Output.Speaker;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.UiElement;
+import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PVector;
 import uibooster.model.ListElement;
 
@@ -48,70 +49,74 @@ public class MousePressedHandler {
             case 1 -> {
                 ListElement selected = (ListElement) sketch.form.getByLabel("Select Gate").getValue();
                 if (selected != null) {
+                    PVector mouse = new PVector(
+                            sketch.mouseX / ShapeLoader.scale - ShapeLoader.size/2f,
+                            sketch.mouseY / ShapeLoader.scale - ShapeLoader.size/2f
+                    );
                     //TODO: make it added automatically (created new gates by user are now a problem)
                     switch (selected.getTitle()) {
                         case "AND" -> {
                             AND temp = new AND();
                             sketch.basicGates.add(temp);
-                            sketch.elements.add(new UiElement("AND", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
+                            sketch.elements.add(new UiElement("AND", sketch, mouse, temp));
                         }
                         case "NAND" -> {
                             NAND temp = new NAND();
                             sketch.basicGates.add(temp);
-                            sketch.elements.add(new UiElement("NAND", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
+                            sketch.elements.add(new UiElement("NAND", sketch, mouse, temp));
                         }
                         case "OR" -> {
                             OR temp = new OR();
                             sketch.basicGates.add(temp);
-                            sketch.elements.add(new UiElement("OR", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
+                            sketch.elements.add(new UiElement("OR", sketch, mouse, temp));
                         }
                         case "NOR" -> {
                             NOR temp = new NOR();
                             sketch.basicGates.add(temp);
-                            sketch.elements.add(new UiElement("NOR", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
+                            sketch.elements.add(new UiElement("NOR", sketch, mouse, temp));
                         }
                         case "XOR" -> {
                             XOR temp = new XOR();
                             sketch.basicGates.add(temp);
-                            sketch.elements.add(new UiElement("XOR", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
+                            sketch.elements.add(new UiElement("XOR", sketch, mouse, temp));
                         }
                         case "XNOR" -> {
                             XNOR temp = new XNOR();
                             sketch.basicGates.add(temp);
-                            sketch.elements.add(new UiElement("XNOR", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
+                            sketch.elements.add(new UiElement("XNOR", sketch, mouse, temp));
                         }
                         case "NOT" -> {
                             NOT temp = new NOT();
                             sketch.basicGates.add(temp);
-                            sketch.elements.add(new UiElement("NOT", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
+                            sketch.elements.add(new UiElement("NOT", sketch, mouse, temp));
                         }
                         case "SPEAKER" -> {
                             Speaker temp = new Speaker();
                             sketch.systemOutputs.add(temp);
-                            sketch.elements.add(new UiElement("SPEAKER", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
+                            sketch.elements.add(new UiElement("SPEAKER", sketch, mouse, temp));
                         }
                         case "LED" -> {
                             LED temp = new LED("", 0);
                             temp.toggle();
                             sketch.systemOutputs.add(temp);
-                            sketch.elements.add(new UiElement("LED", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
+                            sketch.elements.add(new UiElement("LED", sketch, mouse, temp));
                         }
                         case "SWITCH" -> {
                             Switch temp = new Switch();
                             temp.toggle();
                             sketch.userInputs.add(temp);
-                            sketch.elements.add(new UiElement("SWITCH", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
+                            sketch.elements.add(new UiElement("SWITCH", sketch, mouse, temp));
                         }
                         case "CLOCK" -> {
                             Clock temp = new Clock(1000, 1000);
                             temp.toggle();
                             sketch.userInputs.add(temp);
-                            sketch.elements.add(new UiElement("CLOCK", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
+                            sketch.elements.add(new UiElement("CLOCK", sketch, mouse, temp));
                         }
                         case "DELAY" -> {
                             Delay temp = new Delay(1000);
                             sketch.userInputs.add(temp);
-                            sketch.elements.add(new UiElement("DELAY", sketch, new PVector(sketch.mouseX, sketch.mouseY), temp));
+                            sketch.elements.add(new UiElement("DELAY", sketch, mouse, temp));
                         }
                     }
                 }

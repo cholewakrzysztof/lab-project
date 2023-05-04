@@ -20,9 +20,19 @@ public class ShapeLoader {
     private static final HashMap<String, PShape> shapes = new HashMap<>();
 
     /**
+     * Map of all buttons
+     */
+    private static final HashMap<String, PShape> buttons = new HashMap<>();
+
+    /**
      * Scale of all shapes
      */
-    public static float scale = 0.1f;
+    public static float scale = 1f;
+
+    /**
+     * Size of all shapes
+     */
+    public static int size = 50;
 
     /**
      * Loads all shapes from resources/gates/ directory
@@ -31,12 +41,6 @@ public class ShapeLoader {
     public static void loadShapes(PApplet sketch){
         //dumb way cus it's working in JAR file
 
-        shapes.put("CONNECT", sketch.loadShape("buttons/CONNECT.svg"));
-        shapes.put("CREATE", sketch.loadShape("buttons/CREATE.svg"));
-        shapes.put("DELETE", sketch.loadShape("buttons/DELETE.svg"));
-        shapes.put("INTERACT", sketch.loadShape("buttons/INTERACT.svg"));
-        shapes.put("SAVE", sketch.loadShape("buttons/SAVE.svg"));
-        shapes.put("LOAD", sketch.loadShape("buttons/LOAD.svg"));
         shapes.put("AND", sketch.loadShape("elements/AND.svg"));
         shapes.put("OR", sketch.loadShape("elements/OR.svg"));
         shapes.put("XOR", sketch.loadShape("elements/XOR.svg"));
@@ -51,19 +55,20 @@ public class ShapeLoader {
         shapes.put("SPEAKER", sketch.loadShape("elements/SPEAKER.svg"));
         shapes.put("DELAY", sketch.loadShape("elements/DELAY.svg"));
 
-        resize(scale);
+        buttons.put("CONNECT", sketch.loadShape("buttons/CONNECT.svg"));
+        buttons.put("CREATE", sketch.loadShape("buttons/CREATE.svg"));
+        buttons.put("DELETE", sketch.loadShape("buttons/DELETE.svg"));
+        buttons.put("INTERACT", sketch.loadShape("buttons/INTERACT.svg"));
+        buttons.put("SAVE", sketch.loadShape("buttons/SAVE.svg"));
+        buttons.put("LOAD", sketch.loadShape("buttons/LOAD.svg"));
     }
 
     /**
      * Resizes all shapes
-     * @param s scale
      */
-    public static void resize(float s){
-        if (s != scale){
-            scale = s;
-        }
-        //TODO: jeżeli będzie przeskalowany cała canva to trzeba wywoływać przeskalowanie każdego elementu
+    public static void resize(){
         for (PShape p : shapes.values()) {
+            p.resetMatrix();
             p.scale(scale);
         }
     }
@@ -75,5 +80,26 @@ public class ShapeLoader {
      */
     public static PShape getShape(String shape){
         return shapes.get(shape);
+    }
+
+    /**
+     * Returns button by name
+     * @param button name of shape
+     * @return PShape object
+     */
+    public static PShape getButton(String button){
+        return buttons.get(button);
+    }
+
+    public static void incrementScale() {
+        if (scale >= 3f) return;
+        scale += 0.1f;
+        resize();
+    }
+
+    public static void decrementScale() {
+        if (scale <= 0.2f) return;
+        scale -= 0.1f;
+        resize();
     }
 }
