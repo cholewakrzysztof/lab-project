@@ -8,6 +8,7 @@ import pl.edu.pwr.student.UI.Buttons.*;
 import pl.edu.pwr.student.UI.Handlers.*;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PApplet;
+import processing.core.PVector;
 import processing.event.MouseEvent;
 import uibooster.UiBooster;
 import uibooster.model.Form;
@@ -84,6 +85,18 @@ public class Canvas extends PApplet {
      * The selected element on the canvas.
      */
     public UiElement selectedElement = null;
+
+    /**
+     * The selected element on the canvas.
+     */
+    public PVector offset = new PVector(0, 0);
+
+    /**
+     * The selected element on the canvas.
+     */
+    public PVector startingMousePosition;
+
+
 
     /**
      * Constructor

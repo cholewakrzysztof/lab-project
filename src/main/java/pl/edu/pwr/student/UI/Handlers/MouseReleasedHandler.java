@@ -1,6 +1,7 @@
 package pl.edu.pwr.student.UI.Handlers;
 
 import pl.edu.pwr.student.UI.Canvas;
+import pl.edu.pwr.student.Utility.ShapeLoader;
 
 /**
  * Handles mouse released event
@@ -19,6 +20,11 @@ public class MouseReleasedHandler {
     public static void mouseReleased(Canvas sketch){
         if (sketch.state == 0) {
             sketch.selectedElement = null;
+            if (sketch.startingMousePosition != null){
+                sketch.offset.x += (sketch.startingMousePosition.x - sketch.mouseX) * ShapeLoader.scale;
+                sketch.offset.y += (sketch.startingMousePosition.y - sketch.mouseY) * ShapeLoader.scale;
+                sketch.startingMousePosition = null;
+            }
         }
     }
 }
