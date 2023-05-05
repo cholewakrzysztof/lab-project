@@ -2,14 +2,14 @@ package pl.edu.pwr.student.Utility.FileManagement;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.AND;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.UiElement;
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.util.Set;
 
+/**
+ * Class responsible for safe HashSet of UI elements to files
+ */
 public class FileWriter {
     /**
      * @param canva source of UI elements to safe
@@ -17,7 +17,6 @@ public class FileWriter {
      */
     public static void safeToFile(Canvas canva, String path){
         for (UiElement uiElement: canva.elements) {
-
         }
     }
 

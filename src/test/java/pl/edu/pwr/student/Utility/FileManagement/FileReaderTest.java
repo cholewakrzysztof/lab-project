@@ -47,11 +47,15 @@ class FileReaderTest {
     void readFromFile() {
     }
 
+    /**
+     * Test rebuilding UI element from generated JSON string of AND gate
+     * @throws Exception
+     */
     @Test
     void generateUIElementFormJSON() throws Exception {
         String jsonString = FileWriter.generateJSONfromUIElement(uiElement);
         UiElement element = FileReader.generateUIElementFormJSON(jsonString,canvas);
 
-        assertFalse(element.uiElem.getState());
+        assertTrue(element.uiElem.getClass()==AND.class);
     }
 }
