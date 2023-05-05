@@ -40,21 +40,28 @@ class DataWriterTest {
                     e
             );
         }
+
+        UiElement uiElement1 = new UiElement("AND",canvas,new PVector(0f,0f),new AND());
+        canvas.elements.add(uiElement1);
     }
 
+    /**
+     * Test saving canva to file plik.txt
+     * @throws IOException Throw simple IO exception
+     */
     @Test
-    void testsafeToFile() {
-
+    void safeToFile() throws IOException {
+        DataWriter.safeToFile(canvas,"plik.txt");
     }
 
     /**
      * Test generating single JSON representation of AND gate
      */
     @Test
-    void testgenerateJSONfromUIElement_AND() {
+    void generateJSONfromUIElement_AND() {
         UiAvailable gate = new AND();
         UiElement uiElement = new UiElement("AND",canvas,new PVector(0f,0f),gate);
-        String jsonString = "Error";
+        String jsonString;
         try{
             jsonString = DataWriter.generateJSONfromUIElement(uiElement);
         } catch (IOException e) {

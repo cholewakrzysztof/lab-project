@@ -7,13 +7,12 @@ import pl.edu.pwr.student.UI.UiElement;
 import processing.core.PVector;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.HashSet;
 
 /**
  * Representation of object based on UIElement that can be safe and create from file
  */
-public class JSONAvaible {
+public class JSONAvailable {
     /**
      * The position of this element.
      */
@@ -32,21 +31,21 @@ public class JSONAvaible {
     /**
      * Inputs of element
      */
-    @JsonProperty("intputs")
-    public HashSet<SignalSender> intputs;
+    @JsonProperty("inputs")
+    public HashSet<SignalSender> inputs;
     /**
      * The color associated with this element.
      */
     @JsonProperty("color")
     public Color color;
 
-    public JSONAvaible(){
+    public JSONAvailable(){
         super();
     }
-    public JSONAvaible(UiElement element){
+    public JSONAvailable(UiElement element){
         this.position = element.position;
         this.outputs = element.uiElem.getOutputs();
-        this.intputs = element.uiElem.getInputs();
+        this.inputs = element.uiElem.getInputs();
         this.elName = element.elName;
 
     }

@@ -9,7 +9,7 @@ import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.IO.Output.Speaker;
-import pl.edu.pwr.student.Utility.FileManagement.JSONAvaible;
+import pl.edu.pwr.student.Utility.FileManagement.JSONAvailable;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PVector;
 
@@ -75,18 +75,18 @@ public class UiElement {
     /**
      * Creates a new UI element from JSONAvaible object
      *
-     * @param jsonAvaible Object created from file
+     * @param jsonAvailable Object created from file
      * @param s The Processing sketch used to render the UI element.
      *
      * <p>
      * The {@code UiElement} constructor creates a new UI element object with the specified
-     * properties. The {@code jsonAvaible} is a middle version of object between JSON string and UIElement.
+     * properties. The {@code jsonAvailable} is a middle version of object between JSON string and UIElement.
      * The {@code s} parameter specifies the Processing sketch used to render the UI element. If JSONAvaible has bad name throw exception.
      * </p>
      */
-    public UiElement(JSONAvaible jsonAvaible,Canvas s) throws Exception {
-        position = jsonAvaible.position;
-        elName = jsonAvaible.elName;;
+    public UiElement(JSONAvailable jsonAvailable, Canvas s) throws Exception {
+        position = jsonAvailable.position;
+        elName = jsonAvailable.elName;;
         sketch = s;
         switch (elName) {
             case "AND" -> {
