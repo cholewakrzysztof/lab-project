@@ -1,5 +1,6 @@
 package pl.edu.pwr.student.Utility.FileManagement;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,6 +16,7 @@ import pl.edu.pwr.student.UI.UiElement;
 import processing.core.PVector;
 import uibooster.UiBooster;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -43,6 +45,15 @@ class DataWriterTest {
 
         UiElement uiElement1 = new UiElement("AND",canvas,new PVector(0f,0f),new AND());
         canvas.elements.add(uiElement1);
+    }
+
+    /**
+     * Clear project folder after tests
+     */
+    @AfterAll
+    static void clearFolder(){
+        File f = new File("plik.txt");
+        f.delete();
     }
 
     /**

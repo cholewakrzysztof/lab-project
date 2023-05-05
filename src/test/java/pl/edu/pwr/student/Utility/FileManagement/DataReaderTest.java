@@ -1,5 +1,6 @@
 package pl.edu.pwr.student.Utility.FileManagement;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
@@ -14,6 +15,7 @@ import pl.edu.pwr.student.UI.UiElement;
 import processing.core.PVector;
 import uibooster.UiBooster;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,6 +50,11 @@ class DataReaderTest {
         uiElement = new UiElement("AND",canvas,new PVector(0f,0f),new AND());
         canvas.elements.add(uiElement);
         canvas.basicGates.add(new AND());
+    }
+    @AfterAll
+    static void clearFolder(){
+        File f = new File("plik.txt");
+        f.delete();
     }
 
     /**
