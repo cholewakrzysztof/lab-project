@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 
-class FileWriterTest {
+class DataWriterTest {
         Canvas canvas;
 
     @BeforeEach
@@ -56,7 +56,7 @@ class FileWriterTest {
         UiElement uiElement = new UiElement("AND",canvas,new PVector(0f,0f),gate);
         String jsonString = "Error";
         try{
-            jsonString = FileWriter.generateJSONfromUIElement(uiElement);
+            jsonString = DataWriter.generateJSONfromUIElement(uiElement);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

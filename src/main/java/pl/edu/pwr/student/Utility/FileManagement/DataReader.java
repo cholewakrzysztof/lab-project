@@ -7,7 +7,7 @@ import pl.edu.pwr.student.UI.UiElement;
 /**
  * Class responsible for reading data from files and generating HashSet of UI elements
  */
-public class FileReader {
+public class DataReader {
     /**
      *
      * @param path Path to file with JSON string of UI Elements

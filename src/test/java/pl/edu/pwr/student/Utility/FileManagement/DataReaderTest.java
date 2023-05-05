@@ -12,13 +12,12 @@ import pl.edu.pwr.student.UI.UiElement;
 import processing.core.PVector;
 import uibooster.UiBooster;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FileReaderTest {
+class DataReaderTest {
     Canvas canvas;
     UiElement uiElement;
 
@@ -53,8 +52,8 @@ class FileReaderTest {
      */
     @Test
     void generateUIElementFormJSON() throws Exception {
-        String jsonString = FileWriter.generateJSONfromUIElement(uiElement);
-        UiElement element = FileReader.generateUIElementFormJSON(jsonString,canvas);
+        String jsonString = DataWriter.generateJSONfromUIElement(uiElement);
+        UiElement element = DataReader.generateUIElementFormJSON(jsonString,canvas);
 
         assertTrue(element.uiElem.getClass()==AND.class);
     }

@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Class responsible for safe HashSet of UI elements to files
  */
-public class FileWriter {
+public class DataWriter {
     /**
      * @param canva source of UI elements to safe
      * @param path path to place where file will be saved
