@@ -2,6 +2,8 @@ package pl.edu.pwr.student.UI.Buttons;
 
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.UiElement;
+import pl.edu.pwr.student.Utility.FileManagement.DataReader;
+import pl.edu.pwr.student.Utility.FileManagement.DataWriter;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PShape;
 import processing.core.PVector;
@@ -44,6 +46,10 @@ public class SaveButton extends Button {
      */
     @Override
     public void click() {
-        //TODO: save
+        try{
+            DataWriter.safeToFile(sketch,"plik.txt");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }

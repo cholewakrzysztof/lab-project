@@ -1,6 +1,7 @@
 package pl.edu.pwr.student.UI.Buttons;
 
 import pl.edu.pwr.student.UI.Canvas;
+import pl.edu.pwr.student.Utility.FileManagement.DataReader;
 import processing.core.PVector;
 
 /**
@@ -41,6 +42,11 @@ public class LoadButton extends Button {
      */
     @Override
     public void click() {
-        //TODO: load
+        try{
+            DataReader.readFromFile("plik.txt",sketch);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
     }
 }
