@@ -50,8 +50,8 @@ public class MousePressedHandler {
                 ListElement selected = (ListElement) sketch.form.getByLabel("Select Gate").getValue();
                 if (selected != null) {
                     PVector mouse = new PVector(
-                            sketch.mouseX / ShapeLoader.scale - ShapeLoader.size/2f,
-                            sketch.mouseY / ShapeLoader.scale - ShapeLoader.size/2f
+                            (sketch.mouseX+sketch.offset.x) / ShapeLoader.scale - ShapeLoader.size/2f,
+                            (sketch.mouseY+sketch.offset.y) / ShapeLoader.scale - ShapeLoader.size/2f
                     );
                     //TODO: make it added automatically (created new gates by user are now a problem)
                     switch (selected.getTitle()) {

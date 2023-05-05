@@ -86,7 +86,7 @@ public class UiElement {
 
         if (over(new PVector(sketch.mouseX, sketch.mouseY))){
             sketch.fill(0, 30);
-            sketch.square(position.x*ShapeLoader.scale,position.y*ShapeLoader.scale,ShapeLoader.size*ShapeLoader.scale);
+            sketch.square((position.x-sketch.offset.x)*ShapeLoader.scale,(position.y-sketch.offset.y)*ShapeLoader.scale,ShapeLoader.size*ShapeLoader.scale);
         }
 
 
@@ -95,22 +95,26 @@ public class UiElement {
         sketch.fill(0);
         if (uiElem instanceof Switch) {
             if (uiElem.getState()){
-                sketch.shape(ShapeLoader.getShape("SWITCH-TRUE"), position.x*ShapeLoader.scale, position.y*ShapeLoader.scale);
+                sketch.shape(ShapeLoader.getShape("SWITCH-TRUE"), (position.x-sketch.offset.x)*ShapeLoader.scale, (position.y-sketch.offset.y)*ShapeLoader.scale);
             } else {
-                sketch.shape(ShapeLoader.getShape("SWITCH-FALSE"), position.x*ShapeLoader.scale, position.y*ShapeLoader.scale);
+                sketch.shape(ShapeLoader.getShape("SWITCH-FALSE"), (position.x-sketch.offset.x)*ShapeLoader.scale, (position.y-sketch.offset.y)*ShapeLoader.scale);
             }
         } else {
             sketch.shape(ShapeLoader.getShape(elName),
-                    position.x*ShapeLoader.scale,
-                    position.y*ShapeLoader.scale);
+                    (position.x-sketch.offset.x)*ShapeLoader.scale,
+                    (position.y-sketch.offset.y)*ShapeLoader.scale
+            );
         }
 
         if (uiElem.getState()){
             if (uiElem instanceof LED) {
+                if (color == null) color = new Color(0, 255, 0);
                 sketch.fill(color.getRGB());
-                sketch.circle(position.x*ShapeLoader.scale + ShapeLoader.size *(ShapeLoader.scale)/2,
-                        position.y*ShapeLoader.scale + (ShapeLoader.size-10)*ShapeLoader.scale/2,
-                        ShapeLoader.size*ShapeLoader.scale/2);
+                sketch.circle(
+                        (position.x-sketch.offset.x)*ShapeLoader.scale + ShapeLoader.size *(ShapeLoader.scale)/2,
+                        (position.y-sketch.offset.y)*ShapeLoader.scale + (ShapeLoader.size-10)*ShapeLoader.scale/2,
+                        ShapeLoader.size*ShapeLoader.scale/2
+                );
             }
         }
 
@@ -135,10 +139,10 @@ public class UiElement {
                         i++;
                     }
 
-                    float startx = position.x*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale;
-                    float starty = position.y*ShapeLoader.scale + ShapeLoader.size/2f*ShapeLoader.scale;
-                    float endx = u.position.x*ShapeLoader.scale;
-                    float endy = u.position.y*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
+                    float startx = (position.x-sketch.offset.x)*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale;
+                    float starty = (position.y-sketch.offset.y)*ShapeLoader.scale + ShapeLoader.size/2f*ShapeLoader.scale;
+                    float endx = (u.position.x-sketch.offset.x)*ShapeLoader.scale;
+                    float endy = (u.position.y-sketch.offset.y)*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
                     if (startx <= endx){
                         float midx = (startx+endx)/2 + ShapeLoader.size*ShapeLoader.scale*pos/i;
                         sketch.line(startx, starty, midx, starty);
@@ -147,7 +151,7 @@ public class UiElement {
                     } else {
                         float padding;
                         float midy;
-                        if (starty <= u.position.y + ShapeLoader.size*1.5f*ShapeLoader.scale && starty >= u.position.y - ShapeLoader.size/2f*ShapeLoader.scale) {
+                        if (starty <= (u.position.y-sketch.offset.y) + ShapeLoader.size*1.5f*ShapeLoader.scale && starty >= (u.position.y-sketch.offset.y) - ShapeLoader.size/2f*ShapeLoader.scale) {
                             padding = ShapeLoader.size*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
                             midy = (starty+endy)/2+padding;
                         } else {
@@ -173,9 +177,9 @@ public class UiElement {
      * @return true if the mouse is over the element, false otherwise
      */
     public boolean over(PVector v)  {
-        return position.x*ShapeLoader.scale <= v.x &&
-                (position.x + ShapeLoader.size)*ShapeLoader.scale >= v.x &&
-                position.y*ShapeLoader.scale <= v.y &&
-                (position.y + ShapeLoader.size)*ShapeLoader.scale >= v.y;
+        return (position.x-sketch.offset.x)*ShapeLoader.scale <= v.x &&
+                (position.x-sketch.offset.x + ShapeLoader.size)*ShapeLoader.scale >= v.x &&
+                (position.y-sketch.offset.y)*ShapeLoader.scale <= v.y &&
+                (position.y-sketch.offset.y + ShapeLoader.size)*ShapeLoader.scale >= v.y;
     }
 }

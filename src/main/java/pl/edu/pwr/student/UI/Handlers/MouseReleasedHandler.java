@@ -19,6 +19,11 @@ public class MouseReleasedHandler {
     public static void mouseReleased(Canvas sketch){
         if (sketch.state == 0) {
             sketch.selectedElement = null;
+            if (sketch.startingMousePosition != null){
+                sketch.tempOffset.x = sketch.offset.x;
+                sketch.tempOffset.y = sketch.offset.y;
+                sketch.startingMousePosition = null;
+            }
         }
     }
 }
