@@ -21,8 +21,9 @@ public class MouseReleasedHandler {
         if (sketch.state == 0) {
             sketch.selectedElement = null;
             if (sketch.startingMousePosition != null){
-                sketch.offset.x += (sketch.startingMousePosition.x - sketch.mouseX) * ShapeLoader.scale;
-                sketch.offset.y += (sketch.startingMousePosition.y - sketch.mouseY) * ShapeLoader.scale;
+                sketch.offset.x += (sketch.startingMousePosition.x - sketch.mouseX) / ShapeLoader.scale;
+                sketch.offset.y += (sketch.startingMousePosition.y - sketch.mouseY) / ShapeLoader.scale;
+                System.out.println(sketch.offset);
                 sketch.startingMousePosition = null;
             }
         }

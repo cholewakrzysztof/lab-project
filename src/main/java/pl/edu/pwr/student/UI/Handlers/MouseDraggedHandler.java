@@ -24,8 +24,8 @@ public class MouseDraggedHandler {
         if (sketch.state == 0) {
             if (sketch.selectedElement != null) {
                 sketch.selectedElement.position = new PVector(
-                        sketch.mouseX / ShapeLoader.scale - ShapeLoader.size/2f,
-                        sketch.mouseY / ShapeLoader.scale - ShapeLoader.size/2f
+                        (sketch.mouseX+sketch.offset.x) / ShapeLoader.scale - ShapeLoader.size/2f,
+                        (sketch.mouseY+sketch.offset.y) / ShapeLoader.scale - ShapeLoader.size/2f
                 );
             } else {
                 if (sketch.startingMousePosition == null) {
