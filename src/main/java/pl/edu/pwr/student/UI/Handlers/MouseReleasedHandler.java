@@ -1,7 +1,6 @@
 package pl.edu.pwr.student.UI.Handlers;
 
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.Utility.ShapeLoader;
 
 /**
  * Handles mouse released event

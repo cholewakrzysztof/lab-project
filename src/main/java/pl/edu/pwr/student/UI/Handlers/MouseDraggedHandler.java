@@ -4,8 +4,6 @@ import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PVector;
 
-import java.util.Arrays;
-
 /**
  * Handles mouse dragged event
  */
