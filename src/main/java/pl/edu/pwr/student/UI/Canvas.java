@@ -90,6 +90,7 @@ public class Canvas extends PApplet {
      * The selected element on the canvas.
      */
     public PVector offset = new PVector(0, 0);
+    public PVector tempOffset = new PVector(0, 0);
 
     /**
      * The selected element on the canvas.
