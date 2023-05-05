@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Scanner;
 
 class DataWriterTest {
         Canvas canvas;
@@ -63,6 +64,8 @@ class DataWriterTest {
     @Test
     void safeToFile() throws IOException {
         DataWriter.safeToFile(canvas,"plik.txt");
+        Scanner myReader = new Scanner(new File("plik.txt"));
+        assertEquals("{\"position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":[],\"inputs\":[],\"color\":null}",myReader.next());
     }
 
     /**
