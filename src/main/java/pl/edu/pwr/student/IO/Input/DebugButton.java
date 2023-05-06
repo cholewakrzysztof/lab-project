@@ -28,12 +28,10 @@ public class DebugButton extends SignalSender implements Runnable {
 
     /**
      * Changes the state of the button.
-     * @return new state of the button
      */
-    public boolean toggle() {
+    public void toggle() {
         state = !state;
         sendUpdate();
-        return state;
     }
 
     /**

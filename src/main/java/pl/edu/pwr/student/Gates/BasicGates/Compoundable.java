@@ -32,9 +32,8 @@ public interface Compoundable {
      * Connects a {@link SignalReceiver} to the output of the gate.
      *
      * @param receiver the {@link SignalReceiver} to connect.
-     * @return 1 if connection was successfully established, 2 if the connection was successfully destroyed, 0 otherwise.
      */
-    int connection(SignalReceiver receiver);
+    void connection(SignalReceiver receiver);
 
     /**
      * Fully disconnects the gate.

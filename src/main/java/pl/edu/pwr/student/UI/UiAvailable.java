@@ -45,7 +45,6 @@ public interface UiAvailable {
      * Connects an input to this element.
      *
      * @param receiver the SignalReceiver object representing the input to be connected.
-     * @return the number of inputs that are currently connected to this element.
      */
-    int connection(SignalReceiver receiver);
+    void connection(SignalReceiver receiver);
 }
