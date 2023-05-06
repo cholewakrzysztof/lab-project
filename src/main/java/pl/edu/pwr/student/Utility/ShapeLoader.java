@@ -32,7 +32,7 @@ public class ShapeLoader {
     /**
      * Size of all shapes
      */
-    public static int size = 50;
+    public static final int size = 50;
 
     /**
      * Loads all shapes from resources/gates/ directory

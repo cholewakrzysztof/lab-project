@@ -3,8 +3,6 @@ package pl.edu.pwr.student.IO.Output;
 import pl.edu.pwr.student.Simulation;
 import pl.edu.pwr.student.UI.UiAvailable;
 
-import java.util.HashSet;
-
 /**
  * OBSOLETE - SHOULD BE CHANGED TO BE USED IN THE UI
  * OLD FUNCTIONALITY MOVED TO {@link DebugLED}
@@ -15,10 +13,10 @@ public class LED extends BasicReceiver implements Runnable, UiAvailable {
     private boolean power = false;
     private final Thread thread;
 
-    public boolean toggle() {
+    public void toggle() {
         if (milliseconds < 1) {
             power = false;
-            return false;
+            return;
         }
 
         power = !power;
@@ -26,7 +24,6 @@ public class LED extends BasicReceiver implements Runnable, UiAvailable {
             thread.start();
         else
             thread.interrupt();
-        return power;
     }
     public void run() {
         while (power) {
@@ -49,12 +46,6 @@ public class LED extends BasicReceiver implements Runnable, UiAvailable {
     public void react() {}
 
     @Override
-    public HashSet<SignalReceiver> getOutputs() {
-        return UiAvailable.super.getOutputs();
-    }
-
-    @Override
-    public int connection(SignalReceiver receiver) {
-        return 0;
+    public void connection(SignalReceiver receiver) {
     }
 }

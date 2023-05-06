@@ -47,28 +47,26 @@ public abstract class SignalSender {
      * Attempts to disconnect the given {@link SignalReceiver} from this signal sender if they had already been connected.
      *
      * @param receiver the {@link SignalReceiver} to (dis)connect.
-     * @return 1 if the elements were successfully connected, 2 if the elements were successfully disconnected, and 0 otherwise.
      */
-    public int connection(SignalReceiver receiver) {
+    public void connection(SignalReceiver receiver) {
         if (this == receiver)
-            return 0;
+            return;
 
         if (outputs.contains(receiver)) {
             outputs.remove(receiver);
             if (receiver.attemptDisconnect(this)) {
                 receiver.update();
-                return 2;
+                return;
             }
             outputs.add(receiver);
         } else {
             outputs.add(receiver);
             if (receiver.attemptConnect(this)) {
                 receiver.update();
-                return 1;
+                return;
             }
             outputs.remove(receiver);
         }
-        return 0;
     }
 
     /**
