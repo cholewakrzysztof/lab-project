@@ -28,14 +28,14 @@ public class CreateButton extends Button {
     public void run() {
         sketch.stroke(0);
         if (over(new PVector(sketch.mouseX, sketch.mouseY))){
-            if (sketch.state == 1){
+            if (sketch.getState() == 1){
                 sketch.fill(0,255,0,30);
                 sketch.square(position.x,position.y,48);
             } else {
                 sketch.fill(0, 30);
                 sketch.square(position.x,position.y,48);
             }
-        } else if(sketch.state == 1){
+        } else if(sketch.getState() == 1){
             sketch.fill(0,255,0,20);
             sketch.square(position.x,position.y,48);
         } else {
@@ -51,8 +51,7 @@ public class CreateButton extends Button {
      */
     @Override
     public void click() {
-        sketch.lastState = sketch.state;
-        sketch.state = 1;
-        sketch.form.show();
+        sketch.setState(1);
+        sketch.showForm();
     }
 }
