@@ -28,6 +28,7 @@ import java.util.*;
  * Handles drawing and interactions with elements.
  */
 public class Canvas extends PApplet {
+
     /**
      * Form with the list of gates.
      */
@@ -94,17 +95,19 @@ public class Canvas extends PApplet {
     private UiElement selectedElement = null;
 
     /**
-     * The selected element on the canvas.
+     * Holds the offset of canvas.
      */
     private final PVector offset = new PVector(0, 0);
+
+    /**
+     * Holds the temporary offset of canvas, used in math.
+     */
     private final PVector tempOffset = new PVector(0, 0);
 
     /**
-     * The selected element on the canvas.
+     * Holds the temporary starting mouse position, used in math.
      */
     private PVector startingMousePosition;
-
-
 
     /**
      * Constructor
@@ -167,55 +170,64 @@ public class Canvas extends PApplet {
     /**
      * Method setting up canvas
      */
+    @Override
     public void settings() {
         size(1000, 1000);
         //TODO: make it added automatically (created new gates by user are now a problem)
         form = booster
                 .createForm("Gates")
                 .addList("Select Gate",
-                        new ListElement("AND", null,""),
-                        new ListElement("NAND", null,""),
-                        new ListElement("OR", null, ""),
-                        new ListElement("NOR", null,""),
-                        new ListElement("XOR", null,""),
-                        new ListElement("XNOR", null,""),
-                        new ListElement("NOT", null, ""),
-                        new ListElement("SPEAKER", null, ""),
-                        new ListElement("LED", null, ""),
-                        new ListElement("SWITCH", null, ""),
-                        new ListElement("CLOCK", null, ""),
-                        new ListElement("DELAY", null, "")
+                        new ListElement("AND", null,"/icon/AND.png"),
+                        new ListElement("NAND", null,"/icon/NAND.png"),
+                        new ListElement("OR", null, "/icon/OR.png"),
+                        new ListElement("NOR", null,"/icon/NOR.png"),
+                        new ListElement("XOR", null,"/icon/XOR.png"),
+                        new ListElement("XNOR", null,"/icon/XNOR.png"),
+                        new ListElement("NOT", null, "/icon/NOT.png"),
+                        new ListElement("SPEAKER", null, "/icon/SPEAKER.png"),
+                        new ListElement("LED", null, "/icon/LED.png"),
+                        new ListElement("SWITCH", null, "/icon/SWITCH-FALSE.png"),
+                        new ListElement("CLOCK", null, "/icon/CLOCK.png"),
+                        new ListElement("DELAY", null, "/icon/DELAY.png")
                 ).run().hide();
 
         booster.createNotification(
                 "Started",
-                "Gates-Simulation");
+                "Gates-Simulation"
+        );
     }
 
     /**
      * Method called when canvas is ready and starts drawing
      */
+    @Override
     public void draw() {
         background(255);
-
-        for (int i = 0; i < buttons.size(); i++) {
-            buttons.get(i).run();
-        }
 
         for (UiElement g : elements) {
             g.run();
         }
+
         if (elements.isEmpty()) {
             fill(0);
             textAlign(CENTER);
             textSize(32);
-            text("Select gate and place it", width / 2f, height / 2f);
+            text(
+                    "Select gate and place it",
+                    width / 2f,
+                    height / 2f
+            );
+        }
+
+        for (int i = 0; i < buttons.size(); i++) {
+            buttons.get(i).run();
         }
     }
 
     /**
      * Method called when user presses mouse
      */
+    @Override
     public void mousePressed() {
         for (int i = 0; i < buttons.size(); i++) {
             if(buttons.get(i).over(new PVector(mouseX, mouseY))) {
@@ -238,8 +250,8 @@ public class Canvas extends PApplet {
                 ListElement selected = (ListElement) form.getByLabel("Select Gate").getValue();
                 if (selected != null) {
                     PVector mouse = new PVector(
-                            (mouseX+offset.x) / ShapeLoader.scale - ShapeLoader.size/2f,
-                            (mouseY+offset.y) / ShapeLoader.scale - ShapeLoader.size/2f
+                            mouseX / ShapeLoader.scale - ShapeLoader.size/2f + offset.x,
+                            mouseY / ShapeLoader.scale - ShapeLoader.size/2f + offset.y
                     );
                     //TODO: make it added automatically (created new gates by user are now a problem)
                     switch (selected.getTitle()) {
@@ -312,8 +324,7 @@ public class Canvas extends PApplet {
             case 2 -> {
                 for (UiElement g : elements) {
                     if (g.over(new PVector(mouseX, mouseY))) {
-                        lastState = state;
-                        state = 4;
+                        setState(4);
                         selectedElement = g;
                         break;
                     }
@@ -353,6 +364,7 @@ public class Canvas extends PApplet {
     /**
      * Method called when user clicks mouse
      */
+    @Override
     public void mouseClicked(){
         if (state == 0) {
             for (UiElement g : elements) {
@@ -396,12 +408,13 @@ public class Canvas extends PApplet {
     /**
      * Method called when user drags mouse
      */
+    @Override
     public void mouseDragged() {
         if (state == 0) {
             if (selectedElement != null) {
                 selectedElement.position = new PVector(
-                        (mouseX+offset.x) / ShapeLoader.scale - ShapeLoader.size/2f,
-                        (mouseY+offset.y) / ShapeLoader.scale - ShapeLoader.size/2f
+                        mouseX / ShapeLoader.scale - ShapeLoader.size/2f + offset.x,
+                        mouseY / ShapeLoader.scale - ShapeLoader.size/2f + offset.y
                 );
             } else {
                 if (startingMousePosition == null) {
@@ -417,6 +430,7 @@ public class Canvas extends PApplet {
     /**
      * Method called when user releases mouse
      */
+    @Override
     public void mouseReleased() {
         if (state == 0) {
             selectedElement = null;
@@ -431,6 +445,7 @@ public class Canvas extends PApplet {
     /**
      * Method called when user rotates mouse wheel
      */
+    @Override
     public void mouseWheel(MouseEvent event) {
         if (event.getCount() > 0) {
             ShapeLoader.decrementScale();
@@ -456,14 +471,16 @@ public class Canvas extends PApplet {
 
     /**
      * Sets state of the canvas
+     * @param state state
      */
     public void setState(int state) {
-        lastState = state;
+        lastState = this.state;
         this.state = state;
     }
 
     /**
      * Gets state of the canvas
+     * @return state
      */
     public int getState() {
         return state;
@@ -471,6 +488,7 @@ public class Canvas extends PApplet {
 
     /**
      * Gets set of all elements
+     * @return set of elements
      */
     public Set<UiElement> getElements() {
         return elements;
@@ -478,6 +496,7 @@ public class Canvas extends PApplet {
 
     /**
     * Gets offset of the canvas
+     * @return offset
     */
     public PVector getOffset() {
         return offset;
