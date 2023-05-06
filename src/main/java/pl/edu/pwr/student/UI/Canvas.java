@@ -21,6 +21,7 @@ import uibooster.model.Form;
 import uibooster.model.ListElement;
 import uibooster.model.UiBoosterOptions;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -160,6 +161,7 @@ public class Canvas extends PApplet {
                     "Do you want to save your work?",
                     "Exiting",
                     () -> {
+                        getFile("Get file to save to");
                         //TODO: saving
                         super.exit();
                     },
@@ -500,5 +502,13 @@ public class Canvas extends PApplet {
     */
     public PVector getOffset() {
         return offset;
+    }
+
+    /**
+     * Gets file to save to or load from
+     * @return file
+     */
+    public File getFile(String title) {
+        return booster.showFileSelection(title + ": .gss", "gss");
     }
 }

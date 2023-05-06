@@ -24,6 +24,7 @@ public class SaveButton extends Button {
      */
     @Override
     public void click() {
+        sketch.getFile("Get file to save to");
         //TODO: save
     }
 }

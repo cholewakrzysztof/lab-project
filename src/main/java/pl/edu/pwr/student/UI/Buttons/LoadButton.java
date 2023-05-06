@@ -24,6 +24,7 @@ public class LoadButton extends Button {
      */
     @Override
     public void click() {
+        sketch.getFile("Get file to load from");
         //TODO: load
     }
 }
