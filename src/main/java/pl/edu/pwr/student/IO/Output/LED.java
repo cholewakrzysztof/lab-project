@@ -3,8 +3,6 @@ package pl.edu.pwr.student.IO.Output;
 import pl.edu.pwr.student.Simulation;
 import pl.edu.pwr.student.UI.UiAvailable;
 
-import java.util.HashSet;
-
 /**
  * OBSOLETE - SHOULD BE CHANGED TO BE USED IN THE UI
  * OLD FUNCTIONALITY MOVED TO {@link DebugLED}

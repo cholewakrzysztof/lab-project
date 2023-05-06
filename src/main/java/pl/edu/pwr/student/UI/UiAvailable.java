@@ -16,7 +16,7 @@ public interface UiAvailable {
      * @return a HashSet of SignalReceiver objects representing the outputs of this element.
      */
     default HashSet<SignalReceiver> getOutputs() {
-        return new HashSet<SignalReceiver>();
+        return new HashSet<>();
     }
 
     /**
@@ -25,7 +25,7 @@ public interface UiAvailable {
      * @return a HashSet of SignalSender objects representing the inputs of this element.
      */
     default HashSet<SignalSender> getInputs() {
-        return new HashSet<SignalSender>();
+        return new HashSet<>();
     }
 
     /**
