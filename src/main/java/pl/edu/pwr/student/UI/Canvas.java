@@ -209,7 +209,7 @@ public class Canvas extends PApplet {
             fill(0);
             textAlign(CENTER);
             textSize(32);
-            text("Select gate and place it", width / 2, height / 2);
+            text("Select gate and place it", width / 2f, height / 2f);
         }
     }
 
