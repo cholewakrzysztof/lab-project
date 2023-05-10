@@ -59,10 +59,8 @@ public class Simulation {
         // All outputs in the simulation are to be in this collection
         HashSet<SignalReceiver> systemOutputs = new HashSet<>();
 
-        Canvas canvas;
-
         try {
-            canvas = new Canvas(basicGates, compoundGates, savedCompoundGates, userInputs, systemOutputs);
+            Canvas canvas = new Canvas(basicGates, compoundGates, savedCompoundGates, userInputs, systemOutputs);
         } catch (Exception e) {
             new UiBooster().showException(
                     "An error occurred",

@@ -38,13 +38,11 @@ public class DebugLED extends BasicReceiver implements Runnable {
 
     /**
      * Method that toggles the power of the object.
-     *
-     * @return whether the element is power after called the method or not
      */
-    public boolean toggle() {
+    public void toggle() {
         if (milliseconds < 1) {
             power = false;
-            return false;
+            return;
         }
 
         power = !power;
@@ -52,7 +50,6 @@ public class DebugLED extends BasicReceiver implements Runnable {
             thread.start();
         else
             thread.interrupt();
-        return power;
     }
 
     /**

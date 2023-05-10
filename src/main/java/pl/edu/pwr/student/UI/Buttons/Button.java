@@ -24,7 +24,7 @@ public abstract class Button extends UiElement {
     /**
      * Shape of button
      */
-    protected PShape shape;
+    protected final PShape shape;
 
     /**
      * Constructor
@@ -42,7 +42,17 @@ public abstract class Button extends UiElement {
      * Method to be executed when the button is clicked
      */
     @Override
-    public abstract void run();
+    public void run() {
+        sketch.stroke(0);
+        if (over(new PVector(sketch.mouseX, sketch.mouseY))){
+            sketch.fill(0, 30);
+            sketch.square(position.x,position.y,48);
+        } else {
+            sketch.fill(0, 20);
+            sketch.square(position.x,position.y,48);
+        }
+        sketch.shape(shape, position.x, position.y);
+    }
 
     /**
      * Method to be executed when the button is clicked

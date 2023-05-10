@@ -21,6 +21,15 @@ public class Delay extends BasicPassThrough {
     private long milliseconds;
 
     /**
+     * Changes the delay of this element.
+     *
+     * @param delayMilliseconds delay to which the element should be set
+     */
+    public void setDelay(long delayMilliseconds) {
+        milliseconds = delayMilliseconds;
+    }
+
+    /**
      * Updates the state of the element by running it in a new thread.
      * Overrides the default method of {@link BasicPassThrough} class to add the delay to calculations.
      */
@@ -32,9 +41,5 @@ public class Delay extends BasicPassThrough {
             state = newState;
             this.sendUpdate();
         }
-    }
-
-    public void setDelay(long delayMilliseconds) {
-        milliseconds = delayMilliseconds;
     }
 }
