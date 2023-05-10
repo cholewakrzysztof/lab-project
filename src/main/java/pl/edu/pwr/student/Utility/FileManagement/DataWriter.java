@@ -19,7 +19,7 @@ public class DataWriter {
      */
     public static void safeToFile(Canvas canvas, String path) throws IOException {
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path));
-        for (UiElement uiElement: canvas.elements) {
+        for (UiElement uiElement: canvas.getElements()) {
             bufferedWriter.write(DataWriter.generateJSONfromUIElement(uiElement));
             bufferedWriter.newLine();
         }

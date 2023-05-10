@@ -8,6 +8,7 @@ import processing.core.PVector;
 
 import java.awt.*;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 /**
  * Representation of object based on UIElement that can be safe and create from file
@@ -27,12 +28,12 @@ public class JSONAvailable {
      * Set of outputs indexes
      */
     @JsonProperty("outputs")
-    public HashSet<Integer> outputs;
+    public LinkedList<Integer> outputs;
     /**
      * Set of inputs indexes
      */
     @JsonProperty("inputs")
-    public HashSet<Integer> inputs;
+    public LinkedList<Integer> inputs;
     /**
      * The color associated with this element.
      */
@@ -55,21 +56,23 @@ public class JSONAvailable {
      * @param element element with inputs
      * @return HashSet of this element inputs indexes
      */
-    private static HashSet<Integer> GetInputsIndexes(UiElement element){
-        HashSet<Integer> set = new HashSet<>();
+    private static LinkedList<Integer> GetInputsIndexes(UiElement element){
+        LinkedList<Integer> list = new LinkedList<>();
         HashSet<SignalSender> elementInputs = element.uiElem.getInputs();
         HashSet<SignalSender> allInputs = element.sketch.userInputs;
         Integer index = 0;
+        System.out.println("Wczytuję indexy elementu");
         for (SignalSender candidate:allInputs) {
             if(elementInputs.contains(candidate)){
                 for (SignalSender obj : elementInputs) {
                     if (obj.equals(candidate))
-                        set.add(index);
+                        list.add(index);
+                        System.out.println("Dodaję index "+index );
                 }
             }
             index++;
         }
-        return set;
+        return list;
     }
 
     /**
@@ -77,20 +80,20 @@ public class JSONAvailable {
      * @param element element with outputs
      * @return HashSet of this element outputs indexes
      */
-    private static HashSet<Integer> GetOutputsIndexes(UiElement element){
-        HashSet<Integer> set = new HashSet<>();
+    private static LinkedList<Integer> GetOutputsIndexes(UiElement element){
+        LinkedList<Integer> list = new LinkedList<>();
         HashSet<SignalReceiver> elementOutputs = element.uiElem.getOutputs();
         HashSet<SignalReceiver> allOutputs = element.sketch.systemOutputs;
-        int index = 0;
+        Integer index = 0;
         for (SignalReceiver candidate:allOutputs) {
             if(elementOutputs.contains(candidate)){
                 for (SignalReceiver obj : elementOutputs) {
                     if (obj.equals(candidate))
-                        set.add(index);
+                        list.add(index);
                 }
             }
             index++;
         }
-        return set;
+        return list;
     }
 }

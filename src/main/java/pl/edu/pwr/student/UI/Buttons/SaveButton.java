@@ -2,9 +2,12 @@ package pl.edu.pwr.student.UI.Buttons;
 
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.UiElement;
+import pl.edu.pwr.student.Utility.FileManagement.DataWriter;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PShape;
 import processing.core.PVector;
+
+import java.io.IOException;
 
 /**
  * Represents a button for creating new elements on the canvas.
@@ -43,7 +46,11 @@ public class SaveButton extends Button {
      * Overrides the click method of the Button class.
      */
     @Override
-    public void click() {
-        //TODO: save
+    public void click(){
+        try {
+            DataWriter.safeToFile(sketch,"plik.txt");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

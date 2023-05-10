@@ -22,6 +22,7 @@ import uibooster.model.ListElement;
 import uibooster.model.UiBoosterOptions;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -63,7 +64,7 @@ public class Canvas extends PApplet {
     /**
      * The set of all basic gates.
      */
-    private final HashSet<Compoundable> basicGates;
+    public final HashSet<Compoundable> basicGates;
 
     /**
      * The set of all compound gates.
@@ -78,12 +79,12 @@ public class Canvas extends PApplet {
     /**
      * The set of all user inputs.
      */
-    private final HashSet<SignalSender> userInputs;
+    public final HashSet<SignalSender> userInputs;
 
     /**
      * The set of all system outputs.
      */
-    private final HashSet<SignalReceiver> systemOutputs;
+    public final HashSet<SignalReceiver> systemOutputs;
 
     /**
      * The list of all buttons.
@@ -233,7 +234,11 @@ public class Canvas extends PApplet {
     public void mousePressed() {
         for (int i = 0; i < buttons.size(); i++) {
             if(buttons.get(i).over(new PVector(mouseX, mouseY))) {
-                buttons.get(i).click();
+                try {
+                    buttons.get(i).click();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 return;
             }
         }

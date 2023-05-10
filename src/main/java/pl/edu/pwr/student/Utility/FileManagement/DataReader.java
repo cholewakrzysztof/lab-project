@@ -36,7 +36,7 @@ public class DataReader {
         canvas.userInputs.clear();
         canvas.systemOutputs.clear();
         canvas.basicGates.clear();
-        canvas.elements.clear();
+        canvas.getElements().clear();
 
 
         List<JSONAvailable> jsonAvailables = new LinkedList<>();
@@ -53,7 +53,7 @@ public class DataReader {
 
     private static void rebuildConnections(List<JSONAvailable> jsonAvailables,final Canvas canvas){
         Integer i = 0;
-        for (UiElement element: canvas.elements) {
+        for (UiElement element: canvas.getElements()) {
             for (Integer index: jsonAvailables.get(i).outputs) {
                 element.uiElem.connection(getSignalRecieverFromCanva(index,canvas));
                 System.out.println("Connection"+i+"to "+index );
@@ -65,7 +65,7 @@ public class DataReader {
     private static SignalReceiver getSignalRecieverFromCanva(Integer index, final Canvas canvas){
         Integer currentIndex = 0;
         UiElement uiElement = null;
-        for (UiElement element: canvas.elements) {
+        for (UiElement element: canvas.getElements()) {
             if(currentIndex==index){
                 uiElement = element;
                 break;
