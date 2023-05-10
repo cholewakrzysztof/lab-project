@@ -24,15 +24,15 @@ public class JSONAvailable {
     @JsonProperty("elName")
     public String elName;
     /**
-     * Outputs of element
+     * Set of outputs indexes
      */
     @JsonProperty("outputs")
-    public HashSet<SignalReceiver> outputs;
+    public HashSet<Integer> outputs;
     /**
-     * Inputs of element
+     * Set of inputs indexes
      */
     @JsonProperty("inputs")
-    public HashSet<SignalSender> inputs;
+    public HashSet<Integer> inputs;
     /**
      * The color associated with this element.
      */
@@ -44,9 +44,53 @@ public class JSONAvailable {
     }
     public JSONAvailable(UiElement element){
         this.position = element.position;
-        this.outputs = element.uiElem.getOutputs();
-        this.inputs = element.uiElem.getInputs();
+        this.inputs = JSONAvailable.GetInputsIndexes(element);
+        this.outputs = JSONAvailable.GetOutputsIndexes(element);
         this.elName = element.elName;
 
+    }
+
+    /**
+     * Return indexes from canva set of all inputs of this element
+     * @param element element with inputs
+     * @return HashSet of this element inputs indexes
+     */
+    private static HashSet<Integer> GetInputsIndexes(UiElement element){
+        HashSet<Integer> set = new HashSet<>();
+        HashSet<SignalSender> elementInputs = element.uiElem.getInputs();
+        HashSet<SignalSender> allInputs = element.sketch.userInputs;
+        Integer index = 0;
+        for (SignalSender candidate:allInputs) {
+            if(elementInputs.contains(candidate)){
+                for (SignalSender obj : elementInputs) {
+                    if (obj.equals(candidate))
+                        set.add(index);
+                }
+            }
+            index++;
+        }
+        return set;
+    }
+
+    /**
+     * Return indexes from canva set of all outputs of this element
+     * @param element element with outputs
+     * @return HashSet of this element outputs indexes
+     */
+    private static HashSet<Integer> GetOutputsIndexes(UiElement element){
+        HashSet<Integer> set = new HashSet<>();
+        HashSet<SignalReceiver> elementOutputs = element.uiElem.getOutputs();
+        HashSet<SignalReceiver> allOutputs = element.sketch.systemOutputs;
+        int index = 0;
+        for (SignalReceiver candidate:allOutputs) {
+            if(elementOutputs.contains(candidate)){
+                for (SignalReceiver obj : elementOutputs) {
+                    if (obj.equals(candidate))
+                        set.add(index);
+                }
+            }
+            index++;
+        }
+        return set;
     }
 }

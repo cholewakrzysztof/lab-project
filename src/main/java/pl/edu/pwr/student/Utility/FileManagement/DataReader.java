@@ -7,11 +7,18 @@ import pl.edu.pwr.student.Gates.BasicGates.SingleInput.NOT;
 import pl.edu.pwr.student.IO.Input.Clock;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
+import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.IO.Output.Speaker;
 import pl.edu.pwr.student.UI.Canvas;
+import pl.edu.pwr.student.UI.UiAvailable;
 import pl.edu.pwr.student.UI.UiElement;
 
+import javax.xml.crypto.Data;
 import java.io.File;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -31,11 +38,41 @@ public class DataReader {
         canvas.basicGates.clear();
         canvas.elements.clear();
 
+
+        List<JSONAvailable> jsonAvailables = new LinkedList<>();
+
         while(myReader.hasNext()){
             String json = myReader.next();
             UiElement uiElement = DataReader.generateUIElementFormJSON(json,canvas);
+            jsonAvailables.add(generateJSONAvailableFromJSON(json));
             addToProperCanvaSet(uiElement.elName,canvas);
         }
+
+        rebuildConnections(jsonAvailables,canvas);
+    }
+
+    private static void rebuildConnections(List<JSONAvailable> jsonAvailables,final Canvas canvas){
+        Integer i = 0;
+        for (UiElement element: canvas.elements) {
+            for (Integer index: jsonAvailables.get(i).outputs) {
+                element.uiElem.connection(getSignalRecieverFromCanva(index,canvas));
+                System.out.println("Connection"+i+"to "+index );
+            }
+            i++;
+        }
+    }
+
+    private static SignalReceiver getSignalRecieverFromCanva(Integer index, final Canvas canvas){
+        Integer currentIndex = 0;
+        UiElement uiElement = null;
+        for (UiElement element: canvas.elements) {
+            if(currentIndex==index){
+                uiElement = element;
+                break;
+            }
+            currentIndex++;
+        }
+        return (SignalReceiver) uiElement.uiElem;
     }
 
     /**
@@ -106,8 +143,10 @@ public class DataReader {
      * @throws Exception when something wrong with jsonString
      */
     public static UiElement generateUIElementFormJSON(String jsonString, Canvas canvas) throws Exception {
+        return new UiElement(DataReader.generateJSONAvailableFromJSON(jsonString),canvas);
+    }
+    private static JSONAvailable generateJSONAvailableFromJSON(String jsonString) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        JSONAvailable jsonAvailable = objectMapper.readValue(jsonString,JSONAvailable.class);
-        return new UiElement(jsonAvailable,canvas);
+        return objectMapper.readValue(jsonString,JSONAvailable.class);
     }
 }
