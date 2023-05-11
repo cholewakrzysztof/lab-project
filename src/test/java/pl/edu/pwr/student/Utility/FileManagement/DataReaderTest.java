@@ -48,7 +48,7 @@ class DataReaderTest {
         }
 
         uiElement = new UiElement("AND",canvas,new PVector(0f,0f),new AND());
-        canvas.elements.add(uiElement);
+        canvas.getElements().add(uiElement);
         canvas.basicGates.add(new AND());
     }
     @AfterAll
@@ -66,9 +66,9 @@ class DataReaderTest {
         FileWriter fileWriter = new FileWriter("plik.txt");
         fileWriter.write("{\"position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":[],\"inputs\":[],\"color\":null}");
         fileWriter.close();
-        canvas.elements.clear();
+        canvas.getElements().clear();
         DataReader.readFromFile("plik.txt",canvas);
-        assertEquals(1, canvas.elements.size());
+        assertEquals(1, canvas.getElements().size());
     }
 
     /**

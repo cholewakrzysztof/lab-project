@@ -45,7 +45,7 @@ class DataWriterTest {
         }
 
         UiElement uiElement1 = new UiElement("AND",canvas,new PVector(0f,0f),new AND());
-        canvas.elements.add(uiElement1);
+        canvas.getElements().add(uiElement1);
     }
 
     /**
@@ -65,7 +65,7 @@ class DataWriterTest {
     void safeToFile() throws IOException {
         DataWriter.safeToFile(canvas,"plik.txt");
         Scanner myReader = new Scanner(new File("plik.txt"));
-        assertEquals("{\"position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":[],\"inputs\":[],\"color\":null}",myReader.next());
+        assertEquals("{\"position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":[],\"color\":null}",myReader.next());
     }
 
     /**

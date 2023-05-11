@@ -10,10 +10,8 @@ import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.IO.Output.Speaker;
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.UI.UiAvailable;
 import pl.edu.pwr.student.UI.UiElement;
 
-import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
