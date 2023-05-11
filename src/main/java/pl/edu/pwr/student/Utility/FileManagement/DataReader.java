@@ -16,10 +16,7 @@ import pl.edu.pwr.student.UI.UiElement;
 import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Class responsible for reading data from files and generating HashSet of UI elements
@@ -39,29 +36,31 @@ public class DataReader {
         canvas.getElements().clear();
 
 
-        List<JSONAvailable> jsonAvailables = new LinkedList<>();
+        HashMap<Integer,UiElement> elements = new HashMap<>();
+        HashMap<Integer,JSONAvailable> jsonAvailables = new HashMap<>();
 
         while(myReader.hasNext()){
             String json = myReader.next();
             UiElement uiElement = DataReader.generateUIElementFormJSON(json,canvas);
-            jsonAvailables.add(generateJSONAvailableFromJSON(json));
+            JSONAvailable jsonAvailable = generateJSONAvailableFromJSON(json);
+            elements.put(jsonAvailable.hashCode,uiElement);
+            jsonAvailables.put(jsonAvailable.hashCode,jsonAvailable);
             addToProperCanvaSet(uiElement.elName,canvas);
         }
 
-        rebuildConnections(jsonAvailables,canvas);
-    }
-
-    private static void rebuildConnections(List<JSONAvailable> jsonAvailables,final Canvas canvas){
-        Integer i = 0;
-        for (UiElement element: canvas.getElements()) {
-            for (Integer index: jsonAvailables.get(i).outputs) {
-                element.uiElem.connection(getSignalRecieverFromCanva(index,canvas));
-                System.out.println("Connection"+i+"to "+index );
+        for(Map.Entry<Integer, JSONAvailable> entry : jsonAvailables.entrySet()) {
+            Integer key = entry.getKey();
+            JSONAvailable value = entry.getValue();
+            UiElement el = elements.get(key);
+            for (Integer hashCode: value.outputs) {
+                for (Map.Entry<Integer, UiElement> candidate : elements.entrySet()) {
+                    if(Objects.equals(hashCode, candidate.getKey())){
+                        el.uiElem.connection((SignalReceiver) candidate.getValue().uiElem);
+                    }
+                }
             }
-            i++;
         }
     }
-
     private static SignalReceiver getSignalRecieverFromCanva(Integer index, final Canvas canvas){
         Integer currentIndex = 0;
         UiElement uiElement = null;

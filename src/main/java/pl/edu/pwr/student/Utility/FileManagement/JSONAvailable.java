@@ -25,15 +25,15 @@ public class JSONAvailable {
     @JsonProperty("elName")
     public String elName;
     /**
-     * Set of outputs indexes
+     * Set of outputs hashcodes
      */
     @JsonProperty("outputs")
     public LinkedList<Integer> outputs;
     /**
-     * Set of inputs indexes
+     * Hashcode of source element
      */
-    @JsonProperty("inputs")
-    public LinkedList<Integer> inputs;
+    @JsonProperty("hashCode")
+    public Integer hashCode;
     /**
      * The color associated with this element.
      */
@@ -45,54 +45,20 @@ public class JSONAvailable {
     }
     public JSONAvailable(UiElement element){
         this.position = element.position;
-        this.inputs = JSONAvailable.GetInputsIndexes(element);
-        this.outputs = JSONAvailable.GetOutputsIndexes(element);
+        this.outputs = JSONAvailable.GetOutputsHashCodes(element);
         this.elName = element.elName;
-
+        this.hashCode = element.uiElem.hashCode();
     }
 
     /**
-     * Return indexes from canva set of all inputs of this element
-     * @param element element with inputs
-     * @return HashSet of this element inputs indexes
+     *
+     * @param element
+     * @return
      */
-    private static LinkedList<Integer> GetInputsIndexes(UiElement element){
+    private static LinkedList<Integer> GetOutputsHashCodes(UiElement element){
         LinkedList<Integer> list = new LinkedList<>();
-        HashSet<SignalSender> elementInputs = element.uiElem.getInputs();
-        HashSet<SignalSender> allInputs = element.sketch.userInputs;
-        Integer index = 0;
-        System.out.println("Wczytuję indexy elementu");
-        for (SignalSender candidate:allInputs) {
-            if(elementInputs.contains(candidate)){
-                for (SignalSender obj : elementInputs) {
-                    if (obj.equals(candidate))
-                        list.add(index);
-                        System.out.println("Dodaję index "+index );
-                }
-            }
-            index++;
-        }
-        return list;
-    }
-
-    /**
-     * Return indexes from canva set of all outputs of this element
-     * @param element element with outputs
-     * @return HashSet of this element outputs indexes
-     */
-    private static LinkedList<Integer> GetOutputsIndexes(UiElement element){
-        LinkedList<Integer> list = new LinkedList<>();
-        HashSet<SignalReceiver> elementOutputs = element.uiElem.getOutputs();
-        HashSet<SignalReceiver> allOutputs = element.sketch.systemOutputs;
-        Integer index = 0;
-        for (SignalReceiver candidate:allOutputs) {
-            if(elementOutputs.contains(candidate)){
-                for (SignalReceiver obj : elementOutputs) {
-                    if (obj.equals(candidate))
-                        list.add(index);
-                }
-            }
-            index++;
+        for (SignalReceiver el:element.uiElem.getOutputs()) {
+            list.add(el.hashCode());
         }
         return list;
     }
