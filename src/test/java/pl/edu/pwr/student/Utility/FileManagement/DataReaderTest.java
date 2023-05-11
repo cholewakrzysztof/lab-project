@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DataReaderTest {
     Canvas canvas;
     UiElement uiElement;
+    static String path = "PlikTestowy.txt";
 
     /**
      * Create new canva and add one basic gate AND
@@ -53,8 +54,9 @@ class DataReaderTest {
     }
     @AfterAll
     static void clearFolder(){
-        File f = new File("plik.txt");
-        f.delete();
+        File f = new File(path);
+        if(f.exists())
+            f.delete();
     }
 
     /**
@@ -63,8 +65,8 @@ class DataReaderTest {
      */
     @Test
     void readFromFile() throws Exception {
-        FileWriter fileWriter = new FileWriter("plik.txt");
-        fileWriter.write("{\"position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":[],\"inputs\":[],\"color\":null}");
+        FileWriter fileWriter = new FileWriter(path);
+        fileWriter.write("{\"position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":[],\"hashCode\":120345,\"color\":null}");
         fileWriter.close();
         canvas.getElements().clear();
         DataReader.readFromFile("plik.txt",canvas);

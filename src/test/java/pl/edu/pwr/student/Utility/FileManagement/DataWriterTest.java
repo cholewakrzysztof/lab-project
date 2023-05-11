@@ -23,7 +23,9 @@ import java.util.HashSet;
 import java.util.Scanner;
 
 class DataWriterTest {
-        Canvas canvas;
+    Canvas canvas;
+    static String path = "PlikTestowy.txt";
+
 
     @BeforeEach
     void setUp() {
@@ -53,8 +55,9 @@ class DataWriterTest {
      */
     @AfterAll
     static void clearFolder(){
-        File f = new File("plik.txt");
-        f.delete();
+        File f = new File(path);
+        if(f.exists())
+            f.delete();
     }
 
     /**
@@ -63,9 +66,13 @@ class DataWriterTest {
      */
     @Test
     void safeToFile() throws IOException {
-        DataWriter.safeToFile(canvas,"plik.txt");
-        Scanner myReader = new Scanner(new File("plik.txt"));
-        assertEquals("{\"position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":[],\"color\":null}",myReader.next());
+        DataWriter.safeToFile(canvas,path);
+        int hashCode = 0;
+        Scanner myReader = new Scanner(new File(path));
+        for (UiElement el:canvas.getElements()) {
+            hashCode = el.uiElem.hashCode();
+        }
+        assertEquals("{\"position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":[],\"hashCode\":"+ hashCode+",\"color\":null}",myReader.next());
     }
 
     /**
