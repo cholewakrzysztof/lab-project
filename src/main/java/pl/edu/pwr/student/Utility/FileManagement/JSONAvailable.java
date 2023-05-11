@@ -54,6 +54,9 @@ public class JSONAvailable {
         this.outputs = JSONAvailable.GetOutputsHashCodes(element);
         this.elName = element.elName;
         this.hashCode = element.uiElem.hashCode();
+        /*TODO
+        * Add special fields like color for LED, interval for Clock
+        * */
     }
 
     /**
@@ -63,8 +66,8 @@ public class JSONAvailable {
      */
     private static LinkedList<Integer> GetOutputsHashCodes(UiElement element){
         LinkedList<Integer> list = new LinkedList<>();
-        for (SignalReceiver el:element.uiElem.getOutputs()) {
-            list.add(el.hashCode());
+        for (SignalReceiver output:element.uiElem.getOutputs()) {
+            list.add(output.hashCode());
         }
         return list;
     }

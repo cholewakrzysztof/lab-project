@@ -2,13 +2,9 @@ package pl.edu.pwr.student.Utility.FileManagement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.*;
-import pl.edu.pwr.student.Gates.BasicGates.SingleInput.Delay;
-import pl.edu.pwr.student.Gates.BasicGates.SingleInput.NOT;
-import pl.edu.pwr.student.IO.Input.Clock;
-import pl.edu.pwr.student.IO.Input.Switch;
-import pl.edu.pwr.student.IO.Output.LED;
-import pl.edu.pwr.student.IO.Output.SignalReceiver;
-import pl.edu.pwr.student.IO.Output.Speaker;
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.*;
+import pl.edu.pwr.student.IO.Input.*;
+import pl.edu.pwr.student.IO.Output.*;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.UiElement;
 
@@ -21,32 +17,31 @@ import java.util.*;
  */
 public class DataReader {
     /**
-     *
      * @param path Path to file with JSON string of UI Elements
-     * @param canvas Canvas where all UI elements will be saved
+     * @param canvas Canvas where all UiElements will be saved
      * @throws Exception when something wrong with path
      */
     public static void readFromFile(String path,final Canvas canvas ) throws Exception {
         Scanner myReader = new Scanner(new File(path));
-        canvas.userInputs.clear();
-        canvas.systemOutputs.clear();
-        canvas.basicGates.clear();
-        canvas.getElements().clear();
 
+        clearBasicSets(canvas);
 
         HashMap<Integer,UiElement> elements = new HashMap<>();
-        HashMap<Integer,JSONAvailable> jsonAvailables = new HashMap<>();
+        HashMap<Integer,JSONAvailable> jsonAvailableHashMap = new HashMap<>();
 
         while(myReader.hasNext()){
             String json = myReader.next();
-            UiElement uiElement = DataReader.generateUIElementFormJSON(json,canvas);
+            UiElement uiElement = generateUIElementFormJSON(json,canvas);
             JSONAvailable jsonAvailable = generateJSONAvailableFromJSON(json);
-            elements.put(jsonAvailable.hashCode,uiElement);
-            jsonAvailables.put(jsonAvailable.hashCode,jsonAvailable);
+
+            Integer id = jsonAvailable.hashCode;
+            elements.put(id,uiElement);
+            jsonAvailableHashMap.put(id,jsonAvailable);
+
             addToProperCanvaSet(uiElement.elName,canvas);
         }
 
-        for(Map.Entry<Integer, JSONAvailable> entry : jsonAvailables.entrySet()) {
+        for(Map.Entry<Integer, JSONAvailable> entry : jsonAvailableHashMap.entrySet()) {
             Integer key = entry.getKey();
             JSONAvailable value = entry.getValue();
             UiElement el = elements.get(key);
@@ -59,23 +54,11 @@ public class DataReader {
             }
         }
     }
-    private static SignalReceiver getSignalRecieverFromCanva(Integer index, final Canvas canvas){
-        Integer currentIndex = 0;
-        UiElement uiElement = null;
-        for (UiElement element: canvas.getElements()) {
-            if(currentIndex==index){
-                uiElement = element;
-                break;
-            }
-            currentIndex++;
-        }
-        return (SignalReceiver) uiElement.uiElem;
-    }
 
     /**
-     * Update one of sets of canva (basicGates, userInputs etc.)
+     * Update one of sets of canvas (basicGates, userInputs etc.)
      * @param elName Name of UI element
-     * @param canvas Canva to update
+     * @param canvas Canvas to update
      */
     public static void addToProperCanvaSet(String elName,final Canvas canvas){
         switch (elName) {
@@ -132,16 +115,35 @@ public class DataReader {
             }
         }
     }
+
+    /**
+     * Clear all HashSets of canvas
+     * @param canvas Source canvas
+     */
+    private static void clearBasicSets(final Canvas canvas){
+        canvas.userInputs.clear();
+        canvas.systemOutputs.clear();
+        canvas.basicGates.clear();
+        canvas.getElements().clear();
+    }
+
     /**
      *
      * @param jsonString Raw JSON string of single JSONAvailable object
      * @param canvas Canvas connected with UI Element
-     * @return new UiElement
-     * @throws Exception when something wrong with jsonString
+     * @return UiElement
+     * @throws Exception Throw when JSONAvailable object cannot be created
      */
     public static UiElement generateUIElementFormJSON(String jsonString, Canvas canvas) throws Exception {
         return new UiElement(DataReader.generateJSONAvailableFromJSON(jsonString),canvas);
     }
+
+    /**
+     * Generate JSONAvailable object from JSON string
+     * @param jsonString Source string
+     * @return  JSONAvailable object
+     * @throws IOException Throw usually when fields don't match
+     */
     private static JSONAvailable generateJSONAvailableFromJSON(String jsonString) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(jsonString,JSONAvailable.class);

@@ -17,7 +17,7 @@ public class DataWriter {
      * @param canvas source of UI elements to safe
      * @param path path to place where file will be saved
      */
-    public static void safeToFile(Canvas canvas, String path) throws IOException {
+    public static void saveToFile(Canvas canvas, String path) throws IOException {
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path));
         for (UiElement uiElement: canvas.getElements()) {
             bufferedWriter.write(DataWriter.generateJSONfromUIElement(uiElement));
