@@ -2,11 +2,11 @@
 <svg
    width="50"
    height="50"
-   class="bi bi-upload"
+   class="bi bi-download"
    viewBox="0 0 50 50"
    version="1.1"
    id="svg6"
-   sodipodi:docname="LOAD.svg"
+   sodipodi:docname="SAVE.svg"
    inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -24,9 +24,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
      showgrid="false"
-     inkscape:zoom="14.750001"
-     inkscape:cx="45.288133"
-     inkscape:cy="39.796608"
+     inkscape:zoom="20.85965"
+     inkscape:cx="36.529855"
+     inkscape:cy="23.586206"
      inkscape:window-width="2560"
      inkscape:window-height="1494"
      inkscape:window-x="-11"
@@ -35,12 +35,12 @@
      inkscape:current-layer="svg6" />
   <g
      id="g167"
-     transform="matrix(3.0805084,0,0,3.0805084,-1.4946443,0.7594232)">
+     transform="matrix(3.061396,0,0,3.061396,-1.1180453,0.07935734)">
     <path
-       d="m 1.0880572,10.053406 a 0.50000001,0.50000001 0 0 1 0.5,0.5 v 2.5 a 1,1 0 0 0 1,1 H 14.588057 a 1,1 0 0 0 1,-1 v -2.5 a 0.50000001,0.50000001 0 0 1 1,0 v 2.5 a 2,2 0 0 1 -2,2 H 2.5880572 a 2,2 0 0 1 -2.00000003,-2 v -2.5 a 0.50000001,0.50000001 0 0 1 0.50000003,-0.5 z"
+       d="m 1.0423729,9.9542373 a 0.5,0.5 0 0 1 0.5,0.4999997 v 2.5 a 1,1 0 0 0 1,1 H 14.542373 a 1,1 0 0 0 1,-1 v -2.5 a 0.5,0.5 0 0 1 1,0 v 2.5 a 2,2 0 0 1 -2,2 H 2.5423729 a 2,2 0 0 1 -2,-2 v -2.5 a 0.5,0.5 0 0 1 0.5,-0.4999997 z"
        id="path2" />
     <path
-       d="m 8.0881396,1.2482708 a 0.5,0.5 0 0 1 0.708,0 l 3.0000004,3 a 0.5006316,0.5006316 0 0 1 -0.708,0.708 l -2.1460004,-2.147 v 8.7930002 a 0.5,0.5 0 0 1 -1,0 V 2.8092708 l -2.146,2.147 a 0.5006316,0.5006316 0 1 1 -0.708,-0.708 z"
+       d="m 8.265209,11.978294 a 0.5,0.5 0 0 0 0.708,0 l 3,-3.0000002 a 0.5006316,0.5006316 0 0 0 -0.708,-0.708 l -2.146,2.1470002 V 1.6242938 a 0.5,0.5 0 0 0 -1,0 v 8.7930002 l -2.146,-2.1470002 a 0.5006316,0.5006316 0 1 0 -0.708,0.708 z"
        id="path4" />
   </g>
 </svg>

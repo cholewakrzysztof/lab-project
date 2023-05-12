@@ -22,28 +22,13 @@ public class SaveButton extends Button {
     }
 
     /**
-     * Draws the SaveButton element on the canvas.
-     * Overrides the run method of the UiElement class.
-     */
-    @Override
-    public void run() {
-        sketch.stroke(0);
-        if (over(new PVector(sketch.mouseX, sketch.mouseY))){
-            sketch.fill(0, 30);
-            sketch.square(position.x,position.y,48);
-        } else {
-            sketch.fill(0, 20);
-            sketch.square(position.x,position.y,48);
-        }
-        sketch.shape(shape, position.x, position.y);
-    }
-
-    /**
      * Handles the click event of the SaveButton element.
      * Overrides the click method of the Button class.
      */
     @Override
-    public void click(){
+    public void click() {
+        sketch.getFile("Get file to save to");
+        //TODO: save
         try {
             DataWriter.saveToFile(sketch,"plik.txt");
         } catch (IOException e) {
