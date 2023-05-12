@@ -1,14 +1,9 @@
 package pl.edu.pwr.student.UI;
 
-import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.*;
-import pl.edu.pwr.student.Gates.BasicGates.SingleInput.Delay;
-import pl.edu.pwr.student.Gates.BasicGates.SingleInput.NOT;
-import pl.edu.pwr.student.IO.Input.Clock;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
-import pl.edu.pwr.student.IO.Output.Speaker;
 import pl.edu.pwr.student.Utility.FileManagement.JSONAvailable;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PVector;
@@ -86,88 +81,9 @@ public class UiElement {
      */
     public UiElement(JSONAvailable jsonAvailable, Canvas s) throws Exception {
         position = jsonAvailable.position;
-        elName = jsonAvailable.elName;;
+        elName = jsonAvailable.elName;
         sketch = s;
-        switch (elName) {
-            case "AND" -> {
-                AND temp = new AND();
-                uiElem = temp;
-                sketch.basicGates.add(temp);
-                sketch.getElements().add(new UiElement("AND", sketch, position, temp));
-            }
-            case "NAND" -> {
-                NAND temp = new NAND();
-                uiElem = temp;
-                sketch.basicGates.add(temp);
-                sketch.getElements().add(new UiElement("NAND", sketch, position, temp));
-            }
-            case "OR" -> {
-                OR temp = new OR();
-                uiElem = temp;
-                sketch.basicGates.add(temp);
-                sketch.getElements().add(new UiElement("OR", sketch, position, temp));
-            }
-            case "NOR" -> {
-                NOR temp = new NOR();
-                uiElem = temp;
-                sketch.basicGates.add(temp);
-                sketch.getElements().add(new UiElement("NOR", sketch, position, temp));
-            }
-            case "XOR" -> {
-                XOR temp = new XOR();
-                uiElem = temp;
-                sketch.basicGates.add(temp);
-                sketch.getElements().add(new UiElement("XOR", sketch, position, temp));
-            }
-            case "XNOR" -> {
-                XNOR temp = new XNOR();
-                uiElem = temp;
-                sketch.basicGates.add(temp);
-                sketch.getElements().add(new UiElement("XNOR", sketch, position, temp));
-            }
-            case "NOT" -> {
-                NOT temp = new NOT();
-                uiElem = temp;
-                sketch.basicGates.add(temp);
-                sketch.getElements().add(new UiElement("NOT", sketch, position, temp));
-            }
-            case "SPEAKER" -> {
-                Speaker temp = new Speaker();
-                uiElem = temp;
-                sketch.systemOutputs.add(temp);
-                sketch.getElements().add(new UiElement("SPEAKER", sketch, position, temp));
-            }
-            case "LED" -> {
-                LED temp = new LED("", 0);
-                temp.toggle();
-                uiElem = temp;
-                sketch.systemOutputs.add(temp);
-                sketch.getElements().add(new UiElement("LED", sketch, position, temp));
-            }
-            case "SWITCH" -> {
-                Switch temp = new Switch();
-                temp.toggle();
-                uiElem = temp;
-                sketch.userInputs.add(temp);
-                sketch.getElements().add(new UiElement("SWITCH", sketch, position, temp));
-            }
-            case "CLOCK" -> {
-                Clock temp = new Clock(1000, 1000);
-                temp.toggle();
-                uiElem = temp;
-                sketch.userInputs.add(temp);
-                sketch.getElements().add(new UiElement("CLOCK", sketch, position, temp));
-            }
-            case "DELAY" -> {
-                Delay temp = new Delay(1000);
-                sketch.userInputs.add(temp);
-                uiElem = temp;
-                sketch.getElements().add(new UiElement("DELAY", sketch, position, temp));
-            }
-            default -> {
-                throw new Exception("Bad name of JSONAvaible");
-            }
-        }
+        uiElem = s.create(elName, position);
     }
 
     /**

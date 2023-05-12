@@ -62,9 +62,6 @@ public class DataReader {
      * @param canvas Source canvas
      */
     private static void clearBasicSets(final Canvas canvas){
-        canvas.userInputs.clear();
-        canvas.systemOutputs.clear();
-        canvas.basicGates.clear();
         canvas.getElements().clear();
     }
 

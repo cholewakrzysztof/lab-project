@@ -1,18 +1,8 @@
 package pl.edu.pwr.student;
 
-import pl.edu.pwr.student.Examples.CustomClock;
-import pl.edu.pwr.student.Examples.DLatch;
-import pl.edu.pwr.student.Examples.Register;
-import pl.edu.pwr.student.Examples.SRLatch;
-import pl.edu.pwr.student.Gates.CompoundGate;
-import pl.edu.pwr.student.IO.Input.SignalSender;
-import pl.edu.pwr.student.IO.Output.SignalReceiver;
-import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
+import pl.edu.pwr.student.Examples.*;
 import pl.edu.pwr.student.UI.Canvas;
 import uibooster.UiBooster;
-
-import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * Main class of the application
@@ -40,27 +30,8 @@ public class Simulation {
      * @param args - arguments passed to the application
      */
     public static void main(String[] args) {
-        // All basic gates(AND OR XOR NAND NOR XNOR NOT)
-        // are to be added to this collection when created by the user
-        // and removed from it when deleted from the simulation
-        HashSet<Compoundable> basicGates = new HashSet<>();
-
-        // All compound gates that are currently in simulation should be put in this collection
-        HashSet<CompoundGate> compoundGates = new HashSet<>();
-
-        // When a new compound gate is created by the user it should be added to this collection
-        // The key is the name of the gate given by the user during its creation
-        // When adding new compound gates to the simulation use 'compoundGates.add(new CompoundGate(savedCompoundGates.get(nameOfTheGate)));'
-        HashMap<String, CompoundGate> savedCompoundGates = new HashMap<>();
-
-        // All inputs and clocks in the simulation are to be in this collection
-        HashSet<SignalSender> userInputs = new HashSet<>();
-
-        // All outputs in the simulation are to be in this collection
-        HashSet<SignalReceiver> systemOutputs = new HashSet<>();
-
         try {
-            Canvas canvas = new Canvas(basicGates, compoundGates, savedCompoundGates, userInputs, systemOutputs);
+            new Canvas();
         } catch (Exception e) {
             new UiBooster().showException(
                     "An error occurred",
