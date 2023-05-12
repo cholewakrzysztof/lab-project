@@ -66,7 +66,7 @@ class DataWriterTest {
      */
     @Test
     void saveToFile() throws IOException {
-        DataWriter.saveToFile(canvas,path);
+        DataWriter.saveToFile(canvas, new File(path));
         int hashCode = 0;
         Scanner myReader = new Scanner(new File(path));
         for (UiElement el:canvas.getElements()) {

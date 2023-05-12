@@ -69,7 +69,7 @@ class DataReaderTest {
         fileWriter.write("{\"position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":[],\"hashCode\":120345,\"color\":null}");
         fileWriter.close();
         canvas.getElements().clear();
-        DataReader.readFromFile("plik.txt",canvas);
+        DataReader.readFromFile(new File("plik.txt"),canvas);
         assertEquals(1, canvas.getElements().size());
     }
 
@@ -92,7 +92,7 @@ class DataReaderTest {
     void addToProperCanvasSetCaseBasicGate(){
         UiElement element = new UiElement("AND",canvas,new PVector(0f,0f),new AND());
         canvas.basicGates.clear();
-        DataReader.addToProperCanvaSet(element.elName,canvas);
+        canvas.create(element.elName,element.position);
         assertEquals(1, canvas.basicGates.size());
     }
     /**
@@ -102,7 +102,7 @@ class DataReaderTest {
     void addToProperCanvasSetCaseSystemOutputs(){
         UiElement element = new UiElement("LED",canvas,new PVector(0f,0f),new LED("",100));
         canvas.systemOutputs.clear();
-        DataReader.addToProperCanvaSet(element.elName,canvas);
+        canvas.create(element.elName,element.position);
         assertEquals(1, canvas.systemOutputs.size());
     }
     /**
@@ -112,7 +112,7 @@ class DataReaderTest {
     void addToProperCanvasSetCaseSystemInputs(){
         UiElement element = new UiElement("SWITCH",canvas,new PVector(0f,0f),new Switch());
         canvas.userInputs.clear();
-        DataReader.addToProperCanvaSet(element.elName,canvas);
+        canvas.create(element.elName,element.position);
         assertEquals(1, canvas.userInputs.size());
     }
     /**
@@ -124,7 +124,7 @@ class DataReaderTest {
         canvas.userInputs.clear();
         canvas.systemOutputs.clear();
         canvas.basicGates.clear();
-        DataReader.addToProperCanvaSet(element.elName,canvas);
+        canvas.create(element.elName,element.position);
         assertEquals(0, canvas.basicGates.size());
         assertEquals(0, canvas.systemOutputs.size());
         assertEquals(1, canvas.userInputs.size());

@@ -20,30 +20,13 @@ public class LoadButton extends Button {
     }
 
     /**
-     * Draws the LoadButton element on the canvas.
-     * Overrides the run method of the UiElement class.
-     */
-    @Override
-    public void run() {
-        sketch.stroke(0);
-        if (over(new PVector(sketch.mouseX, sketch.mouseY))){
-            sketch.fill(0, 30);
-            sketch.square(position.x,position.y,48);
-        } else {
-            sketch.fill(0, 20);
-            sketch.square(position.x,position.y,48);
-        }
-        sketch.shape(shape, position.x, position.y);
-    }
-
-    /**
      * Handles the click event of the LoadButton element.
      * Overrides the click method of the Button class.
      */
     @Override
     public void click() {
         try {
-            DataReader.readFromFile("plik.txt",sketch);
+            DataReader.readFromFile(sketch.getFile(), sketch);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

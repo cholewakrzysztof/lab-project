@@ -12,6 +12,7 @@ import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.IO.Output.Speaker;
 import pl.edu.pwr.student.UI.Buttons.*;
+import pl.edu.pwr.student.Utility.FileManagement.DataWriter;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -162,9 +163,12 @@ public class Canvas extends PApplet {
                     "Do you want to save your work?",
                     "Exiting",
                     () -> {
-                        getDirectory();
-                        //TODO: saving
-                        super.exit();
+                        try {
+                            DataWriter.saveToFile(this,getDirectory());
+                            super.exit();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     },
                     super::exit);
         }
@@ -194,10 +198,7 @@ public class Canvas extends PApplet {
                         new ListElement("DELAY", null, "/icon/DELAY.png")
                 ).run().hide();
 
-        booster.createNotification(
-                "Started",
-                "Gates-Simulation"
-        );
+        showPopup("Started");
     }
 
     /**
@@ -260,7 +261,6 @@ public class Canvas extends PApplet {
                             mouseX / ShapeLoader.scale - ShapeLoader.size/2f + offset.x,
                             mouseY / ShapeLoader.scale - ShapeLoader.size/2f + offset.y
                     );
-                    //TODO: make it added automatically (created new gates by user are now a problem)
                     create(selected.getTitle(), mouse);
                 }
             }
@@ -446,12 +446,13 @@ public class Canvas extends PApplet {
      * Gets file to save to or load from
      * @return file
      */
-    public File getFile(String title) {
-        return booster.showFileSelection(title + ": .gss", "gss");
+    public File getFile() {
+        return booster.showFileSelection("Get file to save to: .gss", "gss");
     }
 
     /**
      * Gets file to save to or load from
+     *
      * @return file
      */
     public File getDirectory() {
@@ -530,5 +531,17 @@ public class Canvas extends PApplet {
                 elements.add(new UiElement(type, this, mouse, temp));
             }
         }
+    }
+
+    /**
+     * Shows popup with message
+     *
+     * @param message - String to show
+     */
+    public void showPopup(String message) {
+        booster.createNotification(
+                message,
+                "Gates-Simulation"
+        );
     }
 }

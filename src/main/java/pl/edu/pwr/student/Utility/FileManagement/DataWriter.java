@@ -8,6 +8,7 @@ import pl.edu.pwr.student.UI.UiElement;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.File;
 
 /**
  * Class responsible for safe HashSet of UI elements to files
@@ -15,10 +16,14 @@ import java.io.IOException;
 public class DataWriter {
     /**
      * @param canvas source of UI elements to safe
-     * @param path path to place where file will be saved
+     * @param directory path to place where file will be saved
      */
-    public static void saveToFile(Canvas canvas, String path) throws IOException {
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path));
+    public static void saveToFile(Canvas canvas, File directory) throws IOException {
+        if (directory == null || !directory.exists() || !directory.isDirectory()) {
+            canvas.showPopup("Directory does not exist or is not a directory");
+            return;
+        }
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(directory.getAbsoluteFile() + "\\" + System.currentTimeMillis() + ".gss"));
         for (UiElement uiElement: canvas.getElements()) {
             bufferedWriter.write(DataWriter.generateJSONfromUIElement(uiElement));
             bufferedWriter.newLine();
