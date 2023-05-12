@@ -1,12 +1,9 @@
 package pl.edu.pwr.student.UI;
 
-import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.*;
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.Delay;
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.NOT;
-import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Input.Clock;
-import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
@@ -61,31 +58,6 @@ public class Canvas extends PApplet {
     private final Set<UiElement> elements = new HashSet<>();
 
     /**
-     * The set of all basic gates.
-     */
-    private final HashSet<Compoundable> basicGates;
-
-    /**
-     * The set of all compound gates.
-     */
-    private final HashSet<CompoundGate> compoundGates;
-
-    /**
-     * The map of all saved compound gates.
-     */
-    private final HashMap<String, CompoundGate> savedCompoundGates;
-
-    /**
-     * The set of all user inputs.
-     */
-    private final HashSet<SignalSender> userInputs;
-
-    /**
-     * The set of all system outputs.
-     */
-    private final HashSet<SignalReceiver> systemOutputs;
-
-    /**
      * The list of all buttons.
      */
     private final ArrayList<Button> buttons = new ArrayList<>();
@@ -112,26 +84,9 @@ public class Canvas extends PApplet {
 
     /**
      * Constructor
-     * @param basicGates list of all basic gates
-     * @param compoundGates list of all compound gates
-     * @param savedCompoundGates list of all saved compound gates
-     * @param userInputs list of all user inputs
-     * @param systemOutputs list of all system outputs
      */
-    public Canvas (
-        HashSet<Compoundable> basicGates,
-        HashSet<CompoundGate> compoundGates,
-        HashMap<String, CompoundGate> savedCompoundGates,
-        HashSet<SignalSender> userInputs,
-        HashSet<SignalReceiver> systemOutputs
-    ) {
+    public Canvas () {
         booster = new UiBooster(UiBoosterOptions.Theme.DARK_THEME);
-
-        this.basicGates = basicGates;
-        this.compoundGates = compoundGates;
-        this.savedCompoundGates = savedCompoundGates;
-        this.userInputs = userInputs;
-        this.systemOutputs = systemOutputs;
 
         // Set up the canvas
         String[] processingArgs = {"Gates-Simulation"};
@@ -272,7 +227,6 @@ public class Canvas extends PApplet {
                 for (UiElement g : elements) {
                     if (g.over(new PVector(mouseX, mouseY))) {
                         g.uiElem.fullDisconnect();
-                        basicGates.remove(g.uiElem);
                         elements.remove(g);
                         break;
                     }
@@ -463,65 +417,53 @@ public class Canvas extends PApplet {
         switch (type) {
             case "AND" -> {
                 AND temp =  new AND();
-                basicGates.add(temp);
                 elements.add(new UiElement(type, this, mouse, temp));
             }
             case "NAND" -> {
                 NAND temp = new NAND();
-                basicGates.add(temp);
                 elements.add(new UiElement(type, this, mouse, temp));
             }
             case "OR" -> {
                 OR temp = new OR();
-                basicGates.add(temp);
                 elements.add(new UiElement(type, this, mouse, temp));
             }
             case "NOR" -> {
                 NOR temp = new NOR();
-                basicGates.add(temp);
                 elements.add(new UiElement(type, this, mouse, temp));
             }
             case "XOR" -> {
                 XOR temp = new XOR();
-                basicGates.add(temp);
                 elements.add(new UiElement(type, this, mouse, temp));
             }
             case "XNOR" -> {
                 XNOR temp = new XNOR();
-                basicGates.add(temp);
                 elements.add(new UiElement(type, this, mouse, temp));
             }
             case "NOT" -> {
                 NOT temp = new NOT();
-                basicGates.add(temp);
                 elements.add(new UiElement(type, this, mouse, temp));
             }
             case "SPEAKER" -> {
                 Speaker temp = new Speaker();
-                systemOutputs.add(temp);
                 elements.add(new UiElement(type, this, mouse, temp));
             }
             case "LED" -> {
                 LED temp = new LED("", 0);
                 temp.toggle();
-                systemOutputs.add(temp);
                 elements.add(new UiElement(type, this, mouse, temp));
             }
             case "SWITCH" -> {
                 Switch temp = new Switch();
                 temp.toggle();
-                userInputs.add(temp);
                 elements.add(new UiElement(type, this, mouse, temp));
             }
             case "CLOCK" -> {
                 Clock temp = new Clock(1000, 1000);
                 temp.toggle();
-                userInputs.add(temp);
                 elements.add(new UiElement(type, this, mouse, temp));
             }
             case "DELAY" -> {
                 Delay temp = new Delay(1000);
-                userInputs.add(temp);
                 elements.add(new UiElement(type, this, mouse, temp));
             }
         }
