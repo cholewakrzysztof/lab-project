@@ -1,5 +1,6 @@
 package pl.edu.pwr.student.IO.Output;
 
+import pl.edu.pwr.student.IO.UserUsable;
 import pl.edu.pwr.student.UI.UiAvailable;
 import processing.core.PApplet;
 import processing.sound.SinOsc;
@@ -7,7 +8,7 @@ import processing.sound.SinOsc;
 /**
  * Class that makes a sound as long as its state is on.
  */
-public class Speaker extends BasicReceiver implements UiAvailable {
+public class Speaker extends BasicReceiver implements UiAvailable, UserUsable {
     /**
      * Default constructor.
      */

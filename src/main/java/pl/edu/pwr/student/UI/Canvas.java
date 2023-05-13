@@ -101,6 +101,7 @@ public class Canvas extends PApplet {
         buttons.add(new DeleteButton(this));
         buttons.add(new SaveButton(this));
         buttons.add(new LoadButton(this));
+        buttons.add(new AddButton(this));
     }
 
     /**

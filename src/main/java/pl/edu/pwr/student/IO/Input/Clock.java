@@ -1,12 +1,13 @@
 package pl.edu.pwr.student.IO.Input;
 
+import pl.edu.pwr.student.IO.UserUsable;
 import pl.edu.pwr.student.Simulation;
 import pl.edu.pwr.student.UI.UiAvailable;
 
 /**
  * Class that represents a clock logical element with configurable high and low times.
  */
-public class Clock extends SignalSender implements Runnable, UiAvailable {
+public class Clock extends SignalSender implements Runnable, UiAvailable, UserUsable {
     /**
      * Creates a new clock element.
      * @param millisecondsOn the duration for which the clock will be on, in milliseconds.

@@ -1,5 +1,6 @@
 package pl.edu.pwr.student.IO.Output;
 
+import pl.edu.pwr.student.IO.UserUsable;
 import pl.edu.pwr.student.Simulation;
 import pl.edu.pwr.student.UI.UiAvailable;
 
@@ -7,7 +8,7 @@ import pl.edu.pwr.student.UI.UiAvailable;
  * OBSOLETE - SHOULD BE CHANGED TO BE USED IN THE UI
  * OLD FUNCTIONALITY MOVED TO {@link DebugLED}
  */
-public class LED extends BasicReceiver implements Runnable, UiAvailable {
+public class LED extends BasicReceiver implements Runnable, UiAvailable, UserUsable {
     private final String name;
     private long milliseconds;
     private boolean power = false;

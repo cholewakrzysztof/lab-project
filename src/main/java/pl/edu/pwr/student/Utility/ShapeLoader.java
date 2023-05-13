@@ -61,6 +61,7 @@ public class ShapeLoader {
         buttons.put("INTERACT", sketch.loadShape("buttons/INTERACT.svg"));
         buttons.put("SAVE", sketch.loadShape("buttons/SAVE.svg"));
         buttons.put("LOAD", sketch.loadShape("buttons/LOAD.svg"));
+        buttons.put("ADD", sketch.loadShape("buttons/ADD.svg"));
     }
 
     /**
