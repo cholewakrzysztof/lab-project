@@ -14,13 +14,22 @@ import processing.core.PVector;
 
 import java.util.Set;
 
+/**
+ * Creates gate, saves it to proper place and performs necessary actions
+ */
 public class GateCreator {
+
+    /**
+     * Constructor of GateCreator
+     */
+    public GateCreator() {}
 
     /**
      * Creates gate, saves it to proper place and performs necessary actions
      *
      * @param type - type of gate
      * @param mouse - vector of mouse
+     * @param canvas - canvas
      */
     public static void create(String type, PVector mouse, Canvas canvas) {
         Set<UiElement> elements = canvas.getElements();

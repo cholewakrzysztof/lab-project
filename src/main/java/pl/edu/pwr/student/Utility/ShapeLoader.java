@@ -91,12 +91,18 @@ public class ShapeLoader {
         return buttons.get(button);
     }
 
+    /**
+     * Increments scale of all shapes
+     */
     public static void incrementScale() {
         if (scale >= 3f) return;
         scale += 0.1f;
         resize();
     }
 
+    /**
+     * Decrements scale of all shapes
+     */
     public static void decrementScale() {
         if (scale <= 0.2f) return;
         scale -= 0.1f;

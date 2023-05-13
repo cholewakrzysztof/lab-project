@@ -397,6 +397,7 @@ public class Canvas extends PApplet {
     /**
      * Gets file to save to or load from
      * @return file
+     * @param title title of the file
      */
     public File getFile(String title) {
         return booster.showFileSelection(title + ": .gss", "gss");
