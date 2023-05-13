@@ -102,6 +102,8 @@ public class Canvas extends PApplet {
         buttons.add(new SaveButton(this));
         buttons.add(new LoadButton(this));
         buttons.add(new AddButton(this));
+
+        windowResizable(true);
     }
 
     /**
@@ -148,7 +150,9 @@ public class Canvas extends PApplet {
                         new ListElement("CLOCK", null, "/icon/CLOCK.png"),
                         new ListElement("DELAY", null, "/icon/DELAY.png"),
                         new ListElement("VIRTUALIO", "Input or output for CompoundGate", "")
-                ).run().hide();
+                )
+                .run()
+                .hide();
 
         booster.createNotification(
                 "Started",
