@@ -19,7 +19,7 @@ public class VirtualIO extends BasicPassThrough {
     /**
      * Name of the virtual input/output port.
      */
-    public final String name;
+    public String name;
 
     /**
      * Returns true since this is a virtual input/output port.
@@ -39,5 +39,12 @@ public class VirtualIO extends BasicPassThrough {
     @Override
     public Compoundable getNewInstance() {
         return new VirtualIO(name);
+    }
+
+    /**
+     * Changes the name of the virtual input/output port.
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 }

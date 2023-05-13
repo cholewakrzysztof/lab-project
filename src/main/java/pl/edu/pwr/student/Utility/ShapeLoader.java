@@ -54,6 +54,7 @@ public class ShapeLoader {
         shapes.put("SWITCH-FALSE", sketch.loadShape("elements/SWITCH-FALSE.svg"));
         shapes.put("SPEAKER", sketch.loadShape("elements/SPEAKER.svg"));
         shapes.put("DELAY", sketch.loadShape("elements/DELAY.svg"));
+        shapes.put("VIRTUALIO", sketch.loadShape("elements/DELAY.svg"));
 
         buttons.put("CONNECT", sketch.loadShape("buttons/CONNECT.svg"));
         buttons.put("CREATE", sketch.loadShape("buttons/CREATE.svg"));

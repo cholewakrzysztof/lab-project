@@ -1,14 +1,14 @@
 package pl.edu.pwr.student.UI;
 
-import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.*;
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.Delay;
-import pl.edu.pwr.student.Gates.BasicGates.SingleInput.NOT;
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
 import pl.edu.pwr.student.IO.Input.Clock;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.IO.Output.Speaker;
 import pl.edu.pwr.student.UI.Buttons.*;
+import pl.edu.pwr.student.UI.Creator.GateCreator;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -145,7 +145,8 @@ public class Canvas extends PApplet {
                         new ListElement("LED", null, "/icon/LED.png"),
                         new ListElement("SWITCH", null, "/icon/SWITCH-FALSE.png"),
                         new ListElement("CLOCK", null, "/icon/CLOCK.png"),
-                        new ListElement("DELAY", null, "/icon/DELAY.png")
+                        new ListElement("DELAY", null, "/icon/DELAY.png"),
+                        new ListElement("VIRTUALIO", "Input or output for CompoundGate", "/icon/DELAY.png")
                 ).run().hide();
 
         booster.createNotification(
@@ -211,7 +212,7 @@ public class Canvas extends PApplet {
                             mouseY / ShapeLoader.scale - ShapeLoader.size/2f + offset.y
                     );
                     //TODO: make it added automatically (created new gates by user are now a problem)
-                    create(selected.getTitle(), mouse);
+                    GateCreator.create(selected.getTitle(), mouse, this);
                 }
             }
             case 2 -> {
@@ -287,6 +288,13 @@ public class Canvas extends PApplet {
                                 .show();
                         ((Speaker) g.uiElem).setFrequency(
                                 temp.getByLabel("Frequency").asInt()
+                        );
+                    } else if (g.uiElem instanceof VirtualIO) {
+                        Form temp = booster.createForm("NAME")
+                                .addTextArea("Name", ((VirtualIO)g.uiElem).name)
+                                .show();
+                        ((VirtualIO) g.uiElem).setName(
+                                temp.getByLabel("Name").asString()
                         );
                     }
                 }
@@ -405,67 +413,5 @@ public class Canvas extends PApplet {
      */
     public File getDirectory() {
         return booster.showDirectorySelection();
-    }
-
-    /**
-     * Creates gate, saves it to proper place and performs necessary actions
-     *
-     * @param type - type of gate
-     * @param mouse - vector of mouse
-     */
-    public void create(String type, PVector mouse) {
-        switch (type) {
-            case "AND" -> {
-                AND temp =  new AND();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "NAND" -> {
-                NAND temp = new NAND();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "OR" -> {
-                OR temp = new OR();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "NOR" -> {
-                NOR temp = new NOR();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "XOR" -> {
-                XOR temp = new XOR();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "XNOR" -> {
-                XNOR temp = new XNOR();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "NOT" -> {
-                NOT temp = new NOT();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "SPEAKER" -> {
-                Speaker temp = new Speaker();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "LED" -> {
-                LED temp = new LED("", 0);
-                temp.toggle();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "SWITCH" -> {
-                Switch temp = new Switch();
-                temp.toggle();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "CLOCK" -> {
-                Clock temp = new Clock(1000, 1000);
-                temp.toggle();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "DELAY" -> {
-                Delay temp = new Delay(1000);
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-        }
     }
 }
