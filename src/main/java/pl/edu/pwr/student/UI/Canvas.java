@@ -147,7 +147,9 @@ public class Canvas extends PApplet {
                         new ListElement("SWITCH", null, "/icon/SWITCH-FALSE.png"),
                         new ListElement("CLOCK", null, "/icon/CLOCK.png"),
                         new ListElement("DELAY", null, "/icon/DELAY.png")
-                ).run().hide();
+                )
+                .run()
+                .hide();
 
         booster.createNotification(
                 "Started",
