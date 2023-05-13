@@ -1,5 +1,6 @@
 package pl.edu.pwr.student.UI;
 
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
@@ -93,11 +94,32 @@ public class UiElement {
         // Code for displaying the state of Switch and LED elements
 
         sketch.fill(0);
-        if (uiElem instanceof Switch) {
+        if (uiElem instanceof VirtualIO){
+            sketch.fill(0);
+            sketch.textAlign(sketch.CENTER, sketch.CENTER);
+            sketch.textSize(32*ShapeLoader.scale);
+            String temp = ((VirtualIO)uiElem).name;
+            if (temp.length() > 3){
+                temp = temp.substring(0,3);
+            }
+            sketch.text(
+                    temp,
+                    (position.x-sketch.getOffset().x+ShapeLoader.size/2)*ShapeLoader.scale,
+                    (position.y-sketch.getOffset().y+ShapeLoader.size/2)*ShapeLoader.scale
+            );
+        } else if (uiElem instanceof Switch) {
             if (uiElem.getState()){
-                sketch.shape(ShapeLoader.getShape("SWITCH-TRUE"), (position.x-sketch.getOffset().x)*ShapeLoader.scale, (position.y-sketch.getOffset().y)*ShapeLoader.scale);
+                sketch.shape(
+                        ShapeLoader.getShape("SWITCH-TRUE"),
+                        (position.x-sketch.getOffset().x)*ShapeLoader.scale,
+                        (position.y-sketch.getOffset().y)*ShapeLoader.scale
+                );
             } else {
-                sketch.shape(ShapeLoader.getShape("SWITCH-FALSE"), (position.x-sketch.getOffset().x)*ShapeLoader.scale, (position.y-sketch.getOffset().y)*ShapeLoader.scale);
+                sketch.shape(
+                        ShapeLoader.getShape("SWITCH-FALSE"),
+                        (position.x-sketch.getOffset().x)*ShapeLoader.scale,
+                        (position.y-sketch.getOffset().y)*ShapeLoader.scale
+                );
             }
         } else {
             sketch.shape(ShapeLoader.getShape(elName),
