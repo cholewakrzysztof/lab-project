@@ -3,6 +3,7 @@ package pl.edu.pwr.student.Utility.FileManagement;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import pl.edu.pwr.student.IO.Output.*;
 import pl.edu.pwr.student.UI.Canvas;
+import pl.edu.pwr.student.UI.Creator.GateCreator;
 import pl.edu.pwr.student.UI.UiElement;
 
 import java.io.File;
@@ -40,7 +41,7 @@ public class DataReader {
             elements.put(id,uiElement);
             jsonAvailableHashMap.put(id,jsonAvailable);
 
-            canvas.create(uiElement.elName, uiElement.position);
+            GateCreator.create(uiElement.elName, uiElement.position, canvas);
         }
 
         for(Map.Entry<Integer, JSONAvailable> entry : jsonAvailableHashMap.entrySet()) {

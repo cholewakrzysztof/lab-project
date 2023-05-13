@@ -1,14 +1,13 @@
 package pl.edu.pwr.student.UI;
 
-import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.*;
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.Delay;
-import pl.edu.pwr.student.Gates.BasicGates.SingleInput.NOT;
 import pl.edu.pwr.student.IO.Input.Clock;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.IO.Output.Speaker;
 import pl.edu.pwr.student.UI.Buttons.*;
+import pl.edu.pwr.student.UI.Creator.GateCreator;
 import pl.edu.pwr.student.Utility.FileManagement.DataWriter;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PApplet;
@@ -103,6 +102,8 @@ public class Canvas extends PApplet {
         buttons.add(new DeleteButton(this));
         buttons.add(new SaveButton(this));
         buttons.add(new LoadButton(this));
+
+        windowResizable(true);
     }
 
     /**
@@ -218,7 +219,7 @@ public class Canvas extends PApplet {
                     );
 
                     try {
-                        create(selected.getTitle(), mouse);
+                        GateCreator.create(selected.getTitle(), mouse, this);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -415,73 +416,6 @@ public class Canvas extends PApplet {
      */
     public File getDirectory() {
         return booster.showDirectorySelection();
-    }
-
-    /**
-     * Creates gate, saves it to proper place and performs necessary actions
-     *
-     * @param type - type of gate
-     * @param mouse - vector of mouse
-     */
-    public UiAvailable create(String type, PVector mouse) throws Exception {
-        UiAvailable temp;
-        switch (type) {
-            case "AND" -> {
-                temp =  new AND();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "NAND" -> {
-                temp = new NAND();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "OR" -> {
-                temp = new OR();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "NOR" -> {
-                temp = new NOR();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "XOR" -> {
-                temp = new XOR();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "XNOR" -> {
-                temp = new XNOR();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "NOT" -> {
-                temp = new NOT();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "SPEAKER" -> {
-                temp = new Speaker();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "LED" -> {
-                temp = new LED("", 0);
-                ((LED)temp).toggle();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "SWITCH" -> {
-                temp = new Switch();
-                ((Switch)temp).toggle();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "CLOCK" -> {
-                temp = new Clock(1000, 1000);
-                ((Clock)temp).toggle();
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            case "DELAY" -> {
-                temp = new Delay(1000);
-                elements.add(new UiElement(type, this, mouse, temp));
-            }
-            default -> throw new Exception("Bad name of JSONAvaible");
-
-        }
-
-        return temp;
     }
 
     /**

@@ -4,6 +4,7 @@ import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
+import pl.edu.pwr.student.UI.Creator.GateCreator;
 import pl.edu.pwr.student.Utility.FileManagement.JSONAvailable;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PVector;
@@ -83,7 +84,7 @@ public class UiElement {
         position = jsonAvailable.position;
         elName = jsonAvailable.elName;
         sketch = s;
-        uiElem = s.create(elName, position);
+        uiElem = GateCreator.create(elName, position, s);
     }
 
     /**
