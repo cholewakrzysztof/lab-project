@@ -109,6 +109,7 @@ public class UiElement {
         if (uiElem.getState()){
             if (uiElem instanceof LED) {
                 if (color == null) color = new Color(0, 255, 0);
+                sketch.stroke(color.getRGB());
                 sketch.fill(color.getRGB());
                 sketch.circle(
                         (position.x-sketch.getOffset().x)*ShapeLoader.scale + ShapeLoader.size *(ShapeLoader.scale)/2,
