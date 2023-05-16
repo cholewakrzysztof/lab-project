@@ -1,6 +1,7 @@
 package pl.edu.pwr.student.UI.Buttons;
 
 import pl.edu.pwr.student.UI.Canvas;
+import pl.edu.pwr.student.Utility.FileManagement.DataReader;
 import processing.core.PVector;
 
 /**
@@ -24,7 +25,10 @@ public class LoadButton extends Button {
      */
     @Override
     public void click() {
-        sketch.getFile("Get file to load from");
-        //TODO: load
+        try {
+            DataReader.readFromFile(sketch.getFile(), sketch);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

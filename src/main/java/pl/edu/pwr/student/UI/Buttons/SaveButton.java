@@ -1,7 +1,10 @@
 package pl.edu.pwr.student.UI.Buttons;
 
 import pl.edu.pwr.student.UI.Canvas;
+import pl.edu.pwr.student.Utility.FileManagement.DataWriter;
 import processing.core.PVector;
+
+import java.io.IOException;
 
 /**
  * Represents a button for creating new elements on the canvas.
@@ -24,7 +27,10 @@ public class SaveButton extends Button {
      */
     @Override
     public void click() {
-        sketch.getDirectory();
-        //TODO: save
+        try {
+            DataWriter.saveToFile(sketch, sketch.getDirectory());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
