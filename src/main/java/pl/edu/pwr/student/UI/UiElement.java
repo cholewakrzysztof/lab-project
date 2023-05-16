@@ -149,8 +149,8 @@ public class UiElement {
             );
         }
 
-        if (uiElem.getState()){
-            if (uiElem instanceof LED) {
+        if (uiElem instanceof LED) {
+            if (uiElem.getState()){
                 if (color == null) color = new Color(0, 255, 0);
                 sketch.stroke(color.getRGB());
                 sketch.fill(color.getRGB());

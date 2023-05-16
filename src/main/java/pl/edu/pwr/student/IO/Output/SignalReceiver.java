@@ -1,11 +1,12 @@
 package pl.edu.pwr.student.IO.Output;
 
+import pl.edu.pwr.student.Gates.CreatableInstance;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 
 /**
  * Interface for a signal receiver which can connect to a {@link SignalSender} and receive updates.
  */
-public interface SignalReceiver {
+public interface SignalReceiver extends CreatableInstance {
     /**
      * Gets the current state of the signal receiver.
      *

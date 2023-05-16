@@ -5,7 +5,9 @@ import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
+import pl.edu.pwr.student.UI.UiAvailable;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -13,7 +15,7 @@ import java.util.HashSet;
  * Represents a gate that is composed of other gates.
  * Can be used to combine multiple gates into a single logical unit.
  */
-public class CompoundGate {
+public class CompoundGate implements CreatableInstance, UiAvailable {
     /**
      * Copy constructor.
      *
@@ -76,7 +78,7 @@ public class CompoundGate {
      *
      * @return an array of input names
      */
-    public String[] getInputs() {
+    public String[] getInputKeys() {
         return inputKeys;
     }
 
@@ -85,7 +87,7 @@ public class CompoundGate {
      *
      * @return an array of output names
      */
-    public String[] getOutputs() {
+    public String[] getOutputKeys() {
         return outputKeys;
     }
 
@@ -109,6 +111,11 @@ public class CompoundGate {
         return outputs.get(name);
     }
 
+    @Override
+    public HashSet<SignalReceiver> getOutputs() {
+        return UiAvailable.super.getOutputs();
+    }
+
     /**
      * Disconnects all inputs and outputs of this compound gate.
      * Allows the gate to be completely removed from the simulation and collected by the garbage collector.
@@ -120,6 +127,9 @@ public class CompoundGate {
         for (String outputKey : outputKeys)
             outputs.get(outputKey).disconnectOutputs();
     }
+
+    @Override
+    public void connection(SignalReceiver receiver) {}
 
     /**
      * Returns a set of the gates that make up this compound gate.
@@ -140,7 +150,7 @@ public class CompoundGate {
     private void create(@NotNull HashSet<Compoundable> gates) {
         HashMap<Compoundable, Compoundable> copiedGates = new HashMap<>();
         for (Compoundable gate : gates)
-            copiedGates.put(gate, gate.getNewInstance());
+            copiedGates.put(gate, (Compoundable) gate.getNewInstance());
 
         for (Compoundable gate : gates)
             for (SignalReceiver receiver : gate.getOutputs())
@@ -190,5 +200,14 @@ public class CompoundGate {
 
         inputKeys = tempInputs.toArray(new String[0]);
         outputKeys = tempOutputs.toArray(new String[0]);
+    }
+
+    @Override
+    public CreatableInstance getNewInstance() {
+        try {
+            return this.getClass().getDeclaredConstructor(Class.forName("pl.edu.pwr.student.Gates.CompoundGate")).newInstance(this);
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException |
+                 ClassNotFoundException ignored) {}
+        return null;
     }
 }

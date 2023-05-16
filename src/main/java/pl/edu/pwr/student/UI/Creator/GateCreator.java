@@ -4,6 +4,8 @@ import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.*;
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.Delay;
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.NOT;
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
+import pl.edu.pwr.student.Gates.CompoundGate;
+import pl.edu.pwr.student.Gates.CreatableInstance;
 import pl.edu.pwr.student.IO.Input.Clock;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
@@ -13,12 +15,14 @@ import pl.edu.pwr.student.UI.UiAvailable;
 import pl.edu.pwr.student.UI.UiElement;
 import processing.core.PVector;
 
-import java.util.Set;
+import java.util.HashMap;
 
 /**
  * Creates gate, saves it to proper place and performs necessary actions
  */
 public class GateCreator {
+
+    private static HashMap<String, CreatableInstance> possibleGates;
 
     /**
      * Constructor of GateCreator
@@ -33,65 +37,39 @@ public class GateCreator {
      * @param canvas - canvas
      */
     public static UiAvailable create(String type, PVector mouse, Canvas canvas) {
-        Set<UiElement> elements = canvas.getElements();
-        UiAvailable temp = null;
-        switch (type) {
-            case "AND" -> {
-                temp =  new AND();
-                elements.add(new UiElement(type, canvas, mouse, temp));
-            }
-            case "NAND" -> {
-                temp = new NAND();
-                elements.add(new UiElement(type, canvas, mouse, temp));
-            }
-            case "OR" -> {
-                temp = new OR();
-                elements.add(new UiElement(type, canvas, mouse, temp));
-            }
-            case "NOR" -> {
-                temp = new NOR();
-                elements.add(new UiElement(type, canvas, mouse, temp));
-            }
-            case "XOR" -> {
-                temp = new XOR();
-                elements.add(new UiElement(type, canvas, mouse, temp));
-            }
-            case "XNOR" -> {
-                temp = new XNOR();
-                elements.add(new UiElement(type, canvas, mouse, temp));
-            }
-            case "NOT" -> {
-                temp = new NOT();
-                elements.add(new UiElement(type, canvas, mouse, temp));
-            }
-            case "SPEAKER" -> {
-                temp = new Speaker();
-                elements.add(new UiElement(type, canvas, mouse, temp));
-            }
-            case "LED" -> {
-                temp = new LED("", 0);
-                ((LED)temp).toggle();
-                elements.add(new UiElement(type, canvas, mouse, temp));
-            }
-            case "SWITCH" -> {
-                temp = new Switch();
-                ((Switch)temp).toggle();
-                elements.add(new UiElement(type, canvas, mouse, temp));
-            }
-            case "CLOCK" -> {
-                temp = new Clock(1000, 1000);
-                ((Clock)temp).toggle();
-                elements.add(new UiElement(type, canvas, mouse, temp));
-            }
-            case "DELAY" -> {
-                temp = new Delay(1000);
-                elements.add(new UiElement(type, canvas, mouse, temp));
-            }
-            case "VIRTUALIO" -> {
-                temp = new VirtualIO("IO");
-                elements.add(new UiElement(type, canvas, mouse, temp));
-            }
+        UiAvailable ci = (UiAvailable) possibleGates.get(type).getNewInstance();
+
+        if (ci instanceof Clock){
+            ((Clock) ci).toggle();
+        } else if (ci instanceof Switch){
+            ((Switch) ci).toggle();
+        } else if (ci instanceof LED){
+            ((LED) ci).toggle();
         }
-        return temp;
+
+        canvas.getElements().add(new UiElement(type, canvas, mouse, ci));
+
+        return ci;
+    }
+
+    public static void initGates() {
+        possibleGates = new HashMap<>();
+        possibleGates.put("AND", new AND());
+        possibleGates.put("NAND", new NAND());
+        possibleGates.put("OR", new OR());
+        possibleGates.put("NOR", new NOR());
+        possibleGates.put("XOR", new XOR());
+        possibleGates.put("XNOR", new XNOR());
+        possibleGates.put("NOT", new NOT());
+        possibleGates.put("SPEAKER", new Speaker());
+        possibleGates.put("LED", new LED());
+        possibleGates.put("SWITCH", new Switch());
+        possibleGates.put("CLOCK", new Clock());
+        possibleGates.put("DELAY", new Delay());
+        possibleGates.put("VIRTUALIO", new VirtualIO());
+    }
+
+    public static void registerGate(String name, CompoundGate gate) {
+        possibleGates.put(name, gate);
     }
 }

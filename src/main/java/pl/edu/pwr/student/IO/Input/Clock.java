@@ -18,6 +18,11 @@ public class Clock extends SignalSender implements Runnable, UiAvailable, UserUs
 
         thread = new Thread(this);
     }
+    public Clock() {
+        this.setIntervals(1000, 1000);
+
+        thread = new Thread(this);
+    }
 
     /**
      * Duration for which the clock stays on during its every cycle.

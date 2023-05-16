@@ -31,7 +31,13 @@ public class Simulation {
      */
     public static void main(String[] args) {
         try {
-            new Canvas();
+            Canvas canvas = new Canvas();
+            // Registering example compound gates
+            canvas.registerCompoundGate("DLatch", "", Register.createDLatch());
+            canvas.registerCompoundGate("Register", "", Register.createRegister());
+            canvas.registerCompoundGate("SRLatch", "", Register.createSRLatch());
+            canvas.registerCompoundGate("4bitRegister", "", Register.create4bitRegister());
+            canvas.registerCompoundGate("ETDFlipFlop", "", Register.createETDFlipFlop());
         } catch (Exception e) {
             new UiBooster().showException(
                     "An error occurred",

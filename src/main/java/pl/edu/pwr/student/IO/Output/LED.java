@@ -44,6 +44,12 @@ public class LED extends BasicReceiver implements Runnable, UiAvailable, UserUsa
 
         thread = new Thread(this);
     }
+    public LED() {
+        this.name = "";
+        milliseconds = 0;
+
+        thread = new Thread(this);
+    }
     public void react() {}
 
     @Override

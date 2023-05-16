@@ -80,7 +80,9 @@ public class ShapeLoader {
      * @return PShape object
      */
     public static PShape getShape(String shape){
-        return shapes.get(shape);
+        PShape s = shapes.get(shape);
+        if (s != null) return s;
+        return shapes.get("AND");
     }
 
     /**

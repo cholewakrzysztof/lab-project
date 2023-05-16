@@ -15,6 +15,10 @@ public class VirtualIO extends BasicPassThrough {
     public VirtualIO(String name) {
         this.name = name;
     }
+    public VirtualIO() {
+        this.name = "IO";
+    }
+
 
     /**
      * Name of the virtual input/output port.

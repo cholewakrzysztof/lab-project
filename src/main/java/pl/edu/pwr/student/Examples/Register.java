@@ -252,7 +252,7 @@ public class Register {
         clock.toggle();
     }
 
-    private static CompoundGate create4bitRegister() {
+    public static CompoundGate create4bitRegister() {
         HashSet<Compoundable> gates = new HashSet<>();
         HashSet<CompoundGate> compoundGates = new HashSet<>();
 
@@ -315,7 +315,7 @@ public class Register {
         return new CompoundGate(gates, compoundGates);
     }
 
-    private static CompoundGate createRegister() {
+    public static CompoundGate createRegister() {
         HashSet<CompoundGate> compoundGates = new HashSet<>();
         HashSet<Compoundable> gates = new HashSet<>();
 
@@ -365,7 +365,7 @@ public class Register {
         return new CompoundGate(gates, compoundGates);
     }
 
-    private static CompoundGate createETDFlipFlop() {
+    public static CompoundGate createETDFlipFlop() {
         HashSet<Compoundable> gates = new HashSet<>();
         HashSet<CompoundGate> compoundGates = new HashSet<>();
 
@@ -399,7 +399,7 @@ public class Register {
         return new CompoundGate(gates, compoundGates);
     }
 
-    private static CompoundGate createDLatch() {
+    public static CompoundGate createDLatch() {
         HashSet<Compoundable> gates = new HashSet<>();
         HashSet<CompoundGate> compoundGates = new HashSet<>();
 
@@ -434,7 +434,7 @@ public class Register {
         return new CompoundGate(gates, compoundGates);
     }
 
-    private static CompoundGate createSRLatch() {
+    public static CompoundGate createSRLatch() {
         HashSet<Compoundable> gates = new HashSet<>();
 
         NOR top = new NOR();

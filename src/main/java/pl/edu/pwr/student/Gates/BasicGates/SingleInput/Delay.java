@@ -14,6 +14,9 @@ public class Delay extends BasicPassThrough {
     public Delay(long delayMilliseconds) {
         milliseconds = delayMilliseconds;
     }
+    public Delay() {
+        milliseconds = 1000;
+    }
 
     /**
      * Amount of delay this element adds.

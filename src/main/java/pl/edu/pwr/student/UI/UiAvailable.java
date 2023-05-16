@@ -33,7 +33,9 @@ public interface UiAvailable {
      *
      * @return true if the element is "on" or "active", false if it is "off" or "inactive".
      */
-    boolean getState();
+    default boolean getState(){
+        return false;
+    }
 
     /**
      * Disconnects all inputs from this element.
