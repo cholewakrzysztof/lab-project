@@ -6,6 +6,8 @@ import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PShape;
 import processing.core.PVector;
 
+import java.io.IOException;
+
 /**
  * This is an abstract class that defines the basic structure of a button
  * on the canvas. It extends the UiElement class and adds a shape
@@ -57,7 +59,7 @@ public abstract class Button extends UiElement {
     /**
      * Method to be executed when the button is clicked
      */
-    public abstract void click();
+    public abstract void click() throws IOException;
 
     /**
      * Determines whether the mouse is currently over the element.

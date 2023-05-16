@@ -9,6 +9,7 @@ import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.IO.Output.Speaker;
 import pl.edu.pwr.student.UI.Buttons.*;
 import pl.edu.pwr.student.UI.Creator.GateCreator;
+import pl.edu.pwr.student.Utility.FileManagement.DataWriter;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -19,6 +20,7 @@ import uibooster.model.ListElement;
 import uibooster.model.UiBoosterOptions;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -119,9 +121,12 @@ public class Canvas extends PApplet {
                     "Do you want to save your work?",
                     "Exiting",
                     () -> {
-                        getDirectory();
-                        //TODO: saving
-                        super.exit();
+                        try {
+                            DataWriter.saveToFile(this,getDirectory());
+                            super.exit();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     },
                     super::exit);
         }
@@ -154,10 +159,7 @@ public class Canvas extends PApplet {
                 .run()
                 .hide();
 
-        booster.createNotification(
-                "Started",
-                "Gates-Simulation"
-        );
+        showPopup("Started");
     }
 
     /**
@@ -194,7 +196,11 @@ public class Canvas extends PApplet {
     public void mousePressed() {
         for (int i = 0; i < buttons.size(); i++) {
             if(buttons.get(i).over(new PVector(mouseX, mouseY))) {
-                buttons.get(i).click();
+                try {
+                    buttons.get(i).click();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 return;
             }
         }
@@ -216,8 +222,12 @@ public class Canvas extends PApplet {
                             mouseX / ShapeLoader.scale - ShapeLoader.size/2f + offset.x,
                             mouseY / ShapeLoader.scale - ShapeLoader.size/2f + offset.y
                     );
-                    //TODO: make it added automatically (created new gates by user are now a problem)
-                    GateCreator.create(selected.getTitle(), mouse, this);
+
+                    try {
+                        GateCreator.create(selected.getTitle(), mouse, this);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
             case 2 -> {
@@ -407,9 +417,10 @@ public class Canvas extends PApplet {
     /**
      * Gets file to save to or load from
      * @return file
+     * @param title title of the file
      */
-    public File getFile(String title) {
-        return booster.showFileSelection(title + ": .gss", "gss");
+    public File getFile() {
+        return booster.showFileSelection("Get file to save to: .gss", "gss");
     }
 
     /**
@@ -418,5 +429,17 @@ public class Canvas extends PApplet {
      */
     public File getDirectory() {
         return booster.showDirectorySelection();
+    }
+
+    /**
+     * Shows popup with message
+     *
+     * @param message - String to show
+     */
+    public void showPopup(String message) {
+        booster.createNotification(
+                message,
+                "Gates-Simulation"
+        );
     }
 }

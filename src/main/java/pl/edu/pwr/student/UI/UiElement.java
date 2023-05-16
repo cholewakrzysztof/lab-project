@@ -5,6 +5,8 @@ import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
+import pl.edu.pwr.student.UI.Creator.GateCreator;
+import pl.edu.pwr.student.Utility.FileManagement.JSONAvailable;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PVector;
 
@@ -65,6 +67,25 @@ public class UiElement {
         elName = type;
         sketch = s;
         this.uiElem = uiElem;
+    }
+
+    /**
+     * Creates a new UI element from JSONAvaible object
+     *
+     * @param jsonAvailable Object created from file
+     * @param s The Processing sketch used to render the UI element.
+     *
+     * <p>
+     * The {@code UiElement} constructor creates a new UI element object with the specified
+     * properties. The {@code jsonAvailable} is a middle version of object between JSON string and UIElement.
+     * The {@code s} parameter specifies the Processing sketch used to render the UI element. If JSONAvaible has bad name throw exception.
+     * </p>
+     */
+    public UiElement(JSONAvailable jsonAvailable, Canvas s) throws Exception {
+        position = jsonAvailable.position;
+        elName = jsonAvailable.elName;
+        sketch = s;
+        uiElem = GateCreator.create(elName, position, s);
     }
 
     /**
@@ -131,6 +152,7 @@ public class UiElement {
         if (uiElem.getState()){
             if (uiElem instanceof LED) {
                 if (color == null) color = new Color(0, 255, 0);
+                sketch.stroke(color.getRGB());
                 sketch.fill(color.getRGB());
                 sketch.circle(
                         (position.x-sketch.getOffset().x)*ShapeLoader.scale + ShapeLoader.size *(ShapeLoader.scale)/2,
