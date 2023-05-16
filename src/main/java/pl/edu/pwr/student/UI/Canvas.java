@@ -152,7 +152,9 @@ public class Canvas extends PApplet {
                         new ListElement("SWITCH", null, "/icon/SWITCH-FALSE.png"),
                         new ListElement("CLOCK", null, "/icon/CLOCK.png"),
                         new ListElement("DELAY", null, "/icon/DELAY.png")
-                ).run().hide();
+                )
+                .run()
+                .hide();
 
         showPopup("Started");
     }
@@ -405,6 +407,7 @@ public class Canvas extends PApplet {
     /**
      * Gets file to save to or load from
      * @return file
+     * @param title title of the file
      */
     public File getFile() {
         return booster.showFileSelection("Get file to save to: .gss", "gss");
