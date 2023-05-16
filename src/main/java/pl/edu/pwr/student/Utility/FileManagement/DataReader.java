@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import pl.edu.pwr.student.IO.Output.*;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.Creator.GateCreator;
+import pl.edu.pwr.student.UI.UiAvailable;
 import pl.edu.pwr.student.UI.UiElement;
 
 import java.io.File;
@@ -29,29 +30,26 @@ public class DataReader {
 
         clearBasicSets(canvas);
 
-        HashMap<Integer,UiElement> elements = new HashMap<>();
+        HashMap<Integer, UiAvailable> gates = new HashMap<>();
         HashMap<Integer,JSONAvailable> jsonAvailableHashMap = new HashMap<>();
 
         while(myReader.hasNext()){
             String json = myReader.next();
-            UiElement uiElement = generateUIElementFormJSON(json,canvas);
             JSONAvailable jsonAvailable = generateJSONAvailableFromJSON(json);
 
             Integer id = jsonAvailable.hashCode;
-            elements.put(id,uiElement);
-            jsonAvailableHashMap.put(id,jsonAvailable);
-
-            GateCreator.create(uiElement.elName, uiElement.position, canvas);
+            gates.put(id, GateCreator.create(jsonAvailable.elName, jsonAvailable.position, canvas));
+            jsonAvailableHashMap.put(id, jsonAvailable);
         }
 
         for(Map.Entry<Integer, JSONAvailable> entry : jsonAvailableHashMap.entrySet()) {
             Integer key = entry.getKey();
             JSONAvailable value = entry.getValue();
-            UiElement el = elements.get(key);
+            UiAvailable gate = gates.get(key);
             for (Integer hashCode: value.outputs) {
-                for (Map.Entry<Integer, UiElement> candidate : elements.entrySet()) {
+                for (Map.Entry<Integer, UiAvailable> candidate : gates.entrySet()) {
                     if(Objects.equals(hashCode, candidate.getKey())){
-                        el.uiElem.connection((SignalReceiver) candidate.getValue().uiElem);
+                        gate.connection((SignalReceiver) candidate.getValue());
                     }
                 }
             }

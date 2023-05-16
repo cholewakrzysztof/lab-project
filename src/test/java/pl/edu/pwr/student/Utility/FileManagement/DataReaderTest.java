@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DataReaderTest {
     Canvas canvas;
     UiElement uiElement;
-    static String path = "PlikTestowy.txt";
+    static String path = "PlikTestowy.gss";
 
     /**
      * Create new canva and add one basic gate AND
@@ -54,7 +54,7 @@ class DataReaderTest {
         fileWriter.write("{\"position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":[],\"hashCode\":120345,\"color\":null}");
         fileWriter.close();
         canvas.getElements().clear();
-        DataReader.readFromFile(new File("plik.txt"),canvas);
+        DataReader.readFromFile(new File(path),canvas);
         assertEquals(1, canvas.getElements().size());
     }
 

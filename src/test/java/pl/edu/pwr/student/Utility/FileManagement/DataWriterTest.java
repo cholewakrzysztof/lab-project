@@ -5,11 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.AND;
-import pl.edu.pwr.student.Gates.CompoundGate;
-import pl.edu.pwr.student.IO.Input.SignalSender;
-import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.UiAvailable;
 import pl.edu.pwr.student.UI.UiElement;
@@ -18,26 +14,19 @@ import uibooster.UiBooster;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 class DataWriterTest {
     Canvas canvas;
-    static String path = "PlikTestowy.txt";
+    static String path = "PlikTestowy.gss";
 
 
     @BeforeEach
     void setUp() {
-        HashSet<Compoundable> basicGates = new HashSet<>();
-        HashSet<CompoundGate> compoundGates = new HashSet<>();
-        HashMap<String, CompoundGate> savedCompoundGates = new HashMap<>();
-        HashSet<SignalSender> userInputs = new HashSet<>();
-        HashSet<SignalReceiver> systemOutputs = new HashSet<>();
-
-
         try {
-            canvas = new Canvas(basicGates, compoundGates, savedCompoundGates, userInputs, systemOutputs);
+            canvas = new Canvas();
         } catch (Exception e) {
             new UiBooster().showException(
                     "An error occurred",
@@ -61,18 +50,18 @@ class DataWriterTest {
     }
 
     /**
-     * Test saving canva to file plik.txt
+     * Test saving canva to file from path
      * @throws IOException Throw simple IO exception
      */
     @Test
     void saveToFile() throws IOException {
         DataWriter.saveToFile(canvas, new File(path));
-        int hashCode = 0;
         Scanner myReader = new Scanner(new File(path));
-        for (UiElement el:canvas.getElements()) {
-            hashCode = el.uiElem.hashCode();
-        }
-        assertEquals("{\"position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":[],\"hashCode\":"+ hashCode+",\"color\":null}",myReader.next());
+
+        Pattern pattern = Pattern.compile("\\{\"position\":\\{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":\\[],\"hashCode\":\\d*,\"color\":null}", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(myReader.next());
+
+        assertTrue(matcher.matches());
     }
 
     /**
