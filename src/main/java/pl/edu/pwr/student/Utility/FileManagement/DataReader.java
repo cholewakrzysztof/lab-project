@@ -1,7 +1,6 @@
 package pl.edu.pwr.student.Utility.FileManagement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import pl.edu.pwr.student.Examples.Register;
 import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Output.*;
@@ -11,7 +10,6 @@ import pl.edu.pwr.student.UI.UiAvailable;
 import pl.edu.pwr.student.UI.UiElement;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
@@ -32,7 +30,7 @@ public class DataReader {
 
         Scanner myReader = new Scanner(file);
 
-        clearBasicSets(canvas);
+        canvas.clear();
 
         HashMap<Integer, UiAvailable> gates = new HashMap<>();
         HashMap<Integer,JSONAvailable> jsonAvailableHashMap = new HashMap<>();
@@ -82,7 +80,7 @@ public class DataReader {
             JSONAvailable jsonAvailable = generateJSONAvailableFromJSON(json);
 
             Integer id = jsonAvailable.hashCode;
-            gates.put(id, (Compoundable) GateCreator.create(jsonAvailable.elName, jsonAvailable.position, canvas));
+            gates.put(id, (Compoundable) GateCreator.create(jsonAvailable.elName));
             jsonAvailableHashMap.put(id, jsonAvailable);
         }
 
@@ -101,13 +99,6 @@ public class DataReader {
         CompoundGate compoundGate = new CompoundGate(new HashSet<>(gates.values()));
 
         canvas.registerCompoundGate(file.getName().substring(0,file.getName().length()-4),message, compoundGate);
-    }
-    /**
-     * Clear all HashSets of canvas
-     * @param canvas Source canvas
-     */
-    private static void clearBasicSets(final Canvas canvas){
-        canvas.getElements().clear();
     }
 
     /**

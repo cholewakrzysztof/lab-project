@@ -5,8 +5,8 @@ import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.UiElement;
 import pl.edu.pwr.student.Utility.FileManagement.DataWriter;
 import processing.core.PVector;
+import uibooster.model.Form;
 
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -36,7 +36,7 @@ public class AddButton extends Button {
                 return;
             }
         }
-        //TODO: save in local storage
-        DataWriter.safeToFileCompoundGate(sketch,new File("gates"),"example","example");
+        Form form = sketch.saveCompoundGateDialog();
+        DataWriter.saveToFileCompoundGate(sketch, form.getByLabel("Name of the gate").asString(), form.getByLabel("Message for the gate").asString());
     }
 }

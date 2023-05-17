@@ -464,4 +464,18 @@ public class Canvas extends PApplet {
         buttons.add(new LoadButton(this));
         buttons.add(new AddButton(this));
     }
+
+    public Form saveCompoundGateDialog(){
+        return booster.createForm("Compound Gate Creator")
+                .addTextArea("Name of the gate")
+                .addTextArea("Message for the gate")
+                .show();
+    }
+
+    /**
+     * Clear all HashSets of canvas
+     */
+    public void clear(){
+        elements.clear();
+    }
 }

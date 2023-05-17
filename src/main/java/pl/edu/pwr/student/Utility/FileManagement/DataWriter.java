@@ -2,7 +2,6 @@ package pl.edu.pwr.student.Utility.FileManagement;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.UiElement;
 
@@ -33,13 +32,16 @@ public class DataWriter {
         bufferedWriter.close();
     }
 
-    public static void safeToFileCompoundGate(Canvas canvas, File directory,String name, String message) throws IOException {
-        if (directory == null || !directory.exists() || !directory.isDirectory()) {
-            canvas.showPopup("Directory does not exist or is not a directory");
-            return;
+    public static void saveToFileCompoundGate(Canvas canvas, String name, String message) throws IOException {
+        File directory = new File("gates");
+
+        if (!directory.exists()) {
+            directory.mkdir();
         }
 
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(directory.getAbsoluteFile() + "\\" + name + ".gss"));
+        File file = new File(directory.getAbsoluteFile() + "\\" + name + ".gss");
+
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
         bufferedWriter.write(message);
         bufferedWriter.newLine();
         for (UiElement uiElement: canvas.getElements()) {
@@ -47,6 +49,8 @@ public class DataWriter {
             bufferedWriter.newLine();
         }
         bufferedWriter.close();
+        canvas.clear();
+        DataReader.readCompoundGateFromFile(file, canvas);
     }
 
     /**
@@ -58,5 +62,4 @@ public class DataWriter {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(new JSONAvailable(element));
     }
-
 }
