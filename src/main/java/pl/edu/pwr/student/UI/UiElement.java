@@ -83,11 +83,11 @@ public class UiElement {
      * </p>
      */
     public UiElement(JSONAvailable jsonAvailable, Canvas s) throws Exception {
-        position = jsonAvailable.position;
-        elName = jsonAvailable.elName;
+        position = jsonAvailable.getPosition();
+        elName = jsonAvailable.getElName();
         sketch = s;
-        uiElem = GateCreator.create(jsonAvailable.elName);
-        sketch.getElements().add(new UiElement(jsonAvailable.elName, sketch, jsonAvailable.position, uiElem));
+        uiElem = GateCreator.create(jsonAvailable.getElName());
+        sketch.getElements().add(new UiElement(jsonAvailable.getElName(), sketch, jsonAvailable.getPosition(), uiElem));
     }
 
     /**

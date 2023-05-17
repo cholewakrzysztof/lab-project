@@ -65,7 +65,7 @@ class DataReaderTest {
     @Test
     void generateUIElementFormJSON() throws Exception {
         String jsonString = DataWriter.generateJSONfromUIElement(uiElement);
-        UiElement element = DataReader.generateUIElementFormJSON(jsonString,canvas);
+        UiElement element = DataReader.generateUIElementFromJSON(jsonString,canvas);
 
         assertSame(element.uiElem.getClass(), AND.class);
     }

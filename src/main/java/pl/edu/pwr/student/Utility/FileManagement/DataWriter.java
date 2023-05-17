@@ -42,8 +42,12 @@ public class DataWriter {
         File file = new File(directory.getAbsoluteFile() + "\\" + name + ".gss");
 
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
-        bufferedWriter.write(message);
-        bufferedWriter.newLine();
+
+        if(!message.isEmpty()){
+            bufferedWriter.write(message);
+            bufferedWriter.newLine();
+        }
+
         for (UiElement uiElement: canvas.getElements()) {
             bufferedWriter.write(DataWriter.generateJSONfromUIElement(uiElement));
             bufferedWriter.newLine();

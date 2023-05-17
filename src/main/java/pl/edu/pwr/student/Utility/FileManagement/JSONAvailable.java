@@ -16,27 +16,27 @@ public class JSONAvailable {
      * The position of this element.
      */
     @JsonProperty("position")
-    public PVector position;
+    private PVector position;
     /**
      * The name of this element.
      */
     @JsonProperty("elName")
-    public String elName;
+    private String elName;
     /**
      * Set of outputs hashcodes
      */
     @JsonProperty("outputs")
-    public LinkedList<Integer> outputs;
+    private LinkedList<Integer> outputs;
     /**
      * Hashcode of source element
      */
     @JsonProperty("hashCode")
-    public Integer hashCode;
+    private Integer hashCode;
     /**
      * The color associated with this element.
      */
     @JsonProperty("color")
-    public Color color;
+    private Color color;
 
     /**
      *  Constructor used by jackson package
@@ -70,5 +70,25 @@ public class JSONAvailable {
             list.add(output.hashCode());
         }
         return list;
+    }
+
+    public Integer getHashCode(){
+        return hashCode;
+    }
+
+    public LinkedList<Integer> getOutputs(){
+        return outputs;
+    }
+
+    public String getElName(){
+        return elName;
+    }
+
+    public PVector getPosition(){
+        return position;
+    }
+
+    public Color getColor() {
+        return color;
     }
 }
