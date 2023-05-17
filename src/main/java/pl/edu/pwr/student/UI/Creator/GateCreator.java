@@ -10,10 +10,7 @@ import pl.edu.pwr.student.IO.Input.Clock;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.Speaker;
-import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.UiAvailable;
-import pl.edu.pwr.student.UI.UiElement;
-import processing.core.PVector;
 
 import java.util.HashMap;
 
@@ -33,10 +30,8 @@ public class GateCreator {
      * Creates gate, saves it to proper place and performs necessary actions
      *
      * @param type - type of gate
-     * @param mouse - vector of mouse
-     * @param canvas - canvas
      */
-    public static UiAvailable create(String type, PVector mouse, Canvas canvas) {
+    public static UiAvailable create(String type) {
         UiAvailable ci = (UiAvailable) possibleGates.get(type).getNewInstance();
 
         if (ci instanceof Clock){
@@ -46,8 +41,6 @@ public class GateCreator {
         } else if (ci instanceof LED){
             ((LED) ci).toggle();
         }
-
-        canvas.getElements().add(new UiElement(type, canvas, mouse, ci));
 
         return ci;
     }

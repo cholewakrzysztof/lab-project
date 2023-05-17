@@ -1,6 +1,7 @@
 package pl.edu.pwr.student.UI;
 
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
+import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
@@ -85,7 +86,8 @@ public class UiElement {
         position = jsonAvailable.position;
         elName = jsonAvailable.elName;
         sketch = s;
-        uiElem = GateCreator.create(elName, position, s);
+        uiElem = GateCreator.create(jsonAvailable.elName);
+        sketch.getElements().add(new UiElement(jsonAvailable.elName, sketch, jsonAvailable.position, uiElem));
     }
 
     /**
@@ -104,6 +106,27 @@ public class UiElement {
      * </p>
      */
     public void run() {
+        if (uiElem instanceof CompoundGate){
+            runCompoundGate();
+            return;
+        }
+        runGate();
+    }
+
+    /**
+     * Determines whether the mouse is currently over the element.
+     *
+     * @param v the mouse position as a PVector
+     * @return true if the mouse is over the element, false otherwise
+     */
+    public boolean over(PVector v)  {
+        return (position.x-sketch.getOffset().x)*ShapeLoader.scale <= v.x &&
+                (position.x-sketch.getOffset().x + ShapeLoader.size)*ShapeLoader.scale >= v.x &&
+                (position.y-sketch.getOffset().y)*ShapeLoader.scale <= v.y &&
+                (position.y-sketch.getOffset().y + ShapeLoader.size)*ShapeLoader.scale >= v.y;
+    }
+
+    private void runGate() {
         // Code for drawing the element shape and mouse hover effects
 
         if (over(new PVector(sketch.mouseX, sketch.mouseY))){
@@ -214,16 +237,7 @@ public class UiElement {
         }
     }
 
-    /**
-     * Determines whether the mouse is currently over the element.
-     *
-     * @param v the mouse position as a PVector
-     * @return true if the mouse is over the element, false otherwise
-     */
-    public boolean over(PVector v)  {
-        return (position.x-sketch.getOffset().x)*ShapeLoader.scale <= v.x &&
-                (position.x-sketch.getOffset().x + ShapeLoader.size)*ShapeLoader.scale >= v.x &&
-                (position.y-sketch.getOffset().y)*ShapeLoader.scale <= v.y &&
-                (position.y-sketch.getOffset().y + ShapeLoader.size)*ShapeLoader.scale >= v.y;
+    private void runCompoundGate(){
+        System.out.println("Running compound gate");
     }
 }

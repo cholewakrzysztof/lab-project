@@ -38,7 +38,12 @@ public class DataReader {
             JSONAvailable jsonAvailable = generateJSONAvailableFromJSON(json);
 
             Integer id = jsonAvailable.hashCode;
-            gates.put(id, GateCreator.create(jsonAvailable.elName, jsonAvailable.position, canvas));
+
+            UiAvailable temp = GateCreator.create(jsonAvailable.elName);
+            canvas.getElements().add(new UiElement(jsonAvailable.elName, canvas, jsonAvailable.position, temp));
+
+            gates.put(id, temp);
+
             jsonAvailableHashMap.put(id, jsonAvailable);
         }
 
