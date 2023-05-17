@@ -32,7 +32,7 @@ public class AddButton extends Button {
     public void click() throws IOException {
         for (UiElement ui : sketch.getElements()) {
             if (ui.uiElem instanceof UserUsable) {
-                //TODO: popup
+                sketch.showPopup("You cannot have user usable element in the compound gate!");
                 return;
             }
         }

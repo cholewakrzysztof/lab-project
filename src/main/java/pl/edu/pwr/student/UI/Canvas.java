@@ -205,7 +205,8 @@ public class Canvas extends PApplet {
                     );
 
                     try {
-                        GateCreator.create(selected.getTitle(), mouse, this);
+                        UiAvailable temp = GateCreator.create(selected.getTitle());
+                        elements.add(new UiElement(selected.getTitle(), this, mouse, temp));
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }

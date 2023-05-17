@@ -24,6 +24,7 @@ public class DataWriter {
             canvas.showPopup("Directory does not exist or is not a directory");
             return;
         }
+
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(directory.getAbsoluteFile() + "\\" + System.currentTimeMillis() + ".gss"));
         for (UiElement uiElement: canvas.getElements()) {
             bufferedWriter.write(DataWriter.generateJSONfromUIElement(uiElement));
