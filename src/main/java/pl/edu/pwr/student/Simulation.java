@@ -36,15 +36,14 @@ public class Simulation {
     public static void main(String[] args) {
         try {
             Canvas canvas = new Canvas();
-            // Registering example compound gates
+            //Registering example compound gates
             canvas.registerCompoundGate("DLatch", "", Register.createDLatch());
             canvas.registerCompoundGate("Register", "", Register.createRegister());
             canvas.registerCompoundGate("SRLatch", "", Register.createSRLatch());
             canvas.registerCompoundGate("4bitRegister", "", Register.create4bitRegister());
             canvas.registerCompoundGate("ETDFlipFlop", "", Register.createETDFlipFlop());
 
-            //Test save
-            DataReader.readCompoundGateFromFile(new File("gates\\example.gss"),canvas);
+            DataReader.initCompoundGates(new File("gates"),canvas);
         } catch (Exception e) {
             new UiBooster().showException(
                     "An error occurred",

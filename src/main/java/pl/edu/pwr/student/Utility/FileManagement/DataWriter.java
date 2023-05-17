@@ -38,15 +38,18 @@ public class DataWriter {
         if (!directory.exists()) {
             directory.mkdir();
         }
-
+        if(name.length()==0){
+            name = "Custom_gate";
+        }
         File file = new File(directory.getAbsoluteFile() + "\\" + name + ".gss");
 
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
 
-        if(!message.isEmpty()){
+        if(message.length()!=0)
             bufferedWriter.write(message);
-            bufferedWriter.newLine();
-        }
+        else
+            bufferedWriter.write("Custom_gate_message");
+        bufferedWriter.newLine();
 
         for (UiElement uiElement: canvas.getElements()) {
             bufferedWriter.write(DataWriter.generateJSONfromUIElement(uiElement));
