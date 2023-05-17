@@ -1,6 +1,9 @@
 package pl.edu.pwr.student.Utility.FileManagement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import pl.edu.pwr.student.Examples.Register;
+import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
+import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Output.*;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.Creator.GateCreator;
@@ -8,6 +11,7 @@ import pl.edu.pwr.student.UI.UiAvailable;
 import pl.edu.pwr.student.UI.UiElement;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
@@ -56,6 +60,43 @@ public class DataReader {
         }
     }
 
+    public static void readCompoundGateFromFile(File file, final Canvas canvas) throws IOException {
+        if (file == null || !file.exists() || file.isDirectory()) {
+            canvas.showPopup("File does not exist or path is wrong");
+            return;
+        }
+
+        Scanner myReader = new Scanner(file);
+        String message = myReader.next();
+
+        HashMap<Integer, Compoundable> gates = new HashMap<>();
+        HashMap<Integer,JSONAvailable> jsonAvailableHashMap = new HashMap<>();
+
+        while(myReader.hasNext()){
+            String json = myReader.next();
+            JSONAvailable jsonAvailable = generateJSONAvailableFromJSON(json);
+
+            Integer id = jsonAvailable.hashCode;
+            gates.put(id, (Compoundable) GateCreator.create(jsonAvailable.elName, jsonAvailable.position, canvas));
+            jsonAvailableHashMap.put(id, jsonAvailable);
+        }
+
+        for(Map.Entry<Integer, JSONAvailable> entry : jsonAvailableHashMap.entrySet()) {
+            Integer key = entry.getKey();
+            JSONAvailable value = entry.getValue();
+            UiAvailable gate = gates.get(key);
+            for (Integer hashCode: value.outputs) {
+                for (Map.Entry<Integer, Compoundable> candidate : gates.entrySet()) {
+                    if(Objects.equals(hashCode, candidate.getKey())){
+                        gate.connection((SignalReceiver) candidate.getValue());
+                    }
+                }
+            }
+        }
+        CompoundGate compoundGate = new CompoundGate(new HashSet<>(gates.values()));
+
+        canvas.registerCompoundGate(file.getName().substring(0,file.getName().length()-4),message, compoundGate);
+    }
     /**
      * Clear all HashSets of canvas
      * @param canvas Source canvas

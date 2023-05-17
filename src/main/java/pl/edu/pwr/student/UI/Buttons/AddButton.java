@@ -3,7 +3,11 @@ package pl.edu.pwr.student.UI.Buttons;
 import pl.edu.pwr.student.IO.UserUsable;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.UiElement;
+import pl.edu.pwr.student.Utility.FileManagement.DataWriter;
 import processing.core.PVector;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Represents a button for creating new elements on the canvas.
@@ -25,7 +29,7 @@ public class AddButton extends Button {
      * Overrides the click method of the Button class.
      */
     @Override
-    public void click() {
+    public void click() throws IOException {
         for (UiElement ui : sketch.getElements()) {
             if (ui.uiElem instanceof UserUsable) {
                 //TODO: popup
@@ -33,5 +37,6 @@ public class AddButton extends Button {
             }
         }
         //TODO: save in local storage
+        DataWriter.safeToFileCompoundGate(sketch,new File("gates"),"example","example");
     }
 }

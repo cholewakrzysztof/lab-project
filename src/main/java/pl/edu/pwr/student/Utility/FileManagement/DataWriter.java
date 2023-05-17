@@ -2,6 +2,7 @@ package pl.edu.pwr.student.Utility.FileManagement;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.UiElement;
 
@@ -31,6 +32,22 @@ public class DataWriter {
         bufferedWriter.close();
     }
 
+    public static void safeToFileCompoundGate(Canvas canvas, File directory,String name, String message) throws IOException {
+        if (directory == null || !directory.exists() || !directory.isDirectory()) {
+            canvas.showPopup("Directory does not exist or is not a directory");
+            return;
+        }
+
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(directory.getAbsoluteFile() + "\\" + name + ".gss"));
+        bufferedWriter.write(message);
+        bufferedWriter.newLine();
+        for (UiElement uiElement: canvas.getElements()) {
+            bufferedWriter.write(DataWriter.generateJSONfromUIElement(uiElement));
+            bufferedWriter.newLine();
+        }
+        bufferedWriter.close();
+    }
+
     /**
      * @param element UI Element to convert
      * @return JSON string representation of single UI Element
@@ -40,6 +57,5 @@ public class DataWriter {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(new JSONAvailable(element));
     }
-
 
 }

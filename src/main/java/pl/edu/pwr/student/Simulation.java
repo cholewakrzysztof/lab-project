@@ -2,7 +2,11 @@ package pl.edu.pwr.student;
 
 import pl.edu.pwr.student.Examples.*;
 import pl.edu.pwr.student.UI.Canvas;
+import pl.edu.pwr.student.Utility.FileManagement.DataReader;
+import pl.edu.pwr.student.Utility.FileManagement.DataWriter;
 import uibooster.UiBooster;
+
+import java.io.File;
 
 /**
  * Main class of the application
@@ -38,6 +42,9 @@ public class Simulation {
             canvas.registerCompoundGate("SRLatch", "", Register.createSRLatch());
             canvas.registerCompoundGate("4bitRegister", "", Register.create4bitRegister());
             canvas.registerCompoundGate("ETDFlipFlop", "", Register.createETDFlipFlop());
+
+            //Test save
+            DataReader.readCompoundGateFromFile(new File("gates\\example.gss"),canvas);
         } catch (Exception e) {
             new UiBooster().showException(
                     "An error occurred",
