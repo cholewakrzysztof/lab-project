@@ -57,16 +57,4 @@ class DataReaderTest {
         DataReader.readFromFile(new File(path),canvas);
         assertEquals(1, canvas.getElements().size());
     }
-
-    /**
-     * Test rebuilding UI element from generated JSON string of gate(AND)
-     * @throws Exception Throw when something wrong happens
-     */
-    @Test
-    void generateUIElementFormJSON() throws Exception {
-        String jsonString = DataWriter.generateJSONfromUIElement(uiElement);
-        UiElement element = DataReader.generateUIElementFromJSON(jsonString,canvas);
-
-        assertSame(element.uiElem.getClass(), AND.class);
-    }
 }
