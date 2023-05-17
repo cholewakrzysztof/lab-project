@@ -73,7 +73,7 @@ class DataWriterTest {
         UiElement uiElement = new UiElement("AND",canvas,new PVector(0f,0f),gate);
         String jsonString;
         try{
-            jsonString = DataWriter.generateJSONfromUIElement(uiElement);
+            jsonString = DataWriter.generateJSONFromUIElement(uiElement);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

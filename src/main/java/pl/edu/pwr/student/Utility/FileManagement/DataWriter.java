@@ -26,7 +26,7 @@ public class DataWriter {
 
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(directory.getAbsoluteFile() + "\\" + System.currentTimeMillis() + ".gss"));
         for (UiElement uiElement: canvas.getElements()) {
-            bufferedWriter.write(DataWriter.generateJSONfromUIElement(uiElement));
+            bufferedWriter.write(DataWriter.generateJSONFromUIElement(uiElement));
             bufferedWriter.newLine();
         }
         bufferedWriter.close();
@@ -52,7 +52,7 @@ public class DataWriter {
         bufferedWriter.newLine();
 
         for (UiElement uiElement: canvas.getElements()) {
-            bufferedWriter.write(DataWriter.generateJSONfromUIElement(uiElement));
+            bufferedWriter.write(DataWriter.generateJSONFromUIElement(uiElement));
             bufferedWriter.newLine();
         }
         bufferedWriter.close();
@@ -65,7 +65,7 @@ public class DataWriter {
      * @return JSON string representation of single UI Element
      * @throws IOException something wrong with UI element
      */
-    public static String generateJSONfromUIElement(UiElement element) throws IOException {
+    public static String generateJSONFromUIElement(UiElement element) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(new JSONAvailable(element));
     }
