@@ -1,12 +1,12 @@
-package pl.edu.pwr.student.UI;
+package pl.edu.pwr.student.UI.Blocks;
 
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
-import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
-import pl.edu.pwr.student.UI.Creator.GateCreator;
+import pl.edu.pwr.student.UI.Canvas;
+import pl.edu.pwr.student.UI.UiAvailable;
 import pl.edu.pwr.student.Utility.FileManagement.JSONAvailable;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PVector;
@@ -17,35 +17,7 @@ import java.util.HashSet;
 /**
  * This is a class definition for a UiElement class, which represents every element on a canvas.
  */
-public class UiElement {
-
-    /**
-     * The position of this element.
-     */
-    public PVector position;
-
-    /**
-     * The name of this element.
-     */
-    public final String elName;
-
-    /**
-     * The Processing sketch associated with this element.
-     */
-    public final Canvas sketch;
-
-    /**
-     * The gate represented by this element.
-     */
-    public final UiAvailable uiElem;
-
-    /**
-     * The color associated with this element.
-     */
-    public Color color = new Color(0, 255, 0);
-
-
-
+public class UiElement extends Drawable {
     /**
      * Creates a new UI element object with the specified parameters.
      *
@@ -64,10 +36,7 @@ public class UiElement {
      * </p>
      */
     public UiElement(String type, Canvas s, PVector v, UiAvailable uiElem) {
-        position = v.copy();
-        elName = type;
-        sketch = s;
-        this.uiElem = uiElem;
+        super(type, s, v, uiElem);
     }
 
     /**
@@ -83,11 +52,7 @@ public class UiElement {
      * </p>
      */
     public UiElement(JSONAvailable jsonAvailable, Canvas s) throws Exception {
-        position = jsonAvailable.position;
-        elName = jsonAvailable.elName;
-        sketch = s;
-        uiElem = GateCreator.create(jsonAvailable.elName);
-        sketch.getElements().add(new UiElement(jsonAvailable.elName, sketch, jsonAvailable.position, uiElem));
+        super(jsonAvailable, s);
     }
 
     /**
@@ -106,27 +71,6 @@ public class UiElement {
      * </p>
      */
     public void run() {
-        if (uiElem instanceof CompoundGate){
-            runCompoundGate();
-            return;
-        }
-        runGate();
-    }
-
-    /**
-     * Determines whether the mouse is currently over the element.
-     *
-     * @param v the mouse position as a PVector
-     * @return true if the mouse is over the element, false otherwise
-     */
-    public boolean over(PVector v)  {
-        return (position.x-sketch.getOffset().x)*ShapeLoader.scale <= v.x &&
-                (position.x-sketch.getOffset().x + ShapeLoader.size)*ShapeLoader.scale >= v.x &&
-                (position.y-sketch.getOffset().y)*ShapeLoader.scale <= v.y &&
-                (position.y-sketch.getOffset().y + ShapeLoader.size)*ShapeLoader.scale >= v.y;
-    }
-
-    private void runGate() {
         // Code for drawing the element shape and mouse hover effects
 
         if (over(new PVector(sketch.mouseX, sketch.mouseY))){
@@ -194,7 +138,7 @@ public class UiElement {
                 sketch.stroke(0, 0, 0);
             }
 
-            for (UiElement u : sketch.getElements()){
+            for (Drawable u : sketch.getElements()){
                 if (u.uiElem.equals(s)) {
                     HashSet<SignalSender> inputs = ((UiAvailable) s).getInputs();
                     int i = 1;
@@ -237,7 +181,16 @@ public class UiElement {
         }
     }
 
-    private void runCompoundGate(){
-        System.out.println("Running compound gate");
+    /**
+     * Determines whether the mouse is currently over the element.
+     *
+     * @param v the mouse position as a PVector
+     * @return true if the mouse is over the element, false otherwise
+     */
+    public boolean over(PVector v)  {
+        return (position.x-sketch.getOffset().x)*ShapeLoader.scale <= v.x &&
+                (position.x-sketch.getOffset().x + ShapeLoader.size)*ShapeLoader.scale >= v.x &&
+                (position.y-sketch.getOffset().y)*ShapeLoader.scale <= v.y &&
+                (position.y-sketch.getOffset().y + ShapeLoader.size)*ShapeLoader.scale >= v.y;
     }
 }

@@ -2,7 +2,7 @@ package pl.edu.pwr.student.Utility.FileManagement;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
-import pl.edu.pwr.student.UI.UiElement;
+import pl.edu.pwr.student.UI.Blocks.Drawable;
 import processing.core.PVector;
 
 import java.awt.*;
@@ -49,7 +49,7 @@ public class JSONAvailable {
      * Custom constructor creating object with most important data from UiElement
      * @param element Source UiElement element for new object
      */
-    public JSONAvailable(UiElement element){
+    public JSONAvailable(Drawable element){
         this.position = element.position;
         this.outputs = JSONAvailable.GetOutputsHashCodes(element);
         this.elName = element.elName;
@@ -64,7 +64,7 @@ public class JSONAvailable {
      * @param element Source UiElement
      * @return Linked list of hashCodes
      */
-    private static LinkedList<Integer> GetOutputsHashCodes(UiElement element){
+    private static LinkedList<Integer> GetOutputsHashCodes(Drawable element){
         LinkedList<Integer> list = new LinkedList<>();
         for (SignalReceiver output:element.uiElem.getOutputs()) {
             list.add(output.hashCode());

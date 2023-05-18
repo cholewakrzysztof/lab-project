@@ -8,6 +8,9 @@ import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.IO.Output.Speaker;
+import pl.edu.pwr.student.UI.Blocks.CompoundElement;
+import pl.edu.pwr.student.UI.Blocks.Drawable;
+import pl.edu.pwr.student.UI.Blocks.UiElement;
 import pl.edu.pwr.student.UI.Buttons.*;
 import pl.edu.pwr.student.UI.Creator.GateCreator;
 import pl.edu.pwr.student.Utility.FileManagement.DataWriter;
@@ -58,7 +61,7 @@ public class Canvas extends PApplet {
     /**
      * The set of all elements on the canvas.
      */
-    private final Set<UiElement> elements = new HashSet<>();
+    private final Set<Drawable> elements = new HashSet<>();
 
     /**
      * The list of all buttons.
@@ -68,7 +71,7 @@ public class Canvas extends PApplet {
     /**
      * The selected element on the canvas.
      */
-    private UiElement selectedElement = null;
+    private Drawable selectedElement = null;
 
     /**
      * Holds the offset of canvas.
@@ -150,7 +153,7 @@ public class Canvas extends PApplet {
     public void draw() {
         background(255);
 
-        for (UiElement g : elements) {
+        for (Drawable g : elements) {
             g.run();
         }
 
@@ -189,7 +192,7 @@ public class Canvas extends PApplet {
 
         switch (state) {
             case 0 -> {
-                for (UiElement g : elements) {
+                for (Drawable g : elements) {
                     if (g.over(new PVector(mouseX, mouseY))) {
                         selectedElement = g;
                         break;
@@ -206,14 +209,18 @@ public class Canvas extends PApplet {
 
                     try {
                         UiAvailable temp = GateCreator.create(selected.getTitle());
-                        elements.add(new UiElement(selected.getTitle(), this, mouse, temp));
+                        if (temp instanceof CompoundGate){
+                            elements.add(new CompoundElement(selected.getTitle(), this, mouse, temp));
+                        } else {
+                            elements.add(new UiElement(selected.getTitle(), this, mouse, temp));
+                        }
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                 }
             }
             case 2 -> {
-                for (UiElement g : elements) {
+                for (Drawable g : elements) {
                     if (g.over(new PVector(mouseX, mouseY))) {
                         setState(4);
                         selectedElement = g;
@@ -222,7 +229,7 @@ public class Canvas extends PApplet {
                 }
             }
             case 3 -> {
-                for (UiElement g : elements) {
+                for (Drawable g : elements) {
                     if (g.over(new PVector(mouseX, mouseY))) {
                         g.uiElem.fullDisconnect();
                         elements.remove(g);
@@ -231,7 +238,7 @@ public class Canvas extends PApplet {
                 }
             }
             case 4 -> {
-                for (UiElement g : elements) {
+                for (Drawable g : elements) {
                     if (g.over(new PVector(mouseX, mouseY))) {
                         if (selectedElement != null) {
                             try {
@@ -257,7 +264,7 @@ public class Canvas extends PApplet {
     @Override
     public void mouseClicked(){
         if (state == 0) {
-            for (UiElement g : elements) {
+            for (Drawable g : elements) {
                 if(g.over(new PVector(mouseX, mouseY))){
                     if (g.uiElem instanceof Switch) {
                         ((Switch) g.uiElem).toggle();
@@ -384,8 +391,12 @@ public class Canvas extends PApplet {
      * Gets set of all elements
      * @return set of elements
      */
-    public Set<UiElement> getElements() {
+    public Set<Drawable> getElements() {
         return elements;
+    }
+
+    public void addElement(Drawable element) {
+        elements.add(element);
     }
 
     /**

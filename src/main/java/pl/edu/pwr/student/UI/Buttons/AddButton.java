@@ -1,8 +1,8 @@
 package pl.edu.pwr.student.UI.Buttons;
 
 import pl.edu.pwr.student.IO.UserUsable;
+import pl.edu.pwr.student.UI.Blocks.Drawable;
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.UI.UiElement;
 import processing.core.PVector;
 
 /**
@@ -26,7 +26,7 @@ public class AddButton extends Button {
      */
     @Override
     public void click() {
-        for (UiElement ui : sketch.getElements()) {
+        for (Drawable ui : sketch.getElements()) {
             if (ui.uiElem instanceof UserUsable) {
                 sketch.showPopup("You cannot have user usable element in the compound gate!");
                 return;

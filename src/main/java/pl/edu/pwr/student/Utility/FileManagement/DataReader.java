@@ -1,11 +1,13 @@
 package pl.edu.pwr.student.Utility.FileManagement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Output.*;
+import pl.edu.pwr.student.UI.Blocks.CompoundElement;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.Creator.GateCreator;
 import pl.edu.pwr.student.UI.UiAvailable;
-import pl.edu.pwr.student.UI.UiElement;
+import pl.edu.pwr.student.UI.Blocks.UiElement;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +42,11 @@ public class DataReader {
             Integer id = jsonAvailable.hashCode;
 
             UiAvailable temp = GateCreator.create(jsonAvailable.elName);
-            canvas.getElements().add(new UiElement(jsonAvailable.elName, canvas, jsonAvailable.position, temp));
+            if (temp instanceof CompoundGate){
+                canvas.addElement(new CompoundElement(jsonAvailable.elName, canvas, jsonAvailable.position, temp));
+            } else {
+                canvas.addElement(new UiElement(jsonAvailable.elName, canvas, jsonAvailable.position, temp));
+            }
 
             gates.put(id, temp);
 
@@ -66,7 +72,7 @@ public class DataReader {
      * @param canvas Source canvas
      */
     private static void clearBasicSets(final Canvas canvas){
-        canvas.getElements().clear();
+        canvas.clear();
     }
 
     /**
