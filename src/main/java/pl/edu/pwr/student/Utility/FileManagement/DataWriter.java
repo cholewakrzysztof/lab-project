@@ -15,7 +15,9 @@ import java.io.File;
  */
 public class DataWriter {
     /**
-     * @param canvas source of UI elements to safe
+     * Saves the current project to a file.
+     *
+     * @param canvas source of UI elements to save
      * @param directory path to place where file will be saved
      */
     public static void saveToFile(Canvas canvas, File directory) throws IOException {
@@ -32,6 +34,14 @@ public class DataWriter {
         bufferedWriter.close();
     }
 
+    /**
+     * Saves a {@link pl.edu.pwr.student.Gates.CompoundGate} element to a file.
+     *
+     * @param canvas source of UI elements to save
+     * @param name name of the {@link pl.edu.pwr.student.Gates.CompoundGate} to save
+     * @param message description of the element once loaded into the program
+     * @throws IOException thrown when something has gone wrong during the saving process
+     */
     public static void saveToFileCompoundGate(Canvas canvas, String name, String message) throws IOException {
         File directory = new File("gates");
 
