@@ -475,4 +475,11 @@ public class Canvas extends PApplet {
         buttons.add(new LoadButton(this));
         buttons.add(new AddButton(this));
     }
+
+    /**
+     * Clear all HashSets of canvas
+     */
+    public void clear(){
+        elements.clear();
+    }
 }

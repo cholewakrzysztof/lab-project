@@ -17,9 +17,9 @@ class ORTest {
     @BeforeEach
     protected void setUp() {
         if(FirstInput.getState())
-            FirstInput.toggle();
+            FirstInput.react();
         if(SecondInput.getState())
-            SecondInput.toggle();
+            SecondInput.react();
 
         FirstInput.connection(gate);
         SecondInput.connection(gate);
@@ -40,7 +40,7 @@ class ORTest {
      */
     @Test
     public void testTruthTableCase2() {
-        FirstInput.toggle();
+        FirstInput.react();
         simWait(50);
         assertTrue(gate.getState());
     }
@@ -49,7 +49,7 @@ class ORTest {
      */
     @Test
     public void testTruthTableCase3() {
-        SecondInput.toggle();
+        SecondInput.react();
         simWait(50);
         assertTrue(gate.getState());
     }
@@ -58,8 +58,8 @@ class ORTest {
      */
     @Test
     public void testTruthTableCase4() {
-        FirstInput.toggle();
-        SecondInput.toggle();
+        FirstInput.react();
+        SecondInput.react();
         simWait(50);
 
         assertTrue(gate.getState());

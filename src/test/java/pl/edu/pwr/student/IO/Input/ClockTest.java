@@ -34,7 +34,7 @@ class ClockTest {
      */
     @Test
     public void testWithPower() {
-        c.toggle();
+        c.react();
         simWait(99);
         assertTrue(c.getState());
         simWait(99);
