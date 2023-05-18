@@ -205,7 +205,7 @@ public class Register {
         register.output("output2").connection(o2);
         register.output("output3").connection(o3);
 
-        clock.toggle();
+        clock.react();
 
         store.press(250);
         Simulation.simWait(500);
@@ -249,7 +249,7 @@ public class Register {
         o2.toggle();
         o3.toggle();
 
-        clock.toggle();
+        clock.react();
     }
 
     public static CompoundGate create4bitRegister() {

@@ -28,4 +28,9 @@ public class Button extends SignalSender implements UserUsable {
         state = false;
         sendUpdate();
     }
+
+    @Override
+    public void react() {
+        // Do nothing
+    }
 }

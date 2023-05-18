@@ -267,7 +267,7 @@ public class Canvas extends PApplet {
             for (Drawable g : elements) {
                 if(g.over(new PVector(mouseX, mouseY))){
                     if (g.uiElem instanceof Switch) {
-                        ((Switch) g.uiElem).toggle();
+                        ((Switch) g.uiElem).react();
                     } else if (g.uiElem instanceof LED){
                         g.color = booster.showColorPicker("Choose color of LED", "Color picking");
                     } else if (g.uiElem instanceof Clock){

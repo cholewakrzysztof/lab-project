@@ -35,7 +35,7 @@ public class Speaker extends BasicReceiver implements UiAvailable, UserUsable {
     /**
      * Method that stars and stops emitting sound based on the state of the input of this element.
      */
-    protected void react() {
+    public void react() {
         if (state)
             sine.play();
         else
