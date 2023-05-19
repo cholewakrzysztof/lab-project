@@ -30,7 +30,7 @@ public abstract class Drawable {
     /**
      * The gate represented by this element.
      */
-    public final UiAvailable uiElem;
+    protected final UiAvailable uiElem;
 
     /**
      * The color associated with this element.
@@ -98,7 +98,27 @@ public abstract class Drawable {
      */
     public abstract void run();
 
-    public abstract boolean over(PVector v);
+    /**
+     * Determines whether the mouse is currently over the element.
+     *
+     * @param v the mouse position as a PVector
+     * @return true if the mouse is over the element, false otherwise
+     */
+    public boolean over(PVector v) {
+        return (position.x-sketch.getOffset().x)*ShapeLoader.scale <= v.x &&
+                (position.x-sketch.getOffset().x + ShapeLoader.size)*ShapeLoader.scale >= v.x &&
+                (position.y-sketch.getOffset().y)*ShapeLoader.scale <= v.y &&
+                (position.y-sketch.getOffset().y + ShapeLoader.size)*ShapeLoader.scale >= v.y;
+    }
 
     public abstract void updatePosition(PVector pVector);
+
+    public UiAvailable getGate(){
+        return uiElem;
+    }
+
+    public abstract UiAvailable getInput();
+
+    public abstract UiAvailable getOutput();
+
 }

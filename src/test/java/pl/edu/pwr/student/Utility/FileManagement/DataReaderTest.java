@@ -67,6 +67,6 @@ class DataReaderTest {
         String jsonString = DataWriter.generateJSONfromUIElement(uiElement);
         UiElement element = DataReader.generateUIElementFormJSON(jsonString,canvas);
 
-        assertSame(element.uiElem.getClass(), AND.class);
+        assertSame(element.getGate().getClass(), AND.class);
     }
 }

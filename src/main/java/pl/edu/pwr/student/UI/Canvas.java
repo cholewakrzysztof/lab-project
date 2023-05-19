@@ -74,6 +74,11 @@ public class Canvas extends PApplet {
     private Drawable selectedElement = null;
 
     /**
+     * The selected element on the canvas.
+     */
+    private UiAvailable connecting = null;
+
+    /**
      * Holds the offset of canvas.
      */
     private final PVector offset = new PVector(0, 0);
@@ -223,7 +228,12 @@ public class Canvas extends PApplet {
                 for (Drawable g : elements) {
                     if (g.over(new PVector(mouseX, mouseY))) {
                         setState(4);
-                        selectedElement = g;
+                        connecting = g.getOutput();
+                        if (connecting == null || connecting instanceof CompoundGate || connecting instanceof SignalReceiver) {
+                            state = lastState;
+                            connecting = null;
+                            showPopup("This gate cannot have output");
+                        }
                         break;
                     }
                 }
@@ -231,7 +241,7 @@ public class Canvas extends PApplet {
             case 3 -> {
                 for (Drawable g : elements) {
                     if (g.over(new PVector(mouseX, mouseY))) {
-                        g.uiElem.fullDisconnect();
+                        g.getGate().fullDisconnect();
                         elements.remove(g);
                         break;
                     }
@@ -240,16 +250,14 @@ public class Canvas extends PApplet {
             case 4 -> {
                 for (Drawable g : elements) {
                     if (g.over(new PVector(mouseX, mouseY))) {
-                        if (selectedElement != null) {
+                        if (connecting != null) {
                             try {
-                                selectedElement.uiElem.connection((SignalReceiver) g.uiElem);
-                                selectedElement = null;
-                                state = lastState;
+                                connecting.connection((SignalReceiver) g.getInput());
                             } catch (Exception e) {
-                                booster.createNotification(
-                                        "You cannot connect this to that",
-                                        "Gates-Simulation");
+                                showPopup("This gate cannot have input");
                             }
+                            state = lastState;
+                            connecting = null;
                         }
                         break;
                     }
@@ -266,38 +274,38 @@ public class Canvas extends PApplet {
         if (state == 0) {
             for (Drawable g : elements) {
                 if(g.over(new PVector(mouseX, mouseY))){
-                    if (g.uiElem instanceof Switch) {
-                        ((Switch) g.uiElem).react();
-                    } else if (g.uiElem instanceof LED){
+                    if (g.getGate() instanceof Switch) {
+                        ((Switch) g.getGate()).react();
+                    } else if (g.getGate() instanceof LED){
                         g.color = booster.showColorPicker("Choose color of LED", "Color picking");
-                    } else if (g.uiElem instanceof Clock){
+                    } else if (g.getGate() instanceof Clock){
                         Form temp = booster.createForm("Clock")
                                 .addSlider("On time", 100, 10000, 1000, 10000, 1000)
                                 .addSlider("Off time", 100, 10000, 1000, 10000, 1000)
                                 .show();
-                        ((Clock) g.uiElem).setIntervals(
+                        ((Clock) g.getGate()).setIntervals(
                                 temp.getByLabel("On time").asInt(),
                                 temp.getByLabel("Off time").asInt()
                         );
-                    } else if (g.uiElem instanceof Delay){
+                    } else if (g.getGate() instanceof Delay){
                         Form temp = booster.createForm("Delay")
                                 .addSlider("Delay time", 100, 10000, 1000, 10000, 1000)
                                 .show();
-                        ((Delay) g.uiElem).setDelay(
+                        ((Delay) g.getGate()).setDelay(
                                 temp.getByLabel("Delay time").asInt()
                         );
-                    } else if (g.uiElem instanceof Speaker) {
+                    } else if (g.getGate() instanceof Speaker) {
                         Form temp = booster.createForm("SPEAKER")
                                 .addSlider("Frequency", 100, 10000, 200, 10000, 1000)
                                 .show();
-                        ((Speaker) g.uiElem).setFrequency(
+                        ((Speaker) g.getGate()).setFrequency(
                                 temp.getByLabel("Frequency").asInt()
                         );
-                    } else if (g.uiElem instanceof VirtualIO) {
+                    } else if (g.getGate() instanceof VirtualIO) {
                         Form temp = booster.createForm("NAME")
-                                .addTextArea("Name", ((VirtualIO)g.uiElem).name)
+                                .addTextArea("Name", ((VirtualIO)g.getGate()).name)
                                 .show();
-                        ((VirtualIO) g.uiElem).setName(
+                        ((VirtualIO) g.getGate()).setName(
                                 temp.getByLabel("Name").asString()
                         );
                     }

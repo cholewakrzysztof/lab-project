@@ -37,7 +37,7 @@ public class CompoundElement extends Drawable {
                     sketch,
                     new PVector(
                         position.x + ShapeLoader.size,
-                        position.y + ShapeLoader.size * (i+1) - ShapeLoader.size * outs.length/2f
+                        position.y + ShapeLoader.size * i - ShapeLoader.size * (outs.length-1)/2f
                     ),
                     (UiAvailable) ((CompoundGate)uiElem).output(outs[i])
                 )
@@ -50,7 +50,7 @@ public class CompoundElement extends Drawable {
                     sketch,
                     new PVector(
                         position.x - ShapeLoader.size,
-                        position.y + ShapeLoader.size * (i+1) - ShapeLoader.size * ins.length/2f
+                        position.y + ShapeLoader.size * i - ShapeLoader.size * (ins.length-1)/2f
                     ),
                     (UiAvailable) ((CompoundGate)uiElem).input(ins[i])
                 )
@@ -65,11 +65,51 @@ public class CompoundElement extends Drawable {
                 return true;
             }
         }
-        return false;
+        return super.over(v);
     }
 
     @Override
     public void run(){
+        sketch.stroke(0, 0, 0);
+        if (over(new PVector(sketch.mouseX, sketch.mouseY))){
+            sketch.fill(0, 30);
+            sketch.square((position.x-sketch.getOffset().x)*ShapeLoader.scale,(position.y-sketch.getOffset().y)*ShapeLoader.scale,ShapeLoader.size*ShapeLoader.scale);
+        }
+
+        int out = ((CompoundGate)uiElem).getOutputKeys().length;
+        int in = ((CompoundGate)uiElem).getInputKeys().length;
+
+        sketch.line(
+        (position.x-sketch.getOffset().x + ShapeLoader.size)*ShapeLoader.scale,
+            (float) ((position.y - sketch.getOffset().y + ShapeLoader.size * Math.floor((out-1)/2f) + ShapeLoader.size)*ShapeLoader.scale),
+        (position.x-sketch.getOffset().x + ShapeLoader.size)*ShapeLoader.scale,
+            (float) ((position.y - sketch.getOffset().y - ShapeLoader.size * Math.floor((out-1)/2f))*ShapeLoader.scale)
+        );
+
+        sketch.line(
+            (position.x-sketch.getOffset().x)*ShapeLoader.scale,
+            (float) ((position.y - sketch.getOffset().y + ShapeLoader.size * Math.floor((in-1)/2f) + ShapeLoader.size)*ShapeLoader.scale),
+            (position.x-sketch.getOffset().x)*ShapeLoader.scale,
+            (float) ((position.y - sketch.getOffset().y - ShapeLoader.size * Math.floor((in-1)/2f))*ShapeLoader.scale)
+        );
+
+        sketch.textSize(32);
+        sketch.fill(0);
+        sketch.textAlign(sketch.CENTER, sketch.CENTER);
+        String temp = "Gate"; //TODO: add name to compound gate
+
+        float width = sketch.textWidth(temp);
+        if (width > 50){
+            sketch.textSize(32*ShapeLoader.scale*ShapeLoader.size/width);
+        } else {
+            sketch.textSize(32*ShapeLoader.scale);
+        }
+        sketch.text(
+                temp,
+                (position.x-sketch.getOffset().x+ShapeLoader.size/2f)*ShapeLoader.scale,
+                (position.y-sketch.getOffset().y+ShapeLoader.size/2f)*ShapeLoader.scale
+        );
+
         for (Drawable d : elements){
             d.run();
         }
@@ -77,6 +117,8 @@ public class CompoundElement extends Drawable {
 
     @Override
     public void updatePosition(PVector v) {
+        position = v;
+
         List<String> outs = List.of(((CompoundGate) uiElem).getOutputKeys());
         List<String> ins = List.of(((CompoundGate) uiElem).getInputKeys());
         for (Drawable d : elements){
@@ -85,7 +127,7 @@ public class CompoundElement extends Drawable {
                 d.updatePosition(
                     new PVector(
                         v.x + ShapeLoader.size,
-                        v.y + ShapeLoader.size * (out+1) - ShapeLoader.size * outs.size()/2f
+                        v.y + ShapeLoader.size * out - ShapeLoader.size * (outs.size()-1)/2f
                     )
                 );
                 continue;
@@ -95,11 +137,59 @@ public class CompoundElement extends Drawable {
                 d.updatePosition(
                     new PVector(
                         v.x - ShapeLoader.size,
-                        v.y + ShapeLoader.size * (in+1) - ShapeLoader.size * ins.size()/2f
+                        v.y + ShapeLoader.size * in - ShapeLoader.size * (ins.size()-1)/2f
                     )
                 );
             }
 
         }
+    }
+
+    @Override
+    public UiAvailable getGate() {
+        PVector v = new PVector(sketch.mouseX, sketch.mouseY);
+        for (Drawable d : elements){
+            if (d.over(v)){
+                return d.getGate();
+            }
+        }
+
+        if (super.over(v)){
+            return uiElem;
+        }
+
+        return null;
+    }
+
+    @Override
+    public UiAvailable getInput() {
+        PVector v = new PVector(sketch.mouseX, sketch.mouseY);
+        for (Drawable d : elements){
+            if (d.over(v)){
+                return (UiAvailable) ((CompoundGate) uiElem).input(d.elName);
+            }
+        }
+
+        if (super.over(v)){
+            return uiElem;
+        }
+
+        return null;
+    }
+
+    @Override
+    public UiAvailable getOutput() {
+        PVector v = new PVector(sketch.mouseX, sketch.mouseY);
+        for (Drawable d : elements){
+            if (d.over(v)){
+                return (UiAvailable) ((CompoundGate) uiElem).output(d.elName);
+            }
+        }
+
+        if (super.over(v)){
+            return uiElem;
+        }
+
+        return null;
     }
 }

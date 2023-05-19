@@ -53,7 +53,7 @@ public class JSONAvailable {
         this.position = element.position;
         this.outputs = JSONAvailable.GetOutputsHashCodes(element);
         this.elName = element.elName;
-        this.hashCode = element.uiElem.hashCode();
+        this.hashCode = element.getGate().hashCode();
         /*TODO
         * Add special fields like color for LED, interval for Clock
         * */
@@ -66,7 +66,7 @@ public class JSONAvailable {
      */
     private static LinkedList<Integer> GetOutputsHashCodes(Drawable element){
         LinkedList<Integer> list = new LinkedList<>();
-        for (SignalReceiver output:element.uiElem.getOutputs()) {
+        for (SignalReceiver output:element.getGate().getOutputs()) {
             list.add(output.hashCode());
         }
         return list;

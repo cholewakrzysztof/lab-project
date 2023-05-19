@@ -72,6 +72,7 @@ public class UiElement extends Drawable {
      */
     @Override
     public void run() {
+        sketch.textSize(32);
         // Code for drawing the element shape and mouse hover effects
 
         if (over(new PVector(sketch.mouseX, sketch.mouseY))){
@@ -86,10 +87,12 @@ public class UiElement extends Drawable {
         if (uiElem instanceof VirtualIO){
             sketch.fill(0);
             sketch.textAlign(sketch.CENTER, sketch.CENTER);
-            sketch.textSize(32*ShapeLoader.scale);
             String temp = ((VirtualIO)uiElem).name;
-            if (temp.length() > 3){
-                temp = temp.substring(0,3);
+            float width = sketch.textWidth(temp);
+            if (width > 50){
+                sketch.textSize(32*ShapeLoader.scale*ShapeLoader.size/width);
+            } else {
+                sketch.textSize(32*ShapeLoader.scale);
             }
             sketch.text(
                     temp,
@@ -187,17 +190,13 @@ public class UiElement extends Drawable {
         position = pVector;
     }
 
-    /**
-     * Determines whether the mouse is currently over the element.
-     *
-     * @param v the mouse position as a PVector
-     * @return true if the mouse is over the element, false otherwise
-     */
     @Override
-    public boolean over(PVector v)  {
-        return (position.x-sketch.getOffset().x)*ShapeLoader.scale <= v.x &&
-                (position.x-sketch.getOffset().x + ShapeLoader.size)*ShapeLoader.scale >= v.x &&
-                (position.y-sketch.getOffset().y)*ShapeLoader.scale <= v.y &&
-                (position.y-sketch.getOffset().y + ShapeLoader.size)*ShapeLoader.scale >= v.y;
+    public UiAvailable getInput() {
+        return getGate();
+    }
+
+    @Override
+    public UiAvailable getOutput() {
+        return getGate();
     }
 }

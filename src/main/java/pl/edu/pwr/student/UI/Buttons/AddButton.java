@@ -27,7 +27,7 @@ public class AddButton extends Button {
     @Override
     public void click() {
         for (Drawable ui : sketch.getElements()) {
-            if (ui.uiElem instanceof UserUsable) {
+            if (ui.getGate() instanceof UserUsable) {
                 sketch.showPopup("You cannot have user usable element in the compound gate!");
                 return;
             }
