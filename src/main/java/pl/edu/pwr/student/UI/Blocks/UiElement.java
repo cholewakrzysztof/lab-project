@@ -70,6 +70,7 @@ public class UiElement extends Drawable {
      * to indicate the signal flow.
      * </p>
      */
+    @Override
     public void run() {
         // Code for drawing the element shape and mouse hover effects
 
@@ -92,8 +93,8 @@ public class UiElement extends Drawable {
             }
             sketch.text(
                     temp,
-                    (position.x-sketch.getOffset().x+ShapeLoader.size/2)*ShapeLoader.scale,
-                    (position.y-sketch.getOffset().y+ShapeLoader.size/2)*ShapeLoader.scale
+                    (position.x-sketch.getOffset().x+ShapeLoader.size/2f)*ShapeLoader.scale,
+                    (position.y-sketch.getOffset().y+ShapeLoader.size/2f)*ShapeLoader.scale
             );
         } else if (uiElem instanceof Switch) {
             if (uiElem.getState()){
@@ -181,12 +182,18 @@ public class UiElement extends Drawable {
         }
     }
 
+    @Override
+    public void updatePosition(PVector pVector) {
+        position = pVector;
+    }
+
     /**
      * Determines whether the mouse is currently over the element.
      *
      * @param v the mouse position as a PVector
      * @return true if the mouse is over the element, false otherwise
      */
+    @Override
     public boolean over(PVector v)  {
         return (position.x-sketch.getOffset().x)*ShapeLoader.scale <= v.x &&
                 (position.x-sketch.getOffset().x + ShapeLoader.size)*ShapeLoader.scale >= v.x &&

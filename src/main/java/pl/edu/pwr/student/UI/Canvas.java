@@ -313,10 +313,10 @@ public class Canvas extends PApplet {
     public void mouseDragged() {
         if (state == 0) {
             if (selectedElement != null) {
-                selectedElement.position = new PVector(
+                selectedElement.updatePosition (new PVector(
                         mouseX / ShapeLoader.scale - ShapeLoader.size/2f + offset.x,
                         mouseY / ShapeLoader.scale - ShapeLoader.size/2f + offset.y
-                );
+                ));
             } else {
                 if (startingMousePosition == null) {
                     startingMousePosition = new PVector(mouseX, mouseY);

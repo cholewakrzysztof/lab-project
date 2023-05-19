@@ -96,6 +96,9 @@ public abstract class Drawable {
      * to indicate the signal flow.
      * </p>
      */
-    public abstract boolean over(PVector v);
     public abstract void run();
+
+    public abstract boolean over(PVector v);
+
+    public abstract void updatePosition(PVector pVector);
 }
