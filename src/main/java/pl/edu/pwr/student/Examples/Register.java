@@ -312,7 +312,7 @@ public class Register {
         compoundGates.add(r3);
         compoundGates.add(r4);
 
-        return new CompoundGate(gates, compoundGates);
+        return new CompoundGate("4bitRegister", gates, compoundGates);
     }
 
     public static CompoundGate createRegister() {
@@ -362,7 +362,7 @@ public class Register {
 
         compoundGates.add(dFlipFlop);
 
-        return new CompoundGate(gates, compoundGates);
+        return new CompoundGate("Register", gates, compoundGates);
     }
 
     public static CompoundGate createETDFlipFlop() {
@@ -396,7 +396,7 @@ public class Register {
         compoundGates.add(dLatch1);
         compoundGates.add(dLatch2);
 
-        return new CompoundGate(gates, compoundGates);
+        return new CompoundGate("ETDFlipFlop", gates, compoundGates);
     }
 
     public static CompoundGate createDLatch() {
@@ -431,7 +431,7 @@ public class Register {
         gates.add(out);
         compoundGates.add(srLatch);
 
-        return new CompoundGate(gates, compoundGates);
+        return new CompoundGate("DLatch", gates, compoundGates);
     }
 
     public static CompoundGate createSRLatch() {
@@ -457,6 +457,6 @@ public class Register {
         gates.add(reset);
         gates.add(out);
 
-        return new CompoundGate(gates);
+        return new CompoundGate("SRLatch", gates);
     }
 }

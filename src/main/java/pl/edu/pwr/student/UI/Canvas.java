@@ -5,6 +5,7 @@ import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
 import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Input.Clock;
 import pl.edu.pwr.student.IO.Input.Switch;
+import pl.edu.pwr.student.IO.Output.BasicReceiver;
 import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.IO.Output.Speaker;
@@ -125,17 +126,17 @@ public class Canvas extends PApplet {
             super.exit();
         } else {
             booster.showConfirmDialog(
-                    "Do you want to save your work?",
-                    "Exiting",
-                    () -> {
-                        try {
-                            DataWriter.saveToFile(this, getDirectory());
-                            super.exit();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    },
-                    super::exit);
+                "Do you want to save your work?",
+                "Exiting",
+                () -> {
+                    try {
+                        DataWriter.saveToFile(this, getDirectory());
+                        super.exit();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                },
+                super::exit);
         }
     }
 
@@ -229,7 +230,7 @@ public class Canvas extends PApplet {
                     if (g.over(new PVector(mouseX, mouseY))) {
                         setState(4);
                         connecting = g.getOutput();
-                        if (connecting == null || connecting instanceof CompoundGate || connecting instanceof SignalReceiver) {
+                        if (connecting == null || connecting instanceof CompoundGate || connecting instanceof BasicReceiver) {
                             state = lastState;
                             connecting = null;
                             showPopup("This gate cannot have output");
@@ -438,8 +439,8 @@ public class Canvas extends PApplet {
      */
     public void showPopup(String message) {
         booster.createNotification(
-                message,
-                "Gates-Simulation"
+            message,
+            "Gates-Simulation"
         );
     }
 
@@ -451,10 +452,10 @@ public class Canvas extends PApplet {
 
     private void buildForm(){
         form = booster
-                .createForm("Gates")
-                .addList("Select Gate", gatesList)
-                .run()
-                .hide();
+            .createForm("Gates")
+            .addList("Select Gate", gatesList)
+            .run()
+            .hide();
     }
 
     private void initForm(){

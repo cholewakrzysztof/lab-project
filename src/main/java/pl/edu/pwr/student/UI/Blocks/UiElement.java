@@ -12,7 +12,7 @@ import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PVector;
 
 import java.awt.*;
-import java.util.HashSet;
+import java.util.ArrayList;
 
 /**
  * This is a class definition for a UiElement class, which represents every element on a canvas.
@@ -143,42 +143,11 @@ public class UiElement extends Drawable {
             }
 
             for (Drawable u : sketch.getElements()){
-                if (u.uiElem.equals(s)) {
-                    HashSet<SignalSender> inputs = ((UiAvailable) s).getInputs();
-                    int i = 1;
-                    int pos = 1;
-                    for (SignalSender inp : inputs){
-                        if(inp.equals(uiElem)) {
-                            pos = i;
-                        }
-                        i++;
-                    }
-
-                    float startx = (position.x-sketch.getOffset().x)*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale;
-                    float starty = (position.y-sketch.getOffset().y)*ShapeLoader.scale + ShapeLoader.size/2f*ShapeLoader.scale;
-                    float endx = (u.position.x-sketch.getOffset().x)*ShapeLoader.scale;
-                    float endy = (u.position.y-sketch.getOffset().y)*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
-                    if (startx <= endx){
-                        float midx = (startx+endx)/2 + ShapeLoader.size*ShapeLoader.scale*pos/i;
-                        sketch.line(startx, starty, midx, starty);
-                        sketch.line(midx, starty, midx, endy);
-                        sketch.line(midx, endy, endx, endy);
-                    } else {
-                        float padding;
-                        float midy;
-                        if (starty <= (u.position.y-sketch.getOffset().y) + ShapeLoader.size*1.5f*ShapeLoader.scale && starty >= (u.position.y-sketch.getOffset().y) - ShapeLoader.size/2f*ShapeLoader.scale) {
-                            padding = ShapeLoader.size*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
-                            midy = (starty+endy)/2+padding;
-                        } else {
-                            midy = (starty+endy)/2;
-                            padding = ShapeLoader.size*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
-                        }
-
-                        sketch.line(startx, starty, startx+padding, starty);
-                        sketch.line(startx+padding, starty, startx+padding, midy);
-                        sketch.line(startx+padding, midy, endx-padding, midy);
-                        sketch.line(endx-padding, midy, endx-padding, endy);
-                        sketch.line(endx-padding, endy, endx, endy);
+                if (u instanceof UiElement){
+                    drawLines(s, u);
+                } else if (u instanceof CompoundElement){
+                    for (Drawable e : ((CompoundElement) u).getElements()){
+                        drawLines(s, e);
                     }
                 }
             }
@@ -198,5 +167,50 @@ public class UiElement extends Drawable {
     @Override
     public UiAvailable getOutput() {
         return getGate();
+    }
+
+    private void drawLines(SignalReceiver s, Drawable u) {
+        if (u.uiElem.equals(s)) {
+            ArrayList<SignalSender> inputs = ((UiAvailable) s).getInputs();
+            int i = inputs.size()+1;
+            int pos = 1;
+            for (int j = 0; j < inputs.size(); j++){
+                if (inputs.get(j).equals(uiElem)) {
+                    pos = j+1;
+                    break;
+                }
+            }
+
+            if (inputs.size() == 0){
+                i++;
+            }
+
+            float startx = (position.x-sketch.getOffset().x)*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale;
+            float starty = (position.y-sketch.getOffset().y)*ShapeLoader.scale + ShapeLoader.size/2f*ShapeLoader.scale;
+            float endx = (u.position.x-sketch.getOffset().x)*ShapeLoader.scale;
+            float endy = (u.position.y-sketch.getOffset().y)*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
+            if (startx <= endx){
+                float midx = (startx+endx)/2 + ShapeLoader.size*ShapeLoader.scale*pos/i;
+                sketch.line(startx, starty, midx, starty);
+                sketch.line(midx, starty, midx, endy);
+                sketch.line(midx, endy, endx, endy);
+            } else {
+                float padding;
+                float midy;
+                if (starty <= (u.position.y-sketch.getOffset().y) + ShapeLoader.size*1.5f*ShapeLoader.scale && starty >= (u.position.y-sketch.getOffset().y) - ShapeLoader.size/2f*ShapeLoader.scale) {
+                    padding = ShapeLoader.size*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
+                    midy = (starty+endy)/2+padding;
+                } else {
+                    midy = (starty+endy)/2;
+                    padding = ShapeLoader.size*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
+                }
+
+                sketch.line(startx, starty, startx+padding, starty);
+                sketch.line(startx+padding, starty, startx+padding, midy);
+                sketch.line(startx+padding, midy, endx-padding, midy);
+                sketch.line(endx-padding, midy, endx-padding, endy);
+                sketch.line(endx-padding, endy, endx, endy);
+            }
+        }
     }
 }

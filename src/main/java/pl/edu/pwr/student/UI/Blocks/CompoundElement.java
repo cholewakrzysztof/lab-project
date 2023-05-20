@@ -81,22 +81,22 @@ public class CompoundElement extends Drawable {
 
         sketch.line(
         (position.x-sketch.getOffset().x + ShapeLoader.size)*ShapeLoader.scale,
-            (float) ((position.y - sketch.getOffset().y + ShapeLoader.size * Math.floor((out-1)/2f) + ShapeLoader.size)*ShapeLoader.scale),
+        (position.y - sketch.getOffset().y + ShapeLoader.size * (out-1)/2f + ShapeLoader.size)*ShapeLoader.scale,
         (position.x-sketch.getOffset().x + ShapeLoader.size)*ShapeLoader.scale,
-            (float) ((position.y - sketch.getOffset().y - ShapeLoader.size * Math.floor((out-1)/2f))*ShapeLoader.scale)
+        (position.y - sketch.getOffset().y - ShapeLoader.size * (out-1)/2f)*ShapeLoader.scale
         );
 
         sketch.line(
-            (position.x-sketch.getOffset().x)*ShapeLoader.scale,
-            (float) ((position.y - sketch.getOffset().y + ShapeLoader.size * Math.floor((in-1)/2f) + ShapeLoader.size)*ShapeLoader.scale),
-            (position.x-sketch.getOffset().x)*ShapeLoader.scale,
-            (float) ((position.y - sketch.getOffset().y - ShapeLoader.size * Math.floor((in-1)/2f))*ShapeLoader.scale)
+        (position.x-sketch.getOffset().x)*ShapeLoader.scale,
+        (position.y - sketch.getOffset().y + ShapeLoader.size * (in-1)/2f + ShapeLoader.size)*ShapeLoader.scale,
+        (position.x-sketch.getOffset().x)*ShapeLoader.scale,
+        (position.y - sketch.getOffset().y - ShapeLoader.size * (in-1)/2f)*ShapeLoader.scale
         );
 
         sketch.textSize(32);
         sketch.fill(0);
         sketch.textAlign(sketch.CENTER, sketch.CENTER);
-        String temp = "Gate"; //TODO: add name to compound gate
+        String temp = ((CompoundGate) uiElem).name;
 
         float width = sketch.textWidth(temp);
         if (width > 50){
@@ -191,5 +191,9 @@ public class CompoundElement extends Drawable {
         }
 
         return null;
+    }
+
+    public Set<Drawable> getElements() {
+        return elements;
     }
 }
