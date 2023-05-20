@@ -5,9 +5,13 @@ import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
 import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Input.Clock;
 import pl.edu.pwr.student.IO.Input.Switch;
+import pl.edu.pwr.student.IO.Output.BasicReceiver;
 import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.IO.Output.Speaker;
+import pl.edu.pwr.student.UI.Blocks.CompoundElement;
+import pl.edu.pwr.student.UI.Blocks.Drawable;
+import pl.edu.pwr.student.UI.Blocks.UiElement;
 import pl.edu.pwr.student.UI.Buttons.*;
 import pl.edu.pwr.student.UI.Creator.GateCreator;
 import pl.edu.pwr.student.Utility.FileManagement.DataWriter;
@@ -58,7 +62,7 @@ public class Canvas extends PApplet {
     /**
      * The set of all elements on the canvas.
      */
-    private final Set<UiElement> elements = new HashSet<>();
+    private final Set<Drawable> elements = new HashSet<>();
 
     /**
      * The list of all buttons.
@@ -68,7 +72,12 @@ public class Canvas extends PApplet {
     /**
      * The selected element on the canvas.
      */
-    private UiElement selectedElement = null;
+    private Drawable selectedElement = null;
+
+    /**
+     * The selected element on the canvas.
+     */
+    private UiAvailable connecting = null;
 
     /**
      * Holds the offset of canvas.
@@ -117,17 +126,17 @@ public class Canvas extends PApplet {
             super.exit();
         } else {
             booster.showConfirmDialog(
-                    "Do you want to save your work?",
-                    "Exiting",
-                    () -> {
-                        try {
-                            DataWriter.saveToFile(this, getDirectory());
-                            super.exit();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    },
-                    super::exit);
+                "Do you want to save your work?",
+                "Exiting",
+                () -> {
+                    try {
+                        DataWriter.saveToFile(this, getDirectory());
+                        super.exit();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                },
+                super::exit);
         }
     }
 
@@ -150,7 +159,7 @@ public class Canvas extends PApplet {
     public void draw() {
         background(255);
 
-        for (UiElement g : elements) {
+        for (Drawable g : elements) {
             g.run();
         }
 
@@ -189,7 +198,7 @@ public class Canvas extends PApplet {
 
         switch (state) {
             case 0 -> {
-                for (UiElement g : elements) {
+                for (Drawable g : elements) {
                     if (g.over(new PVector(mouseX, mouseY))) {
                         selectedElement = g;
                         break;
@@ -206,43 +215,50 @@ public class Canvas extends PApplet {
 
                     try {
                         UiAvailable temp = GateCreator.create(selected.getTitle());
-                        elements.add(new UiElement(selected.getTitle(), this, mouse, temp));
+                        if (temp instanceof CompoundGate){
+                            elements.add(new CompoundElement(selected.getTitle(), this, mouse, temp));
+                        } else {
+                            elements.add(new UiElement(selected.getTitle(), this, mouse, temp));
+                        }
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                 }
             }
             case 2 -> {
-                for (UiElement g : elements) {
+                for (Drawable g : elements) {
                     if (g.over(new PVector(mouseX, mouseY))) {
                         setState(4);
-                        selectedElement = g;
+                        connecting = g.getOutput();
+                        if (connecting == null || connecting instanceof CompoundGate || connecting instanceof BasicReceiver) {
+                            state = lastState;
+                            connecting = null;
+                            showPopup("This gate cannot have output");
+                        }
                         break;
                     }
                 }
             }
             case 3 -> {
-                for (UiElement g : elements) {
+                for (Drawable g : elements) {
                     if (g.over(new PVector(mouseX, mouseY))) {
-                        g.uiElem.fullDisconnect();
+                        g.getGate().fullDisconnect();
                         elements.remove(g);
                         break;
                     }
                 }
             }
             case 4 -> {
-                for (UiElement g : elements) {
+                for (Drawable g : elements) {
                     if (g.over(new PVector(mouseX, mouseY))) {
-                        if (selectedElement != null) {
+                        if (connecting != null) {
                             try {
-                                selectedElement.uiElem.connection((SignalReceiver) g.uiElem);
-                                selectedElement = null;
-                                state = lastState;
+                                connecting.connection((SignalReceiver) g.getInput());
                             } catch (Exception e) {
-                                booster.createNotification(
-                                        "You cannot connect this to that",
-                                        "Gates-Simulation");
+                                showPopup("This gate cannot have input");
                             }
+                            state = lastState;
+                            connecting = null;
                         }
                         break;
                     }
@@ -257,40 +273,40 @@ public class Canvas extends PApplet {
     @Override
     public void mouseClicked(){
         if (state == 0) {
-            for (UiElement g : elements) {
+            for (Drawable g : elements) {
                 if(g.over(new PVector(mouseX, mouseY))){
-                    if (g.uiElem instanceof Switch) {
-                        ((Switch) g.uiElem).toggle();
-                    } else if (g.uiElem instanceof LED){
+                    if (g.getGate() instanceof Switch) {
+                        ((Switch) g.getGate()).react();
+                    } else if (g.getGate() instanceof LED){
                         g.color = booster.showColorPicker("Choose color of LED", "Color picking");
-                    } else if (g.uiElem instanceof Clock){
+                    } else if (g.getGate() instanceof Clock){
                         Form temp = booster.createForm("Clock")
                                 .addSlider("On time", 100, 10000, 1000, 10000, 1000)
                                 .addSlider("Off time", 100, 10000, 1000, 10000, 1000)
                                 .show();
-                        ((Clock) g.uiElem).setIntervals(
+                        ((Clock) g.getGate()).setIntervals(
                                 temp.getByLabel("On time").asInt(),
                                 temp.getByLabel("Off time").asInt()
                         );
-                    } else if (g.uiElem instanceof Delay){
+                    } else if (g.getGate() instanceof Delay){
                         Form temp = booster.createForm("Delay")
                                 .addSlider("Delay time", 100, 10000, 1000, 10000, 1000)
                                 .show();
-                        ((Delay) g.uiElem).setDelay(
+                        ((Delay) g.getGate()).setDelay(
                                 temp.getByLabel("Delay time").asInt()
                         );
-                    } else if (g.uiElem instanceof Speaker) {
+                    } else if (g.getGate() instanceof Speaker) {
                         Form temp = booster.createForm("SPEAKER")
                                 .addSlider("Frequency", 100, 10000, 200, 10000, 1000)
                                 .show();
-                        ((Speaker) g.uiElem).setFrequency(
+                        ((Speaker) g.getGate()).setFrequency(
                                 temp.getByLabel("Frequency").asInt()
                         );
-                    } else if (g.uiElem instanceof VirtualIO) {
+                    } else if (g.getGate() instanceof VirtualIO) {
                         Form temp = booster.createForm("NAME")
-                                .addTextArea("Name", ((VirtualIO)g.uiElem).name)
+                                .addTextArea("Name", ((VirtualIO)g.getGate()).name)
                                 .show();
-                        ((VirtualIO) g.uiElem).setName(
+                        ((VirtualIO) g.getGate()).setName(
                                 temp.getByLabel("Name").asString()
                         );
                     }
@@ -306,10 +322,10 @@ public class Canvas extends PApplet {
     public void mouseDragged() {
         if (state == 0) {
             if (selectedElement != null) {
-                selectedElement.position = new PVector(
-                        mouseX / ShapeLoader.scale - ShapeLoader.size/2f + offset.x,
-                        mouseY / ShapeLoader.scale - ShapeLoader.size/2f + offset.y
-                );
+                selectedElement.updatePosition (new PVector(
+                    mouseX / ShapeLoader.scale - ShapeLoader.size/2f + offset.x,
+                    mouseY / ShapeLoader.scale - ShapeLoader.size/2f + offset.y
+                ));
             } else {
                 if (startingMousePosition == null) {
                     startingMousePosition = new PVector(mouseX, mouseY);
@@ -384,8 +400,12 @@ public class Canvas extends PApplet {
      * Gets set of all elements
      * @return set of elements
      */
-    public Set<UiElement> getElements() {
+    public Set<Drawable> getElements() {
         return elements;
+    }
+
+    public void addElement(Drawable element) {
+        elements.add(element);
     }
 
     /**
@@ -419,8 +439,8 @@ public class Canvas extends PApplet {
      */
     public void showPopup(String message) {
         booster.createNotification(
-                message,
-                "Gates-Simulation"
+            message,
+            "Gates-Simulation"
         );
     }
 
@@ -432,10 +452,10 @@ public class Canvas extends PApplet {
 
     private void buildForm(){
         form = booster
-                .createForm("Gates")
-                .addList("Select Gate", gatesList)
-                .run()
-                .hide();
+            .createForm("Gates")
+            .addList("Select Gate", gatesList)
+            .run()
+            .hide();
     }
 
     private void initForm(){
@@ -470,6 +490,13 @@ public class Canvas extends PApplet {
                 .addTextArea("Name of the gate")
                 .addTextArea("Message for the gate")
                 .show();
+    }
+
+    /**
+     * Clear all HashSets of canvas
+     */
+    public void clear(){
+        elements.clear();
     }
 
     /**

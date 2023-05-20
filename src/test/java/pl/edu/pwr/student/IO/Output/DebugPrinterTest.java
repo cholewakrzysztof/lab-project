@@ -27,7 +27,7 @@ class DebugPrinterTest {
      */
     @Test
     public void testSetON() {
-        FirstInput.toggle();
+        FirstInput.react();
         assertTrue(printer.getState());
     }
 }

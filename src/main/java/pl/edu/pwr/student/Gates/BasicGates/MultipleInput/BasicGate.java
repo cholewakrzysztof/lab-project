@@ -7,6 +7,7 @@ import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.Simulation;
 import pl.edu.pwr.student.UI.UiAvailable;
 
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.HashSet;
 
@@ -27,10 +28,10 @@ public abstract class BasicGate extends SignalSender implements SignalReceiver, 
     /**
      * Returns the inputs(of type {@link SignalSender}) to this element.
      *
-     * @return set of inputs(of type {@link SignalSender}) to this element
+     * @return list of inputs(of type {@link SignalSender}) to this element
      */
-    public HashSet<SignalSender> getInputs() {
-        return new HashSet<>(inputs);
+    public ArrayList<SignalSender> getInputs() {
+        return new ArrayList<>(inputs);
     }
     
     /**

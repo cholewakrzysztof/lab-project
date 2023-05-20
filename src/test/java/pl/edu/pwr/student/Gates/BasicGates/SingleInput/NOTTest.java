@@ -16,7 +16,7 @@ class NOTTest {
     @BeforeEach
     protected void setUp() {
         if(FirstInput.getState())
-            FirstInput.toggle();
+            FirstInput.react();
 
         FirstInput.connection(gate);
         gate.connection(LED);
@@ -36,7 +36,7 @@ class NOTTest {
      */
     @Test
     public void testTruthTableCase2() {
-        FirstInput.toggle();
+        FirstInput.react();
         simWait(50);
         assertFalse(gate.getState());
     }

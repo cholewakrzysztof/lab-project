@@ -16,31 +16,39 @@ import java.util.HashSet;
  * Can be used to combine multiple gates into a single logical unit.
  */
 public class CompoundGate implements CreatableInstance, UiAvailable {
+
+    public String name;
+
     /**
      * Copy constructor.
      *
      * @param gate the gate to copy
      */
     public CompoundGate(@NotNull CompoundGate gate) {
+        this.name = gate.name;
         create(gate.getGates());
     }
 
     /**
      * Creates a new CompoundGate that is composed of the specified gates that implement {@link Compoundable}.
      *
+     * @param name name of compound gate
      * @param gates the gates to include in the compound gate
      */
-    public CompoundGate(@NotNull HashSet<Compoundable> gates) {
+    public CompoundGate(String name, @NotNull HashSet<Compoundable> gates) {
+        this.name = name;
         create(gates);
     }
 
     /**
      * Creates a new CompoundGate that is composed of the specified basic gates which implement {@link Compoundable} and compound gates.
      *
+     * @param name name of compound gate
      * @param basicGates basic gates to include in the compound gate
      * @param compGates compound gates to include in the compound gate
      */
-    public CompoundGate(HashSet<Compoundable> basicGates, @NotNull HashSet<CompoundGate> compGates) {
+    public CompoundGate(String name, HashSet<Compoundable> basicGates, @NotNull HashSet<CompoundGate> compGates) {
+        this.name = name;
         HashSet<Compoundable> gates = new HashSet<>(basicGates);
         for (CompoundGate gate : compGates)
             gates.addAll(gate.getGates());

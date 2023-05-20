@@ -3,11 +3,13 @@ package pl.edu.pwr.student.Utility.FileManagement;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.Gates.CompoundGate;
+import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Output.*;
+import pl.edu.pwr.student.UI.Blocks.CompoundElement;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.Creator.GateCreator;
 import pl.edu.pwr.student.UI.UiAvailable;
-import pl.edu.pwr.student.UI.UiElement;
+import pl.edu.pwr.student.UI.Blocks.UiElement;
 
 import java.io.File;
 import java.io.IOException;
@@ -78,22 +80,34 @@ public class DataReader {
         String message = myReader.next();
 
         HashMap<Integer, Compoundable> gates = new HashMap<>();
-        HashMap<Integer,JSONAvailable> schema = new HashMap<>();
+        HashMap<Integer, JSONAvailable> schema = new HashMap<>();
 
-        while(myReader.hasNext()){
+        while (myReader.hasNext()) {
             String json = myReader.next();
             JSONAvailable jsonAvailable = generateJSONAvailableFromJSON(json);
 
+            Integer id = jsonAvailable.hashCode;
+
+            UiAvailable temp = GateCreator.create(jsonAvailable.elName);
+            if (temp instanceof CompoundGate) {
+                canvas.addElement(new CompoundElement(jsonAvailable.elName, canvas, jsonAvailable.position, temp));
+            } else {
+                canvas.addElement(new UiElement(jsonAvailable.elName, canvas, jsonAvailable.position, temp));
+            }
+
+            gates.put(id, temp);
+
+            jsonAvailableHashMap.put(id, jsonAvailable);
             Integer id = jsonAvailable.getHashCode();
             gates.put(id, (Compoundable) GateCreator.create(jsonAvailable.getElName()));
             schema.put(id, jsonAvailable);
         }
 
-        connectElements(gates,schema);
+        connectElements(gates, schema);
 
         CompoundGate compoundGate = new CompoundGate(new HashSet<>(gates.values()));
-        String name = file.getName().substring(0,file.getName().length()-4);
-        canvas.registerCompoundGate(name,message, compoundGate);
+        String name = file.getName().substring(0, file.getName().length() - 4);
+        canvas.registerCompoundGate(name, message, compoundGate);
 
         myReader.close();
     }

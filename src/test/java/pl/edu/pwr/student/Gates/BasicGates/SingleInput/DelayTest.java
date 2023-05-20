@@ -14,7 +14,7 @@ class DelayTest {
     @BeforeEach
     protected void setUp() {
         if(FirstInput.getState())
-            FirstInput.toggle();
+            FirstInput.react();
 
         FirstInput.connection(delay);
         simWait(50);
@@ -25,7 +25,7 @@ class DelayTest {
      */
     @Test
     public void testStateBeforeUpdate() {
-        FirstInput.toggle();
+        FirstInput.react();
 
         simWait(50);
         assertFalse(delay.getState());
@@ -36,7 +36,7 @@ class DelayTest {
      */
     @Test
     public void testStateAfterUpdate() {
-        FirstInput.toggle();
+        FirstInput.react();
         simWait(75);
         assertFalse(delay.getState());
         simWait(75);

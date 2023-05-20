@@ -21,9 +21,9 @@ class XNORTest {
         gate.connection(LED);
 
         if(FirstInput.getState())
-            FirstInput.toggle();
+            FirstInput.react();
         if(SecondInput.getState())
-            SecondInput.toggle();
+            SecondInput.react();
         simWait(50);
     }
 
@@ -40,7 +40,7 @@ class XNORTest {
      */
     @Test
     public void testTruthTableCase2() {
-        FirstInput.toggle();
+        FirstInput.react();
         simWait(50);
         assertFalse(gate.getState());
     }
@@ -49,7 +49,7 @@ class XNORTest {
      */
     @Test
     public void testTruthTableCase3() {
-        SecondInput.toggle();
+        SecondInput.react();
         simWait(50);
         assertFalse(gate.getState());
     }
@@ -58,8 +58,8 @@ class XNORTest {
      */
     @Test
     public void testTruthTableCase4() {
-        FirstInput.toggle();
-        SecondInput.toggle();
+        FirstInput.react();
+        SecondInput.react();
         simWait(50);
 
         assertTrue(gate.getState());

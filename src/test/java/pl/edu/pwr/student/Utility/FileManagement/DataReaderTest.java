@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.AND;
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.UI.UiElement;
+import pl.edu.pwr.student.UI.Blocks.UiElement;
 import processing.core.PVector;
 import uibooster.UiBooster;
 
@@ -35,7 +35,7 @@ class DataReaderTest {
         }
 
         uiElement = new UiElement("AND",canvas,new PVector(0f,0f),new AND());
-        canvas.getElements().add(uiElement);
+        canvas.addElement(uiElement);
     }
     @AfterAll
     static void clearFolder(){
@@ -53,7 +53,7 @@ class DataReaderTest {
         FileWriter fileWriter = new FileWriter(path);
         fileWriter.write("{\"position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":[],\"hashCode\":120345,\"color\":null}");
         fileWriter.close();
-        canvas.getElements().clear();
+        canvas.clear();
         DataReader.readFromFile(new File(path),canvas);
         assertEquals(1, canvas.getElements().size());
     }
@@ -67,6 +67,6 @@ class DataReaderTest {
         String jsonString = DataWriter.generateJSONfromUIElement(uiElement);
         UiElement element = DataReader.generateUIElementFromJSON(jsonString,canvas);
 
-        assertSame(element.uiElem.getClass(), AND.class);
+        assertSame(element.getGate().getClass(), AND.class);
     }
 }

@@ -27,7 +27,7 @@ class SwitchTest {
      */
     @Test
     public void testSetON() {
-        FirstInput.toggle();
+        FirstInput.react();
         assertTrue(Speaker.getState());
     }
 }

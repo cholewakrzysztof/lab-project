@@ -2,8 +2,8 @@ package pl.edu.pwr.student.Utility.FileManagement;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import pl.edu.pwr.student.UI.Blocks.Drawable;
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.UI.UiElement;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -27,8 +27,8 @@ public class DataWriter {
         }
 
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(directory.getAbsoluteFile() + "\\" + System.currentTimeMillis() + ".gss"));
-        for (UiElement uiElement: canvas.getElements()) {
-            bufferedWriter.write(DataWriter.generateJSONfromUIElement(uiElement));
+        for (Drawable d: canvas.getElements()) {
+            bufferedWriter.write(DataWriter.generateJSONfromUIElement(d));
             bufferedWriter.newLine();
         }
         bufferedWriter.close();
@@ -75,7 +75,7 @@ public class DataWriter {
      * @return JSON string representation of single UI Element
      * @throws IOException something wrong with UI element
      */
-    public static String generateJSONfromUIElement(UiElement element) throws IOException {
+    public static String generateJSONfromUIElement(Drawable element) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(new JSONAvailable(element));
     }

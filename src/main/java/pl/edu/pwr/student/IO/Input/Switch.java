@@ -19,14 +19,14 @@ public class Switch extends SignalSender implements Runnable, UiAvailable, UserU
         Thread thread = new Thread(this);
         thread.start();
     }
-    public boolean toggle() {
+    public void react() {
         state = !state;
         sendUpdate();
-        return state;
+//        return state;
     }
     public void run() {
-        toggle();
+        react();
         Simulation.simWait(milliseconds);
-        toggle();
+        react();
     }
 }

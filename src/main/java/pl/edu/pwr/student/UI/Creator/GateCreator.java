@@ -10,6 +10,7 @@ import pl.edu.pwr.student.IO.Input.Clock;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.Speaker;
+import pl.edu.pwr.student.IO.UserUsable;
 import pl.edu.pwr.student.UI.UiAvailable;
 
 import java.util.HashMap;
@@ -34,12 +35,8 @@ public class GateCreator {
     public static UiAvailable create(String type) {
         UiAvailable ci = (UiAvailable) possibleGates.get(type).getNewInstance();
 
-        if (ci instanceof Clock){
-            ((Clock) ci).toggle();
-        } else if (ci instanceof Switch){
-            ((Switch) ci).toggle();
-        } else if (ci instanceof LED){
-            ((LED) ci).toggle();
+        if (ci instanceof UserUsable){
+            ((UserUsable) ci).react();
         }
 
         return ci;
