@@ -1,6 +1,7 @@
 package pl.edu.pwr.student.Utility.FileManagement;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.UI.Blocks.Drawable;
 import processing.core.PVector;
@@ -22,6 +23,11 @@ public class JSONAvailable {
      */
     @JsonProperty("elName")
     private String elName;
+    /**
+     * The name of this element.
+     */
+    @JsonProperty("name")
+    private String name;
     /**
      * Set of outputs hashcodes
      */
@@ -55,8 +61,11 @@ public class JSONAvailable {
         this.elName = element.elName;
         this.hashCode = element.getGate().hashCode();
         /*TODO
-        * Add special fields like color for LED, interval for Clock
+        * Add special fields like color for LED, interval for Clock, VirtualIO name
         * */
+        if (element.getGate() instanceof VirtualIO){
+            this.name = ((VirtualIO) element.getGate()).name;
+        }
     }
 
     /**
@@ -90,5 +99,9 @@ public class JSONAvailable {
 
     public Color getColor() {
         return color;
+    }
+
+    public String getName() {
+        return name;
     }
 }

@@ -8,6 +8,7 @@ import processing.core.PVector;
 import uibooster.model.Form;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Represents a button for creating new elements on the canvas.
@@ -30,7 +31,13 @@ public class AddButton extends Button {
      */
     @Override
     public void click() throws IOException {
-        for (Drawable ui : sketch.getElements()) {
+        List<Drawable> elem = sketch.getElements();
+        if (elem.size() <= 0){
+            sketch.showPopup("You cannot save empty compound gate!");
+            return;
+        }
+
+        for (Drawable ui : elem) {
             if (ui.getGate() instanceof UserUsable) {
                 sketch.showPopup("You cannot have user usable element in the compound gate!");
                 return;

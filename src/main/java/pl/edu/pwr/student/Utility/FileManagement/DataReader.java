@@ -2,9 +2,9 @@ package pl.edu.pwr.student.Utility.FileManagement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
 import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Output.*;
-import pl.edu.pwr.student.UI.Blocks.CompoundElement;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.Creator.GateCreator;
 import pl.edu.pwr.student.UI.UiAvailable;
@@ -32,18 +32,18 @@ public class DataReader {
         Scanner myReader = new Scanner(file);
         canvas.clear();
 
-        HashMap<Integer, Compoundable> gates = new HashMap<>();
+        HashMap<Integer, UiAvailable> gates = new HashMap<>();
         HashMap<Integer,JSONAvailable> schema = new HashMap<>();
 
         while(myReader.hasNext()){
             JSONAvailable source = generateJSONAvailableFromJSON(myReader.next());
             Integer id = source.getHashCode();
-            Compoundable element =(Compoundable) GateCreator.create(source.getElName());
+            UiAvailable element = GateCreator.create(source.getElName());
             canvas.getElements().add(new UiElement(source.getElName(), canvas, source.getPosition(), element));
             gates.put(id, element);
             schema.put(id, source);
         }
-        connectElements(gates,schema);
+        connectElements(gates, schema);
         myReader.close();
     }
 
@@ -86,22 +86,26 @@ public class DataReader {
             JSONAvailable jsonAvailable = generateJSONAvailableFromJSON(json);
 
             Integer id = jsonAvailable.getHashCode();
-
-            UiAvailable temp = GateCreator.create(jsonAvailable.getElName());
-            if (temp instanceof CompoundGate) {
-                canvas.addElement(new CompoundElement(jsonAvailable.getElName(), canvas, jsonAvailable.getPosition(), temp));
+            UiAvailable temp;
+            if (jsonAvailable.getElName().equals("VIRTUALIO")) {
+                 temp = new VirtualIO(jsonAvailable.getName());
             } else {
-                canvas.addElement(new UiElement(jsonAvailable.getElName(), canvas, jsonAvailable.getPosition(), temp));
+                temp = GateCreator.create(jsonAvailable.getElName());
             }
 
             gates.put(id, (Compoundable) temp);
         }
 
-        connectElements(gates, schema);
+        connectElements(new HashMap<Integer, UiAvailable>(gates), schema);
 
         String name = file.getName().substring(0, file.getName().length() - 4);
-        CompoundGate compoundGate = new CompoundGate(name, new HashSet<>(gates.values()));
-        canvas.registerCompoundGate(name, message, compoundGate);
+        try {
+            CompoundGate compoundGate = new CompoundGate(file.getName(), new HashSet<>(gates.values()));
+
+            canvas.registerCompoundGate(name, message, compoundGate);
+        } catch (Exception e) {
+            canvas.showPopup("CompoundGate cannot have more than one gate with the same name");
+        }
 
         myReader.close();
     }
@@ -133,12 +137,12 @@ public class DataReader {
      * @param gates HashMap of elements to connect
      * @param schema HashMap of JSONAvailable representation of schema
      */
-    private static void connectElements(final HashMap<Integer, Compoundable> gates, final HashMap<Integer,JSONAvailable> schema){
+    private static void connectElements(final HashMap<Integer, UiAvailable> gates, final HashMap<Integer,JSONAvailable> schema){
         for(Map.Entry<Integer, JSONAvailable> entry : schema.entrySet()) {
             JSONAvailable value = entry.getValue();
             UiAvailable gate = gates.get(entry.getKey());
             for (Integer hashCode: value.getOutputs()) {
-                for (Map.Entry<Integer, Compoundable> candidate : gates.entrySet()) {
+                for (Map.Entry<Integer, UiAvailable> candidate : gates.entrySet()) {
                     if(Objects.equals(hashCode, candidate.getKey())){
                         gate.connection((SignalReceiver) candidate.getValue());
                     }

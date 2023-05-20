@@ -152,6 +152,7 @@ public class UiElement extends Drawable {
                 }
             }
         }
+        sketch.stroke(0, 0, 0);
     }
 
     @Override

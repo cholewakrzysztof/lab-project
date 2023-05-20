@@ -1,12 +1,7 @@
 package pl.edu.pwr.student;
 
-import pl.edu.pwr.student.Examples.*;
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.Utility.FileManagement.DataReader;
-import pl.edu.pwr.student.Utility.FileManagement.DataWriter;
 import uibooster.UiBooster;
-
-import java.io.File;
 
 /**
  * Main class of the application
@@ -36,15 +31,7 @@ public class Simulation {
      */
     public static void main(String[] args) {
         try {
-            Canvas canvas = new Canvas();
-            //Registering example compound gates
-            canvas.registerCompoundGate("DLatch", "", Register.createDLatch());
-            canvas.registerCompoundGate("Register", "", Register.createRegister());
-            canvas.registerCompoundGate("SRLatch", "", Register.createSRLatch());
-            canvas.registerCompoundGate("4bitRegister", "", Register.create4bitRegister());
-            canvas.registerCompoundGate("ETDFlipFlop", "", Register.createETDFlipFlop());
-
-            DataReader.initCompoundGates(new File("gates"),canvas);
+            new Canvas();
         } catch (Exception e) {
             new UiBooster().showException(
                     "An error occurred",
@@ -52,28 +39,5 @@ public class Simulation {
                     e
             );
         }
-
-
-//        // CODE EXAMPLES BELOW
-//
-//        // Synchronous
-//        DLatch.simulate();
-//        simWait(1000);
-//        System.out.print("\n\n");
-//
-//        // Asynchronous
-//        SRLatch.simulate();
-//        simWait(1000);
-//        System.out.print("\n\n");
-//
-//        // Feedback loop
-//        CustomClock.simulate();
-//        simWait(1000);
-//        System.out.print("\n\n");
-//
-//        // Compound Gate 4 bit register
-//        Register.simulate();
-//        simWait(1000);
-//        System.out.println("\n\n");
     }
 }
