@@ -498,11 +498,4 @@ public class Canvas extends PApplet {
     public void clear(){
         elements.clear();
     }
-
-    /**
-     * Clear all HashSets of canvas
-     */
-    public void clear(){
-        elements.clear();
-    }
 }

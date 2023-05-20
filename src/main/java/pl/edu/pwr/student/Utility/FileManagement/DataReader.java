@@ -3,7 +3,6 @@ package pl.edu.pwr.student.Utility.FileManagement;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.Gates.CompoundGate;
-import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Output.*;
 import pl.edu.pwr.student.UI.Blocks.CompoundElement;
 import pl.edu.pwr.student.UI.Canvas;
@@ -86,27 +85,22 @@ public class DataReader {
             String json = myReader.next();
             JSONAvailable jsonAvailable = generateJSONAvailableFromJSON(json);
 
-            Integer id = jsonAvailable.hashCode;
+            Integer id = jsonAvailable.getHashCode();
 
-            UiAvailable temp = GateCreator.create(jsonAvailable.elName);
+            UiAvailable temp = GateCreator.create(jsonAvailable.getElName());
             if (temp instanceof CompoundGate) {
-                canvas.addElement(new CompoundElement(jsonAvailable.elName, canvas, jsonAvailable.position, temp));
+                canvas.addElement(new CompoundElement(jsonAvailable.getElName(), canvas, jsonAvailable.getPosition(), temp));
             } else {
-                canvas.addElement(new UiElement(jsonAvailable.elName, canvas, jsonAvailable.position, temp));
+                canvas.addElement(new UiElement(jsonAvailable.getElName(), canvas, jsonAvailable.getPosition(), temp));
             }
 
-            gates.put(id, temp);
-
-            jsonAvailableHashMap.put(id, jsonAvailable);
-            Integer id = jsonAvailable.getHashCode();
-            gates.put(id, (Compoundable) GateCreator.create(jsonAvailable.getElName()));
-            schema.put(id, jsonAvailable);
+            gates.put(id, (Compoundable) temp);
         }
 
         connectElements(gates, schema);
 
-        CompoundGate compoundGate = new CompoundGate(new HashSet<>(gates.values()));
         String name = file.getName().substring(0, file.getName().length() - 4);
+        CompoundGate compoundGate = new CompoundGate(name, new HashSet<>(gates.values()));
         canvas.registerCompoundGate(name, message, compoundGate);
 
         myReader.close();

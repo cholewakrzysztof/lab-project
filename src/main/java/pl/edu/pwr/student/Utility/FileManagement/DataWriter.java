@@ -61,7 +61,7 @@ public class DataWriter {
             bufferedWriter.write("Custom_gate_message");
         bufferedWriter.newLine();
 
-        for (UiElement uiElement: canvas.getElements()) {
+        for (Drawable uiElement: canvas.getElements()) {
             bufferedWriter.write(DataWriter.generateJSONfromUIElement(uiElement));
             bufferedWriter.newLine();
         }

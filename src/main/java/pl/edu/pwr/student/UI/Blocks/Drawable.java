@@ -74,11 +74,11 @@ public abstract class Drawable {
      * </p>
      */
     public Drawable(JSONAvailable jsonAvailable, Canvas s) {
-        position = jsonAvailable.position;
-        elName = jsonAvailable.elName;
+        position = jsonAvailable.getPosition();
+        elName = jsonAvailable.getElName();
         sketch = s;
-        uiElem = GateCreator.create(jsonAvailable.elName);
-        sketch.addElement(new UiElement(jsonAvailable.elName, sketch, jsonAvailable.position, uiElem));
+        uiElem = GateCreator.create(jsonAvailable.getElName());
+        sketch.addElement(new UiElement(jsonAvailable.getElName(), sketch, jsonAvailable.getPosition(), uiElem));
     }
 
     /**
