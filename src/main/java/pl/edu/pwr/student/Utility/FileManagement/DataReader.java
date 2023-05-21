@@ -35,8 +35,8 @@ public class DataReader {
         HashMap<Integer, UiAvailable> gates = new HashMap<>();
         HashMap<Integer,JSONAvailable> schema = new HashMap<>();
 
-        while(myReader.hasNext()){
-            JSONAvailable source = generateJSONAvailableFromJSON(myReader.next());
+        while(myReader.hasNextLine()){
+            JSONAvailable source = generateJSONAvailableFromJSON(myReader.nextLine());
             Integer id = source.getHashCode();
             UiAvailable element = GateCreator.create(source.getElName());
             canvas.getElements().add(new UiElement(source.getElName(), canvas, source.getPosition(), element));
@@ -76,13 +76,13 @@ public class DataReader {
         }
 
         Scanner myReader = new Scanner(file);
-        String message = myReader.next();
+        String message = myReader.nextLine();
 
         HashMap<Integer, Compoundable> gates = new HashMap<>();
         HashMap<Integer, JSONAvailable> schema = new HashMap<>();
 
-        while (myReader.hasNext()) {
-            String json = myReader.next();
+        while (myReader.hasNextLine()) {
+            String json = myReader.nextLine();
             JSONAvailable jsonAvailable = generateJSONAvailableFromJSON(json);
 
             Integer id = jsonAvailable.getHashCode();
