@@ -512,8 +512,8 @@ public class Canvas extends PApplet {
 
     public Form saveCompoundGateDialog(){
         return booster.createForm("Compound Gate Creator")
-                .addTextArea("Name of the gate")
-                .addTextArea("Message for the gate")
+                .addTextArea("Name of the gate", 1)
+                .addTextArea("Message for the gate", 1)
                 .show();
     }
 
