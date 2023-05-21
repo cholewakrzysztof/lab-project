@@ -12,6 +12,8 @@ import processing.core.PVector;
 import java.awt.*;
 import java.util.HashSet;
 
+import static processing.core.PConstants.PI;
+
 /**
  * This is a class definition for a UiElement class, which represents every element on a canvas.
  */
@@ -41,6 +43,8 @@ public class UiElement {
      * The color associated with this element.
      */
     public Color color = new Color(0, 255, 0);
+
+    public float rotation = 0;
 
 
 
@@ -116,12 +120,13 @@ public class UiElement {
         sketch.fill(0);
         if (uiElem instanceof Switch) {
             if (uiElem.getState()){
-                sketch.shape(ShapeLoader.getShape("SWITCH-TRUE"), (position.x-sketch.getOffset().x)*ShapeLoader.scale, (position.y-sketch.getOffset().y)*ShapeLoader.scale);
+                sketch.shape(ShapeLoader.getShape("SWITCH-TRUE", PI*rotation), (position.x-sketch.getOffset().x)*ShapeLoader.scale, (position.y-sketch.getOffset().y)*ShapeLoader.scale);
             } else {
-                sketch.shape(ShapeLoader.getShape("SWITCH-FALSE"), (position.x-sketch.getOffset().x)*ShapeLoader.scale, (position.y-sketch.getOffset().y)*ShapeLoader.scale);
+                sketch.shape(ShapeLoader.getShape("SWITCH-FALSE", PI*rotation), (position.x-sketch.getOffset().x)*ShapeLoader.scale, (position.y-sketch.getOffset().y)*ShapeLoader.scale);
             }
         } else {
-            sketch.shape(ShapeLoader.getShape(elName),
+
+            sketch.shape(ShapeLoader.getShape(elName, PI*rotation),
                     (position.x-sketch.getOffset().x)*ShapeLoader.scale,
                     (position.y-sketch.getOffset().y)*ShapeLoader.scale
             );
@@ -203,5 +208,13 @@ public class UiElement {
                 (position.x-sketch.getOffset().x + ShapeLoader.size)*ShapeLoader.scale >= v.x &&
                 (position.y-sketch.getOffset().y)*ShapeLoader.scale <= v.y &&
                 (position.y-sketch.getOffset().y + ShapeLoader.size)*ShapeLoader.scale >= v.y;
+    }
+
+    public void decrementRotation() {
+        rotation = (rotation - 0.01f) % 2;
+    }
+
+    public void incrementRotation() {
+        rotation = (rotation + 0.01f) % 2;
     }
 }

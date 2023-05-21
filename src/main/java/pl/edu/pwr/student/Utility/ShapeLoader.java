@@ -4,6 +4,8 @@ import processing.core.PApplet;
 import processing.core.PShape;
 import java.util.HashMap;
 
+import static processing.core.PApplet.*;
+
 /**
  * Loads all shapes from resources/gates/ directory
  */
@@ -78,8 +80,12 @@ public class ShapeLoader {
      * @param shape name of shape
      * @return PShape object
      */
-    public static PShape getShape(String shape){
-        return shapes.get(shape);
+    public static PShape getShape(String shape, float rotation){
+        PShape temp = shapes.get(shape);
+        temp.resetMatrix();
+        temp.rotate(rotation);
+        temp.translate((7*sin(rotation+PI/4)/10f-1/2f)*size*scale, (7*cos(rotation+PI/4)/10f-1/2f)*size*scale);
+        return temp;
     }
 
     /**
