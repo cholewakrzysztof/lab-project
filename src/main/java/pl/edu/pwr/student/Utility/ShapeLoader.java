@@ -80,11 +80,12 @@ public class ShapeLoader {
      * @param shape name of shape
      * @return PShape object
      */
-    public static PShape getShape(String shape, float rotation){
+    public static PShape getShape(String shape, float rotation, float x, float y){
         PShape temp = shapes.get(shape);
         temp.resetMatrix();
-        temp.rotate(rotation);
-        temp.translate((7*sin(rotation+PI/4)/10f-1/2f)*size*scale, (7*cos(rotation+PI/4)/10f-1/2f)*size*scale);
+        temp.rotate(rotation*PI);
+        temp.translate(x, y);
+        temp.scale(scale);
         return temp;
     }
 
@@ -103,7 +104,7 @@ public class ShapeLoader {
     public static void incrementScale() {
         if (scale >= 3f) return;
         scale += 0.1f;
-        resize();
+//        resize();
     }
 
     /**
@@ -112,6 +113,6 @@ public class ShapeLoader {
     public static void decrementScale() {
         if (scale <= 0.2f) return;
         scale -= 0.1f;
-        resize();
+//        resize();
     }
 }
