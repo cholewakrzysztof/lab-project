@@ -98,11 +98,10 @@ public class DataReader {
 
         connectElements(new HashMap<Integer, UiAvailable>(gates), schema);
 
-        String name = file.getName().substring(0, file.getName().length() - 4);
         try {
-            CompoundGate compoundGate = new CompoundGate(file.getName(), new HashSet<>(gates.values()));
+            CompoundGate compoundGate = new CompoundGate(file.getName().substring(0, file.getName().length() - 4), message, new HashSet<>(gates.values()));
 
-            canvas.registerCompoundGate(name, message, compoundGate);
+            canvas.registerCompoundGate(compoundGate.name, compoundGate.message, compoundGate);
         } catch (Exception e) {
             canvas.showPopup("CompoundGate cannot have more than one gate with the same name");
         }
