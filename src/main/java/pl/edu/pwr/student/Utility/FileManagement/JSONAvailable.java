@@ -1,8 +1,9 @@
 package pl.edu.pwr.student.Utility.FileManagement;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
-import pl.edu.pwr.student.UI.UiElement;
+import pl.edu.pwr.student.UI.Blocks.Drawable;
 import processing.core.PVector;
 
 import java.awt.*;
@@ -22,6 +23,11 @@ public class JSONAvailable {
      */
     @JsonProperty("elName")
     private String elName;
+    /**
+     * The name of this element.
+     */
+    @JsonProperty("name")
+    private String name;
     /**
      * Set of outputs hashcodes
      */
@@ -49,14 +55,17 @@ public class JSONAvailable {
      * Custom constructor creating object with most important data from UiElement
      * @param element Source UiElement element for new object
      */
-    public JSONAvailable(UiElement element){
+    public JSONAvailable(Drawable element){
         this.position = element.position;
         this.outputs = JSONAvailable.GetOutputsHashCodes(element);
         this.elName = element.elName;
-        this.hashCode = element.uiElem.hashCode();
+        this.hashCode = element.getGate().hashCode();
         /*TODO
-        * Add special fields like color for LED, interval for Clock
+        * Add special fields like color for LED, interval for Clock, VirtualIO name
         * */
+        if (element.getGate() instanceof VirtualIO){
+            this.name = ((VirtualIO) element.getGate()).name;
+        }
     }
 
     /**
@@ -64,9 +73,9 @@ public class JSONAvailable {
      * @param element Source UiElement
      * @return Linked list of hashCodes
      */
-    private static LinkedList<Integer> GetOutputsHashCodes(UiElement element){
+    private static LinkedList<Integer> GetOutputsHashCodes(Drawable element){
         LinkedList<Integer> list = new LinkedList<>();
-        for (SignalReceiver output:element.uiElem.getOutputs()) {
+        for (SignalReceiver output:element.getGate().getOutputs()) {
             list.add(output.hashCode());
         }
         return list;
@@ -90,5 +99,9 @@ public class JSONAvailable {
 
     public Color getColor() {
         return color;
+    }
+
+    public String getName() {
+        return name;
     }
 }

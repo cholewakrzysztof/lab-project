@@ -5,10 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.AND;
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.UI.UiAvailable;
-import pl.edu.pwr.student.UI.UiElement;
+import pl.edu.pwr.student.UI.Blocks.UiElement;
 import processing.core.PVector;
 import uibooster.UiBooster;
 
@@ -36,7 +36,7 @@ class DataWriterTest {
         }
 
         UiElement uiElement1 = new UiElement("AND",canvas,new PVector(0f,0f),new AND());
-        canvas.getElements().add(uiElement1);
+        canvas.addElement(uiElement1);
     }
 
     /**
@@ -69,7 +69,7 @@ class DataWriterTest {
      */
     @Test
     void generateJSONfromUIElement_AND() {
-        UiAvailable gate = new AND();
+        Compoundable gate = new AND();
         UiElement uiElement = new UiElement("AND",canvas,new PVector(0f,0f),gate);
         String jsonString;
         try{

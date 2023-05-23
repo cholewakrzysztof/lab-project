@@ -22,9 +22,9 @@ class CompoundGateTest {
     @BeforeEach
     protected void setUp() {
         if(R.getState())
-            R.toggle();
+            R.react();
         if(S.getState())
-            S.toggle();
+            S.react();
 
         R.connection(norUp);
         S.connection(norDown);
@@ -47,7 +47,7 @@ class CompoundGateTest {
      */
     @Test
     public void testWorkCase2() {
-        R.toggle();
+        R.react();
         simWait(50);
         assertFalse(out.getState());
     }
@@ -56,7 +56,7 @@ class CompoundGateTest {
      */
     @Test
     public void testWorkCase3() {
-        S.toggle();
+        S.react();
         simWait(50);
         assertTrue(out.getState());
     }

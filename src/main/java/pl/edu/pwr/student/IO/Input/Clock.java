@@ -44,15 +44,14 @@ public class Clock extends SignalSender implements Runnable, UiAvailable, UserUs
 
     /**
      * Toggle the power state of the clock.
-     * @return the power state of the clock after being toggled.
      */
-    public boolean toggle() {
+    public void react() {
         power = !power;
 
         if (power)
             thread.start();
 
-        return power;
+//        return power;
     }
 
     /**

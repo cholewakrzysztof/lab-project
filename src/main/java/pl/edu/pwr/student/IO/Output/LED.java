@@ -14,7 +14,7 @@ public class LED extends BasicReceiver implements Runnable, UiAvailable, UserUsa
     private boolean power = false;
     private final Thread thread;
 
-    public void toggle() {
+    public void react() {
         if (milliseconds < 1) {
             power = false;
             return;
@@ -36,7 +36,7 @@ public class LED extends BasicReceiver implements Runnable, UiAvailable, UserUsa
         milliseconds = updateMilliseconds;
 
         if (milliseconds < 1)
-            toggle();
+            react();
     }
     public LED(String name, long updateMilliseconds) {
         this.name = name;
@@ -50,7 +50,6 @@ public class LED extends BasicReceiver implements Runnable, UiAvailable, UserUsa
 
         thread = new Thread(this);
     }
-    public void react() {}
 
     @Override
     public void connection(SignalReceiver receiver) {

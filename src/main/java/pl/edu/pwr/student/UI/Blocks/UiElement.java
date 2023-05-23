@@ -1,51 +1,23 @@
-package pl.edu.pwr.student.UI;
+package pl.edu.pwr.student.UI.Blocks;
 
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
-import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
-import pl.edu.pwr.student.UI.Creator.GateCreator;
+import pl.edu.pwr.student.UI.Canvas;
+import pl.edu.pwr.student.UI.UiAvailable;
 import pl.edu.pwr.student.Utility.FileManagement.JSONAvailable;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PVector;
 
 import java.awt.*;
-import java.util.HashSet;
+import java.util.ArrayList;
 
 /**
  * This is a class definition for a UiElement class, which represents every element on a canvas.
  */
-public class UiElement {
-
-    /**
-     * The position of this element.
-     */
-    public PVector position;
-
-    /**
-     * The name of this element.
-     */
-    public final String elName;
-
-    /**
-     * The Processing sketch associated with this element.
-     */
-    public final Canvas sketch;
-
-    /**
-     * The gate represented by this element.
-     */
-    public final UiAvailable uiElem;
-
-    /**
-     * The color associated with this element.
-     */
-    public Color color = new Color(0, 255, 0);
-
-
-
+public class UiElement extends Drawable {
     /**
      * Creates a new UI element object with the specified parameters.
      *
@@ -64,10 +36,7 @@ public class UiElement {
      * </p>
      */
     public UiElement(String type, Canvas s, PVector v, UiAvailable uiElem) {
-        position = v.copy();
-        elName = type;
-        sketch = s;
-        this.uiElem = uiElem;
+        super(type, s, v, uiElem);
     }
 
     /**
@@ -83,11 +52,7 @@ public class UiElement {
      * </p>
      */
     public UiElement(JSONAvailable jsonAvailable, Canvas s) throws Exception {
-        position = jsonAvailable.getPosition();
-        elName = jsonAvailable.getElName();
-        sketch = s;
-        uiElem = GateCreator.create(jsonAvailable.getElName());
-        sketch.getElements().add(new UiElement(jsonAvailable.getElName(), sketch, jsonAvailable.getPosition(), uiElem));
+        super(jsonAvailable, s);
     }
 
     /**
@@ -105,28 +70,9 @@ public class UiElement {
      * to indicate the signal flow.
      * </p>
      */
+    @Override
     public void run() {
-        if (uiElem instanceof CompoundGate){
-            runCompoundGate();
-            return;
-        }
-        runGate();
-    }
-
-    /**
-     * Determines whether the mouse is currently over the element.
-     *
-     * @param v the mouse position as a PVector
-     * @return true if the mouse is over the element, false otherwise
-     */
-    public boolean over(PVector v)  {
-        return (position.x-sketch.getOffset().x)*ShapeLoader.scale <= v.x &&
-                (position.x-sketch.getOffset().x + ShapeLoader.size)*ShapeLoader.scale >= v.x &&
-                (position.y-sketch.getOffset().y)*ShapeLoader.scale <= v.y &&
-                (position.y-sketch.getOffset().y + ShapeLoader.size)*ShapeLoader.scale >= v.y;
-    }
-
-    private void runGate() {
+        sketch.textSize(32);
         // Code for drawing the element shape and mouse hover effects
 
         if (over(new PVector(sketch.mouseX, sketch.mouseY))){
@@ -141,15 +87,17 @@ public class UiElement {
         if (uiElem instanceof VirtualIO){
             sketch.fill(0);
             sketch.textAlign(sketch.CENTER, sketch.CENTER);
-            sketch.textSize(32*ShapeLoader.scale);
             String temp = ((VirtualIO)uiElem).name;
-            if (temp.length() > 3){
-                temp = temp.substring(0,3);
+            float width = sketch.textWidth(temp);
+            if (width > 50){
+                sketch.textSize(32*ShapeLoader.scale*ShapeLoader.size/width);
+            } else {
+                sketch.textSize(32*ShapeLoader.scale);
             }
             sketch.text(
                     temp,
-                    (position.x-sketch.getOffset().x+ShapeLoader.size/2)*ShapeLoader.scale,
-                    (position.y-sketch.getOffset().y+ShapeLoader.size/2)*ShapeLoader.scale
+                    (position.x-sketch.getOffset().x+ShapeLoader.size/2f)*ShapeLoader.scale,
+                    (position.y-sketch.getOffset().y+ShapeLoader.size/2f)*ShapeLoader.scale
             );
         } else if (uiElem instanceof Switch) {
             if (uiElem.getState()){
@@ -194,50 +142,76 @@ public class UiElement {
                 sketch.stroke(0, 0, 0);
             }
 
-            for (UiElement u : sketch.getElements()){
-                if (u.uiElem.equals(s)) {
-                    HashSet<SignalSender> inputs = ((UiAvailable) s).getInputs();
-                    int i = 1;
-                    int pos = 1;
-                    for (SignalSender inp : inputs){
-                        if(inp.equals(uiElem)) {
-                            pos = i;
-                        }
-                        i++;
-                    }
-
-                    float startx = (position.x-sketch.getOffset().x)*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale;
-                    float starty = (position.y-sketch.getOffset().y)*ShapeLoader.scale + ShapeLoader.size/2f*ShapeLoader.scale;
-                    float endx = (u.position.x-sketch.getOffset().x)*ShapeLoader.scale;
-                    float endy = (u.position.y-sketch.getOffset().y)*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
-                    if (startx <= endx){
-                        float midx = (startx+endx)/2 + ShapeLoader.size*ShapeLoader.scale*pos/i;
-                        sketch.line(startx, starty, midx, starty);
-                        sketch.line(midx, starty, midx, endy);
-                        sketch.line(midx, endy, endx, endy);
-                    } else {
-                        float padding;
-                        float midy;
-                        if (starty <= (u.position.y-sketch.getOffset().y) + ShapeLoader.size*1.5f*ShapeLoader.scale && starty >= (u.position.y-sketch.getOffset().y) - ShapeLoader.size/2f*ShapeLoader.scale) {
-                            padding = ShapeLoader.size*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
-                            midy = (starty+endy)/2+padding;
-                        } else {
-                            midy = (starty+endy)/2;
-                            padding = ShapeLoader.size*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
-                        }
-
-                        sketch.line(startx, starty, startx+padding, starty);
-                        sketch.line(startx+padding, starty, startx+padding, midy);
-                        sketch.line(startx+padding, midy, endx-padding, midy);
-                        sketch.line(endx-padding, midy, endx-padding, endy);
-                        sketch.line(endx-padding, endy, endx, endy);
+            for (Drawable u : sketch.getElements()){
+                if (u instanceof UiElement){
+                    drawLines(s, u);
+                } else if (u instanceof CompoundElement){
+                    for (Drawable e : ((CompoundElement) u).getElements()){
+                        drawLines(s, e);
                     }
                 }
             }
         }
+        sketch.stroke(0, 0, 0);
     }
 
-    private void runCompoundGate(){
-        System.out.println("Running compound gate");
+    @Override
+    public void updatePosition(PVector pVector) {
+        position = pVector;
+    }
+
+    @Override
+    public UiAvailable getInput() {
+        return getGate();
+    }
+
+    @Override
+    public UiAvailable getOutput() {
+        return getGate();
+    }
+
+    private void drawLines(SignalReceiver s, Drawable u) {
+        if (u.uiElem.equals(s)) {
+            ArrayList<SignalSender> inputs = ((UiAvailable) s).getInputs();
+            int i = inputs.size()+1;
+            int pos = 1;
+            for (int j = 0; j < inputs.size(); j++){
+                if (inputs.get(j).equals(uiElem)) {
+                    pos = j+1;
+                    break;
+                }
+            }
+
+            if (inputs.size() == 0){
+                i++;
+            }
+
+            float startx = (position.x-sketch.getOffset().x)*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale;
+            float starty = (position.y-sketch.getOffset().y)*ShapeLoader.scale + ShapeLoader.size/2f*ShapeLoader.scale;
+            float endx = (u.position.x-sketch.getOffset().x)*ShapeLoader.scale;
+            float endy = (u.position.y-sketch.getOffset().y)*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
+            if (startx <= endx){
+                float midx = (startx+endx)/2 + ShapeLoader.size*ShapeLoader.scale*pos/i;
+                sketch.line(startx, starty, midx, starty);
+                sketch.line(midx, starty, midx, endy);
+                sketch.line(midx, endy, endx, endy);
+            } else {
+                float padding;
+                float midy;
+                if (starty <= (u.position.y-sketch.getOffset().y) + ShapeLoader.size*1.5f*ShapeLoader.scale && starty >= (u.position.y-sketch.getOffset().y) - ShapeLoader.size/2f*ShapeLoader.scale) {
+                    padding = ShapeLoader.size*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
+                    midy = (starty+endy)/2+padding;
+                } else {
+                    midy = (starty+endy)/2;
+                    padding = ShapeLoader.size*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
+                }
+
+                sketch.line(startx, starty, startx+padding, starty);
+                sketch.line(startx+padding, starty, startx+padding, midy);
+                sketch.line(startx+padding, midy, endx-padding, midy);
+                sketch.line(endx-padding, midy, endx-padding, endy);
+                sketch.line(endx-padding, endy, endx, endy);
+            }
+        }
     }
 }

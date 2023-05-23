@@ -1,13 +1,14 @@
 package pl.edu.pwr.student.UI.Buttons;
 
 import pl.edu.pwr.student.IO.UserUsable;
+import pl.edu.pwr.student.UI.Blocks.Drawable;
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.UI.UiElement;
 import pl.edu.pwr.student.Utility.FileManagement.DataWriter;
 import processing.core.PVector;
 import uibooster.model.Form;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Represents a button for creating new elements on the canvas.
@@ -30,8 +31,14 @@ public class AddButton extends Button {
      */
     @Override
     public void click() throws IOException {
-        for (UiElement ui : sketch.getElements()) {
-            if (ui.uiElem instanceof UserUsable) {
+        List<Drawable> elem = sketch.getElements();
+        if (elem.size() <= 0){
+            sketch.showPopup("You cannot save empty compound gate!");
+            return;
+        }
+
+        for (Drawable ui : elem) {
+            if (ui.getGate() instanceof UserUsable) {
                 sketch.showPopup("You cannot have user usable element in the compound gate!");
                 return;
             }
