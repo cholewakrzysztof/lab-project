@@ -99,20 +99,12 @@ public class ShapeLoader {
     }
 
     /**
-     * Increments scale of all shapes
-     */
-    public static void incrementScale() {
-        if (scale >= 3f) return;
-        scale += 0.1f;
-//        resize();
-    }
-
-    /**
      * Decrements scale of all shapes
      */
-    public static void decrementScale() {
-        if (scale <= 0.2f) return;
-        scale -= 0.1f;
+    public static void scale(int direction) {
+        float temp = scale + direction * 0.1f;
+        if (scale <= 0.2f || scale >= 3f) return;
+        scale = temp;
 //        resize();
     }
 }

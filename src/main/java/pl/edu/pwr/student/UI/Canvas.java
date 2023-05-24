@@ -351,19 +351,11 @@ public class Canvas extends PApplet {
     public void mouseWheel(MouseEvent event) {
         for (UiElement g : elements) {
             if (g.over(new PVector(mouseX, mouseY))) {
-                if (event.getCount() > 0) {
-                    g.decrementRotation();
-                } else {
-                    g.incrementRotation();
-                }
+                g.rotation(event.getCount());
                 return;
             }
         }
-        if (event.getCount() > 0) {
-            ShapeLoader.decrementScale();
-        } else {
-            ShapeLoader.incrementScale();
-        }
+        ShapeLoader.scale(event.getCount());
     }
 
     /**

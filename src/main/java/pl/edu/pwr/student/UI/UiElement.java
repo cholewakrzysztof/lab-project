@@ -227,13 +227,8 @@ public class UiElement {
 
     }
 
-    public void decrementRotation() {
-        rotation = (rotation - 0.01f) % 2;
-        calcMovement();
-    }
-
-    public void incrementRotation() {
-        rotation = (rotation + 0.01f) % 2;
+    public void rotation(int direction) {
+        rotation = (rotation + direction * 0.01f) % 2;
         calcMovement();
     }
 
