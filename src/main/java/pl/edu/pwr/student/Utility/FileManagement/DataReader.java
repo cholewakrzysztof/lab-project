@@ -38,8 +38,13 @@ public class DataReader {
         while(myReader.hasNextLine()){
             JSONAvailable source = generateJSONAvailableFromJSON(myReader.nextLine());
             Integer id = source.getHashCode();
-            UiAvailable element = GateCreator.create(source.getElName());
-            canvas.getElements().add(new UiElement(source.getElName(), canvas, source.getPosition(), element));
+            GateCreator.initGates();
+            String gateType = source.getGateType();
+            UiAvailable element = GateCreator.create(gateType);
+            if(Objects.equals(gateType, "VirtualIO")){
+                ((VirtualIO) element).name = source.getElName();
+            }
+            canvas.getElements().add(new UiElement(gateType, canvas, source.getPosition(), element));
             gates.put(id, element);
             schema.put(id, source);
         }
@@ -88,15 +93,15 @@ public class DataReader {
 
         for (JSONAvailable logicPart: jsonAvailable.getLogic()) {
             Integer id = logicPart.getHashCode();
-            UiAvailable temp;
-            if (jsonAvailable.getElName()!=null) {
-                temp = new VirtualIO(jsonAvailable.getElName());
-            } else {
-                temp = GateCreator.create(jsonAvailable.getElName());
+            GateCreator.initGates();
+            String gateType = logicPart.getGateType();
+            UiAvailable element = GateCreator.create(gateType);
+            if(Objects.equals(gateType, "VirtualIO")){
+                ((VirtualIO) element).name = logicPart.getElName();
             }
 
             schema.put(id,logicPart);
-            gates.put(id, (Compoundable) temp);
+            gates.put(id, (Compoundable) element);
         }
 
         connectElements(new HashMap<>(gates), schema);
@@ -110,17 +115,6 @@ public class DataReader {
         }
 
         myReader.close();
-    }
-
-    /**
-     *  Generate UiElement object from JSON string
-     * @param jsonString Raw JSON string of single JSONAvailable object
-     * @param canvas Canvas connected with UI Element
-     * @return UiElement
-     * @throws Exception Throw when JSONAvailable object cannot be created
-     */
-    public static UiElement generateUIElementFromJSON(String jsonString, Canvas canvas) throws Exception {
-        return new UiElement(DataReader.generateJSONAvailableFromJSON(jsonString),canvas);
     }
 
     /**

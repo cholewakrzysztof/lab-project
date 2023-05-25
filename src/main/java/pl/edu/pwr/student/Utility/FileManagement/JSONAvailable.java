@@ -17,6 +17,8 @@ import java.util.LinkedList;
 public class JSONAvailable {
     @JsonProperty("message")
     private String message;
+    @JsonProperty("gateType")
+    private String gateType;
     /**
      * The position of this element.
      */
@@ -58,6 +60,7 @@ public class JSONAvailable {
      * @param element Source UiElement element for new object
      */
     public JSONAvailable(Drawable element){
+        this.gateType = ((Compoundable) element.getGate()).getClass().getSimpleName();
         this.position = element.position;
         if(element.getGate().getClass()== CompoundGate.class){
             logic = new LinkedList<>();
@@ -68,6 +71,8 @@ public class JSONAvailable {
             this.outputs = JSONAvailable.GetOutputsHashCodes(element);
         }
         this.elName = element.elName;
+        if(((Compoundable) element.getGate()).isIO())
+            this.elName = ((VirtualIO) element.getGate()).name;
         this.hashCode = element.getGate().hashCode();
         /*TODO
         * Add special fields like color for LED, interval for Clock
@@ -85,6 +90,8 @@ public class JSONAvailable {
     }
 
     public JSONAvailable(Compoundable compoundable){
+        this.gateType = compoundable.getClass().getSimpleName();
+        this.elName = compoundable.getClass().getSimpleName();
         if(compoundable.isIO())
             this.elName = ((VirtualIO) compoundable).name;
         this.outputs = JSONAvailable.GetOutputsHashCodes(compoundable);
@@ -113,7 +120,7 @@ public class JSONAvailable {
     }
 
 
-
+    public String getGateType() {return gateType;}
     public Integer getHashCode(){
         return hashCode;
     }
