@@ -2,8 +2,10 @@ package pl.edu.pwr.student.Utility.FileManagement;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
+import pl.edu.pwr.student.Gates.CompoundGate;
+import pl.edu.pwr.student.UI.Blocks.Drawable;
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.UI.UiElement;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -25,7 +27,7 @@ public class DataWriter {
         }
 
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(directory.getAbsoluteFile() + "\\" + System.currentTimeMillis() + ".gss"));
-        for (UiElement uiElement: canvas.getElements()) {
+        for (Drawable uiElement: canvas.getElements()) {
             bufferedWriter.write(DataWriter.generateJSONFromUIElement(uiElement));
             bufferedWriter.newLine();
         }
@@ -51,7 +53,7 @@ public class DataWriter {
             bufferedWriter.write("Custom_gate_message");
         bufferedWriter.newLine();
 
-        for (UiElement uiElement: canvas.getElements()) {
+        for (Drawable uiElement: canvas.getElements()) {
             bufferedWriter.write(DataWriter.generateJSONFromUIElement(uiElement));
             bufferedWriter.newLine();
         }
@@ -65,8 +67,9 @@ public class DataWriter {
      * @return JSON string representation of single UI Element
      * @throws IOException something wrong with UI element
      */
-    public static String generateJSONFromUIElement(UiElement element) throws IOException {
+    public static String generateJSONFromUIElement(Drawable element) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(new JSONAvailable(element));
     }
+
 }

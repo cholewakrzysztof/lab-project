@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Output.*;
+import pl.edu.pwr.student.UI.Blocks.Drawable;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.Creator.GateCreator;
 import pl.edu.pwr.student.UI.UiAvailable;
-import pl.edu.pwr.student.UI.UiElement;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +38,8 @@ public class DataReader {
             JSONAvailable source = generateJSONAvailableFromJSON(json);
 
             Compoundable element =(Compoundable) GateCreator.create(source.getElName());
-            canvas.getElements().add(new UiElement(source.getElName(), canvas, source.getPosition(), element));
+            canvas.getElements().add(new Drawable(source.getElName(), canvas, source.getPosition(), element) {
+            });
 
             Integer id = source.getHashCode();
             gates.put(id, element);

@@ -1,7 +1,8 @@
 package pl.edu.pwr.student.Utility.FileManagement;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
+import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
+import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.UI.Blocks.Drawable;
 import processing.core.PVector;
@@ -24,11 +25,6 @@ public class JSONAvailable {
     @JsonProperty("elName")
     private String elName;
     /**
-     * The name of this element.
-     */
-    @JsonProperty("name")
-    private String name;
-    /**
      * Set of outputs hashcodes
      */
     @JsonProperty("outputs")
@@ -47,6 +43,9 @@ public class JSONAvailable {
     /**
      *  Constructor used by jackson package
      */
+
+    @JsonProperty("logic")
+    private LinkedList<JSONAvailable> logic;
     public JSONAvailable(){
         super();
     }
@@ -57,15 +56,24 @@ public class JSONAvailable {
      */
     public JSONAvailable(Drawable element){
         this.position = element.position;
-        this.outputs = JSONAvailable.GetOutputsHashCodes(element);
+        if(element.getGate().getClass()== CompoundGate.class){
+            logic = new LinkedList<>();
+            for (Compoundable compoundable:((CompoundGate) element.getGate()).getGates()) {
+                logic.add(new JSONAvailable(compoundable));
+            }
+        }else{
+            this.outputs = JSONAvailable.GetOutputsHashCodes((Compoundable) element.getGate());
+        }
         this.elName = element.elName;
         this.hashCode = element.getGate().hashCode();
         /*TODO
-        * Add special fields like color for LED, interval for Clock, VirtualIO name
+        * Add special fields like color for LED, interval for Clock
         * */
-        if (element.getGate() instanceof VirtualIO){
-            this.name = ((VirtualIO) element.getGate()).name;
-        }
+    }
+
+    public JSONAvailable(Compoundable compoundable){
+        this.outputs = JSONAvailable.GetOutputsHashCodes(compoundable);
+        this.hashCode = hashCode();
     }
 
     /**
@@ -80,6 +88,16 @@ public class JSONAvailable {
         }
         return list;
     }
+
+    private static LinkedList<Integer> GetOutputsHashCodes(Compoundable compoundable){
+        LinkedList<Integer> list = new LinkedList<>();
+        for (SignalReceiver output: compoundable.getOutputs()) {
+            list.add(output.hashCode());
+        }
+        return list;
+    }
+
+
 
     public Integer getHashCode(){
         return hashCode;
@@ -99,9 +117,5 @@ public class JSONAvailable {
 
     public Color getColor() {
         return color;
-    }
-
-    public String getName() {
-        return name;
     }
 }
