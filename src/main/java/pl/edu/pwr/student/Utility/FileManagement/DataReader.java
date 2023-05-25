@@ -88,7 +88,7 @@ public class DataReader {
             Integer id = jsonAvailable.getHashCode();
             UiAvailable temp;
             if (jsonAvailable.getElName().equals("VIRTUALIO")) {
-                 temp = new VirtualIO(jsonAvailable.getName());
+                 temp = new VirtualIO(jsonAvailable.getElName());
             } else {
                 temp = GateCreator.create(jsonAvailable.getElName());
             }
