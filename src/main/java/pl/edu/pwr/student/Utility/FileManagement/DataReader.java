@@ -76,30 +76,33 @@ public class DataReader {
         }
 
         Scanner myReader = new Scanner(file);
-        String message = myReader.nextLine();
+        String json = myReader.nextLine();
+        JSONAvailable jsonAvailable = generateJSONAvailableFromJSON(json);
+
+        String message = jsonAvailable.getMessage();
+        String name = jsonAvailable.getElName();
 
         HashMap<Integer, Compoundable> gates = new HashMap<>();
         HashMap<Integer, JSONAvailable> schema = new HashMap<>();
 
-        while (myReader.hasNextLine()) {
-            String json = myReader.nextLine();
-            JSONAvailable jsonAvailable = generateJSONAvailableFromJSON(json);
 
-            Integer id = jsonAvailable.getHashCode();
+        for (JSONAvailable logicPart: jsonAvailable.getLogic()) {
+            Integer id = logicPart.getHashCode();
             UiAvailable temp;
-            if (jsonAvailable.getElName().equals("VIRTUALIO")) {
-                 temp = new VirtualIO(jsonAvailable.getElName());
+            if (jsonAvailable.getElName()!=null) {
+                temp = new VirtualIO(jsonAvailable.getElName());
             } else {
                 temp = GateCreator.create(jsonAvailable.getElName());
             }
 
+            schema.put(id,logicPart);
             gates.put(id, (Compoundable) temp);
         }
 
-        connectElements(new HashMap<Integer, UiAvailable>(gates), schema);
+        connectElements(new HashMap<>(gates), schema);
 
         try {
-            CompoundGate compoundGate = new CompoundGate(file.getName().substring(0, file.getName().length() - 4), message, new HashSet<>(gates.values()));
+            CompoundGate compoundGate = new CompoundGate(name, message, new HashSet<>(gates.values()));
 
             canvas.registerCompoundGate(compoundGate.name, compoundGate.message, compoundGate);
         } catch (Exception e) {

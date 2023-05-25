@@ -2,6 +2,7 @@ package pl.edu.pwr.student.Utility.FileManagement;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.jetbrains.annotations.NotNull;
 import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.UI.Blocks.Drawable;
@@ -11,6 +12,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
+import java.util.HashSet;
 
 /**
  * Class responsible for safe HashSet of UI elements to files
@@ -28,7 +30,7 @@ public class DataWriter {
 
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(directory.getAbsoluteFile() + "\\" + System.currentTimeMillis() + ".gss"));
         for (Drawable uiElement: canvas.getElements()) {
-            bufferedWriter.write(DataWriter.generateJSONFromUIElement(uiElement));
+            bufferedWriter.write(DataWriter.generateJSONFromUIElement((Drawable) uiElement));
             bufferedWriter.newLine();
         }
         bufferedWriter.close();
@@ -40,23 +42,36 @@ public class DataWriter {
         if (!directory.exists()) {
             directory.mkdir();
         }
+        File file = new File(directory.getAbsoluteFile() + "\\" + name + ".gss");
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
+
         if(name.length()==0){
             name = "Custom_gate";
         }
-        File file = new File(directory.getAbsoluteFile() + "\\" + name + ".gss");
+        if(message.length()==0)
+            message = "Custom_gate_message";
 
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
+        HashSet<Compoundable> basicGates = new HashSet<>();
+        HashSet<CompoundGate> compGates = new HashSet<>();
 
-        if(message.length()!=0)
-            bufferedWriter.write(message);
-        else
-            bufferedWriter.write("Custom_gate_message");
+        for (Drawable drawable:canvas.getElements()) {
+            if(drawable.getGate()!=null)
+                if(drawable.getGate().getClass()== CompoundGate.class){
+                    compGates.add((CompoundGate) drawable.getGate());
+                }
+                else{
+                    basicGates.add((Compoundable) drawable.getGate());
+                }
+        }
+
+        CompoundGate compoundGate = new CompoundGate(name,message,basicGates,compGates);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(new JSONAvailable(compoundGate));
+        bufferedWriter.write(json);
         bufferedWriter.newLine();
 
-        for (Drawable uiElement: canvas.getElements()) {
-            bufferedWriter.write(DataWriter.generateJSONFromUIElement(uiElement));
-            bufferedWriter.newLine();
-        }
+
         bufferedWriter.close();
         canvas.clear();
         DataReader.readCompoundGateFromFile(file, canvas);

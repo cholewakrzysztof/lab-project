@@ -2,6 +2,7 @@ package pl.edu.pwr.student.Utility.FileManagement;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
 import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.UI.Blocks.Drawable;
@@ -14,6 +15,8 @@ import java.util.LinkedList;
  * Representation of object based on UIElement that can be safe and create from file
  */
 public class JSONAvailable {
+    @JsonProperty("message")
+    private String message;
     /**
      * The position of this element.
      */
@@ -62,7 +65,7 @@ public class JSONAvailable {
                 logic.add(new JSONAvailable(compoundable));
             }
         }else{
-            this.outputs = JSONAvailable.GetOutputsHashCodes((Compoundable) element.getGate());
+            this.outputs = JSONAvailable.GetOutputsHashCodes(element);
         }
         this.elName = element.elName;
         this.hashCode = element.getGate().hashCode();
@@ -71,9 +74,21 @@ public class JSONAvailable {
         * */
     }
 
+    public JSONAvailable(CompoundGate compoundGate){
+        logic = new LinkedList<>();
+        for (Compoundable compoundable:(compoundGate.getGates())){
+            logic.add(new JSONAvailable(compoundable));
+        }
+        this.elName = compoundGate.name;
+        this.hashCode = compoundGate.hashCode();
+        this.message = compoundGate.message;
+    }
+
     public JSONAvailable(Compoundable compoundable){
+        if(compoundable.isIO())
+            this.elName = ((VirtualIO) compoundable).name;
         this.outputs = JSONAvailable.GetOutputsHashCodes(compoundable);
-        this.hashCode = hashCode();
+        this.hashCode = compoundable.hashCode();
     }
 
     /**
@@ -118,4 +133,8 @@ public class JSONAvailable {
     public Color getColor() {
         return color;
     }
+
+    public String getMessage() {return message;}
+
+    public LinkedList<JSONAvailable> getLogic() { return logic; }
 }
