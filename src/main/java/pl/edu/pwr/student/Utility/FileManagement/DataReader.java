@@ -2,12 +2,13 @@ package pl.edu.pwr.student.Utility.FileManagement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
 import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Output.*;
-import pl.edu.pwr.student.UI.Blocks.Drawable;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.Creator.GateCreator;
 import pl.edu.pwr.student.UI.UiAvailable;
+import pl.edu.pwr.student.UI.Blocks.UiElement;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,24 +29,21 @@ public class DataReader {
             return;
         }
 
+        Scanner myReader = new Scanner(file);
         canvas.clear();
-        HashMap<Integer, Compoundable> gates = new HashMap<>();
+
+        HashMap<Integer, UiAvailable> gates = new HashMap<>();
         HashMap<Integer,JSONAvailable> schema = new HashMap<>();
 
-        Scanner myReader = new Scanner(file);
-        while(myReader.hasNext()){
-            String json = myReader.next();
-            JSONAvailable source = generateJSONAvailableFromJSON(json);
-
-            Compoundable element =(Compoundable) GateCreator.create(source.getElName());
-            canvas.getElements().add(new Drawable(source.getElName(), canvas, source.getPosition(), element) {
-            });
-
+        while(myReader.hasNextLine()){
+            JSONAvailable source = generateJSONAvailableFromJSON(myReader.nextLine());
             Integer id = source.getHashCode();
+            UiAvailable element = GateCreator.create(source.getElName());
+            canvas.getElements().add(new UiElement(source.getElName(), canvas, source.getPosition(), element));
             gates.put(id, element);
             schema.put(id, source);
         }
-        connectElements(gates,schema);
+        connectElements(gates, schema);
         myReader.close();
     }
 
@@ -61,8 +59,9 @@ public class DataReader {
             return;
         }
 
-        for(File file : Objects.requireNonNull(directory.listFiles()))
+        for(File file : Objects.requireNonNull(directory.listFiles())){
             readCompoundGateFromFile(file,canvas);
+        }
     }
     /**
      * Read single CompoundGate from file
@@ -76,27 +75,49 @@ public class DataReader {
             return;
         }
 
-        HashMap<Integer, Compoundable> gates = new HashMap<>();
-        HashMap<Integer,JSONAvailable> schema = new HashMap<>();
-
         Scanner myReader = new Scanner(file);
-        String message = myReader.next();
-        while(myReader.hasNext()){
-            String json = myReader.next();
-            JSONAvailable source = generateJSONAvailableFromJSON(json);
+        String message = myReader.nextLine();
 
-            Integer id = source.getHashCode();
-            gates.put(id, (Compoundable) GateCreator.create(source.getElName()));
-            schema.put(id, source);
+        HashMap<Integer, Compoundable> gates = new HashMap<>();
+        HashMap<Integer, JSONAvailable> schema = new HashMap<>();
+
+        while (myReader.hasNextLine()) {
+            String json = myReader.nextLine();
+            JSONAvailable jsonAvailable = generateJSONAvailableFromJSON(json);
+
+            Integer id = jsonAvailable.getHashCode();
+            UiAvailable temp;
+            if (jsonAvailable.getElName().equals("VIRTUALIO")) {
+                 temp = new VirtualIO(jsonAvailable.getName());
+            } else {
+                temp = GateCreator.create(jsonAvailable.getElName());
+            }
+
+            gates.put(id, (Compoundable) temp);
         }
 
-        connectElements(gates,schema);
+        connectElements(new HashMap<Integer, UiAvailable>(gates), schema);
 
-        CompoundGate compoundGate = new CompoundGate(new HashSet<>(gates.values()));
-        String name = file.getName().substring(0,file.getName().length()-4);
-        canvas.registerCompoundGate(name,message, compoundGate);
+        try {
+            CompoundGate compoundGate = new CompoundGate(file.getName().substring(0, file.getName().length() - 4), message, new HashSet<>(gates.values()));
+
+            canvas.registerCompoundGate(compoundGate.name, compoundGate.message, compoundGate);
+        } catch (Exception e) {
+            canvas.showPopup("CompoundGate cannot have more than one gate with the same name");
+        }
 
         myReader.close();
+    }
+
+    /**
+     *  Generate UiElement object from JSON string
+     * @param jsonString Raw JSON string of single JSONAvailable object
+     * @param canvas Canvas connected with UI Element
+     * @return UiElement
+     * @throws Exception Throw when JSONAvailable object cannot be created
+     */
+    public static UiElement generateUIElementFromJSON(String jsonString, Canvas canvas) throws Exception {
+        return new UiElement(DataReader.generateJSONAvailableFromJSON(jsonString),canvas);
     }
 
     /**
@@ -115,12 +136,12 @@ public class DataReader {
      * @param gates HashMap of elements to connect
      * @param schema HashMap of JSONAvailable representation of schema
      */
-    private static void connectElements(final HashMap<Integer, Compoundable> gates, final HashMap<Integer,JSONAvailable> schema){
+    private static void connectElements(final HashMap<Integer, UiAvailable> gates, final HashMap<Integer,JSONAvailable> schema){
         for(Map.Entry<Integer, JSONAvailable> entry : schema.entrySet()) {
             JSONAvailable value = entry.getValue();
             UiAvailable gate = gates.get(entry.getKey());
             for (Integer hashCode: value.getOutputs()) {
-                for (Map.Entry<Integer, Compoundable> candidate : gates.entrySet()) {
+                for (Map.Entry<Integer, UiAvailable> candidate : gates.entrySet()) {
                     if(Objects.equals(hashCode, candidate.getKey())){
                         gate.connection((SignalReceiver) candidate.getValue());
                     }

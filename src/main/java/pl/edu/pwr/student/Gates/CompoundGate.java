@@ -19,14 +19,16 @@ import java.util.HashSet;
 public class CompoundGate implements CreatableInstance, UiAvailable {
 
     public final String name;
+    public final String message;
 
     /**
      * Copy constructor.
      *
-     * @param gate the gate to copy
+     * @param gate    the gate to copy
      */
     public CompoundGate(@NotNull final CompoundGate gate) {
         this.name = gate.name;
+        this.message = gate.message;
         create(gate.getGates());
     }
 
@@ -36,8 +38,9 @@ public class CompoundGate implements CreatableInstance, UiAvailable {
      * @param name name of compound gate
      * @param gates the gates to include in the compound gate
      */
-    public CompoundGate(final String name, @NotNull final HashSet<Compoundable> gates) {
+    public CompoundGate(final String name, final String message, @NotNull final HashSet<Compoundable> gates) {
         this.name = name;
+        this.message = message;
         create(gates);
     }
 
@@ -48,8 +51,9 @@ public class CompoundGate implements CreatableInstance, UiAvailable {
      * @param basicGates basic gates to include in the compound gate
      * @param compGates compound gates to include in the compound gate
      */
-    public CompoundGate(final String name, final HashSet<Compoundable> basicGates, @NotNull final HashSet<CompoundGate> compGates) {
+    public CompoundGate(final String name, final String message, final HashSet<Compoundable> basicGates, @NotNull final HashSet<CompoundGate> compGates) {
         this.name = name;
+        this.message = message;
         HashSet<Compoundable> gates = new HashSet<>(basicGates);
         for (CompoundGate gate : compGates)
             gates.addAll(gate.getGates());
