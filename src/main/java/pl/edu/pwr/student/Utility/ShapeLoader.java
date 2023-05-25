@@ -102,9 +102,9 @@ public class ShapeLoader {
      * Decrements scale of all shapes
      */
     public static void scale(int direction) {
-        float temp = scale + direction * 0.1f;
-        if (scale <= 0.2f || scale >= 3f) return;
-        scale = temp;
+        float temp = scale - direction * 0.1f;
+        if (scale > 0.2f && scale < 3f) scale = temp;
+
 //        resize();
     }
 }
