@@ -181,11 +181,10 @@ public class UiElement {
                         i++;
                     }
 
-                    float r = sqrt(((1-2f*pos/i)*(1-2f*pos/i))+1);
                     float startx = (position.x-sketch.getOffset().x)*ShapeLoader.scale + (cos(rotation*PI)+1)/2f*ShapeLoader.size*ShapeLoader.scale;
                     float starty = (position.y-sketch.getOffset().y)*ShapeLoader.scale + (sin(rotation*PI)+1)/2f*ShapeLoader.size*ShapeLoader.scale;
-                    float endx = (u.position.x-sketch.getOffset().x + (1-r*cos(u.rotation*PI - (float) pos /i))/2*ShapeLoader.size)*ShapeLoader.scale;
-                    float endy = (u.position.y-sketch.getOffset().y + (1-r*sin(u.rotation*PI - (float) pos /i))/2*ShapeLoader.size)*ShapeLoader.scale;
+                    float endx = (u.position.x-sketch.getOffset().x + (sin(u.rotation*PI)*(1-2f*pos/i)-cos(u.rotation*PI)+1)/2*ShapeLoader.size)*ShapeLoader.scale;
+                    float endy = (u.position.y-sketch.getOffset().y + ((cos(u.rotation*PI)*(2f*pos/i -1)-sin(u.rotation*PI)+1)/2)*ShapeLoader.size)*ShapeLoader.scale;
                     if (startx <= endx){
                         float midx = (startx+endx)/2 + (float) (ShapeLoader.size * pos) /i;
                         sketch.line(startx, starty, midx, starty);
