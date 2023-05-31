@@ -187,8 +187,8 @@ public class DataReader {
             if(gate instanceof CompoundGate){
                 for(Compoundable compoundable:((CompoundGate) gate).getGates()){
                     for (Integer hashCode: value.getOutputs()) {
-                        //if(gates.containsKey(hashCode))
-                            //odpowiednio połączyć
+                        if(gates.containsKey(hashCode))
+                            compoundable.connection((SignalReceiver) gates.get(hashCode));
                     }
                 }
             }else{
