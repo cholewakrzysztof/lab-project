@@ -2,7 +2,6 @@ package pl.edu.pwr.student.Utility.FileManagement;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.jetbrains.annotations.NotNull;
 import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.UI.Blocks.Drawable;
@@ -86,7 +85,4 @@ public class DataWriter {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(new JSONAvailable(element));
     }
-
-
-
 }

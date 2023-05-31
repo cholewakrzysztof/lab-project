@@ -45,24 +45,11 @@ public class DataReader {
             Integer id = source.getHashCode();
             String gateType = source.getGateType().toUpperCase();
             if(gateType.equals("COMPOUNDGATE")){
+                CompoundGate CG;
                 if (GateCreator.isRegistered(source.getElName())){
-                    CompoundGate CG = (CompoundGate)GateCreator.create(source.getElName());
+                    CG = (CompoundGate)GateCreator.create(source.getElName());
                     Drawable drawable = new CompoundElement(source.getElName(), canvas, source.getPosition(), CG);
                     canvas.addElement(drawable);
-
-
-                    for (JSONAvailable logicPart: source.getLogic()) {
-                        if(Objects.equals(logicPart.getGateType(), "VirtualIO")){
-                            UiAvailable el = (UiAvailable) CG.input(logicPart.getElName());
-
-                            if (el == null) {
-                                el = (UiAvailable) CG.output(logicPart.getElName());
-                            }
-
-                            gates.put(logicPart.getHashCode(),  el);
-                            schema.put(logicPart.getHashCode(),logicPart);
-                        }
-                    }
                 } else {
                     //handle compoundgate
 
@@ -90,15 +77,27 @@ public class DataReader {
 
 
                     canvas.registerCompoundGate(compoundGate.name, compoundGate.message, compoundGate);
-                    element = GateCreator.create(compoundGate.name);
-                    Drawable drawable = new CompoundElement(compoundGate.name, canvas, source.getPosition(), element);
-                    canvas.addElement(drawable);
 
-                    gates.put(id, element);
-                    schema.put(id, source);
+                    CG = (CompoundGate)GateCreator.create(compoundGate.name);
+                    Drawable drawable = new CompoundElement(compoundGate.name, canvas, source.getPosition(), CG);
+                    canvas.addElement(drawable);
                 }
 
-            }else{
+
+                for (JSONAvailable logicPart: source.getLogic()) {
+                    if(Objects.equals(logicPart.getGateType(), "VirtualIO")){
+                        UiAvailable el = (UiAvailable) CG.input(logicPart.getElName());
+
+                        if (el == null) {
+                            el = (UiAvailable) CG.output(logicPart.getElName());
+                        }
+
+                        gates.put(logicPart.getHashCode(),  el);
+                        schema.put(logicPart.getHashCode(),logicPart);
+                    }
+                }
+
+            } else {
                 element = GateCreator.create(gateType);
                 if(Objects.equals(gateType, "VIRTUALIO")){
                     ((VirtualIO) element).name = source.getElName();
@@ -121,7 +120,7 @@ public class DataReader {
      */
     public static void initCompoundGates(File directory, final Canvas canvas) throws IOException {
         if (directory == null || !directory.exists() || directory.isFile()) {
-            canvas.showPopup("Directory does not exist or path is wrong");
+            directory.mkdir();
             return;
         }
 
@@ -211,7 +210,6 @@ public class DataReader {
                         SignalReceiver sr = (SignalReceiver) gates.get(hashCode);
                         gate.connection(sr);
                     }
-
                 }
             }
         }
