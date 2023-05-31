@@ -7,12 +7,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.AND;
+import pl.edu.pwr.student.UI.Blocks.Drawable;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.Blocks.UiElement;
 import processing.core.PVector;
 import uibooster.UiBooster;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -21,6 +24,7 @@ import java.util.regex.Pattern;
 class DataWriterTest {
     Canvas canvas;
     static String path = "PlikTestowy.gss";
+    static String directory = "";
 
 
     @BeforeEach
@@ -35,8 +39,8 @@ class DataWriterTest {
             );
         }
 
-        UiElement uiElement1 = new UiElement("AND",canvas,new PVector(0f,0f),new AND());
-        canvas.addElement(uiElement1);
+        Drawable drawable = new UiElement("AND",canvas,new PVector(0f,0f),new AND());
+        canvas.addElement(drawable);
     }
 
     /**
@@ -55,13 +59,12 @@ class DataWriterTest {
      */
     @Test
     void saveToFile() throws IOException {
-        DataWriter.saveToFile(canvas, new File(path));
+        DataWriter.saveToFile(canvas, new File(directory));
         Scanner myReader = new Scanner(new File(path));
 
-        Pattern pattern = Pattern.compile("\\{\"position\":\\{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":\\[],\"hashCode\":\\d*,\"color\":null}", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(myReader.next());
+        String json  = myReader.nextLine();
 
-        assertTrue(matcher.matches());
+        assertEquals("{\"message\":null,\"gateType\":\"AND\",\"position\":{\"x\":290.0,\"y\":172.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":[],\"hashCode\":1787826193,\"color\":null,\"logic\":null}",json);
     }
 
     /**
