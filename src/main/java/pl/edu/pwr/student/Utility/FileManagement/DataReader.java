@@ -31,6 +31,8 @@ public class DataReader {
             return;
         }
 
+        canvas.getElements().clear();
+
         Scanner myReader = new Scanner(file);
         canvas.clear();
 
@@ -43,6 +45,7 @@ public class DataReader {
             JSONAvailable source = generateJSONAvailableFromJSON(myReader.nextLine());
             Integer id = source.getHashCode();
             String gateType = source.getGateType().toUpperCase();
+            Drawable drawable;
             if(gateType.equals("COMPOUNDGATE")){
                 //handle compoundgate
 
@@ -63,10 +66,13 @@ public class DataReader {
 
                     schemaTMP.put(idTMP,logicPart);
                     gatesTMP.put(idTMP,(Compoundable) elementTMP);
-                    if(elementTMP instanceof VirtualIO){
-                        gates.put(idTMP,elementTMP);
-                        schema.put(idTMP,logicPart);
-                    }
+                    //Dodanie osobno virtualIO
+
+
+//                    if(elementTMP instanceof VirtualIO){
+//                        gates.put(idTMP,elementTMP);
+//                        schema.put(idTMP,logicPart);
+//                    }
                 }
 
                 connectElements(new HashMap<>(gatesTMP), schemaTMP);
@@ -76,19 +82,20 @@ public class DataReader {
                 if(!GateCreator.isRegistered(compoundGate.name)){
                     canvas.registerCompoundGate(compoundGate.name, compoundGate.message, compoundGate);
                 }
-                element = GateCreator.create(compoundGate.name);
-                Drawable drawable = new CompoundElement(compoundGate.name, canvas, source.getPosition(), element);
-                canvas.addElement(drawable);
+
+                element = compoundGate;
+                drawable = new CompoundElement(compoundGate.name, canvas, source.getPosition(), element);
 
             }else{
                 element = GateCreator.create(gateType);
                 if(Objects.equals(gateType, "VIRTUALIO")){
                     ((VirtualIO) element).name = source.getElName();
                 }
-                canvas.getElements().add(new UiElement(gateType, canvas, source.getPosition(), element));
+                drawable = new UiElement(gateType, canvas, source.getPosition(), element);
 
             }
 
+            canvas.addElement(drawable);
             gates.put(id, element);
             schema.put(id, source);
         }
@@ -182,10 +189,12 @@ public class DataReader {
             JSONAvailable value = entry.getValue();
             UiAvailable gate = gates.get(entry.getKey());
             if(gate instanceof CompoundGate){
-                for(Compoundable compoundable:((CompoundGate) gate).getGates()){
-                    for (Integer hashCode: value.getOutputs()) {
-                        if(gates.containsKey(hashCode))
-                            compoundable.connection((SignalReceiver) gates.get(hashCode));
+                for(Compoundable signalSender:((CompoundGate) gate).getGates()){
+                    for (Integer hashCodeOfSignalReciever: value.getOutputs()){
+                        if(gates.containsKey(hashCodeOfSignalReciever)) {
+                            SignalReceiver sr = (SignalReceiver) gates.get(hashCodeOfSignalReciever);
+                            signalSender.connection(sr);
+                        }
                     }
                 }
             }else{
