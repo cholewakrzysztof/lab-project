@@ -51,8 +51,6 @@ public class DataReader {
                     Drawable drawable = new CompoundElement(source.getElName(), canvas, source.getPosition(), CG);
                     canvas.addElement(drawable);
                 } else {
-                    //handle compoundgate
-
                     String message = source.getMessage();
                     String name = source.getElName();
 
@@ -198,19 +196,14 @@ public class DataReader {
             JSONAvailable value = entry.getValue();
             UiAvailable gate = gates.get(entry.getKey());
             if(gate instanceof CompoundGate){
-                for(Compoundable compoundable:((CompoundGate) gate).getGates()){
-                    for (Integer hashCode: value.getOutputs()) {
+                for(Compoundable compoundable:((CompoundGate) gate).getGates())
+                    for (Integer hashCode: value.getOutputs())
                         if(gates.containsKey(hashCode))
                             compoundable.connection((SignalReceiver) gates.get(hashCode));
-                    }
-                }
             }else{
-                for (Integer hashCode: value.getOutputs()) {
-                    if(gates.containsKey(hashCode)) {
-                        SignalReceiver sr = (SignalReceiver) gates.get(hashCode);
-                        gate.connection(sr);
-                    }
-                }
+                for (Integer hashCode: value.getOutputs())
+                    if(gates.containsKey(hashCode))
+                        gate.connection((SignalReceiver) gates.get(hashCode));
             }
         }
     }

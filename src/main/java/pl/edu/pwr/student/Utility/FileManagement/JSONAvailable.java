@@ -7,13 +7,11 @@ import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.UI.Blocks.CompoundElement;
 import pl.edu.pwr.student.UI.Blocks.Drawable;
-import pl.edu.pwr.student.UI.Blocks.UiElement;
-import pl.edu.pwr.student.UI.UiAvailable;
 import processing.core.PVector;
 
 import java.awt.*;
+import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Objects;
 
 /**
  * Representation of object based on UIElement that can be safe and create from file
@@ -34,7 +32,7 @@ public class JSONAvailable {
     @JsonProperty("elName")
     private String elName;
     /**
-     * Set of outputs hashcodes
+     * Set of outputs hashcode
      */
     @JsonProperty("outputs")
     private LinkedList<Integer> outputs;
@@ -80,11 +78,9 @@ public class JSONAvailable {
                 logic.add(new JSONAvailable(compoundable));
             }
             this.hashCode = element.uiElem.hashCode();
-            //TODO
-            //Zrobić getoutputhashcodes dla compoundgate
-            this.outputs = JSONAvailable.GetOutputsHashCodes((CompoundElement)element);
+            this.outputs = GetOutputsHashCodes((CompoundElement)element);
         }else{
-            this.outputs = JSONAvailable.GetOutputsHashCodes(element);
+            this.outputs = GetOutputsHashCodes(element.getGate().getOutputs());
             this.hashCode = element.getGate().hashCode();
         }
 
@@ -114,62 +110,41 @@ public class JSONAvailable {
         this.elName = compoundable.getClass().getSimpleName();
         if(compoundable.isIO())
             this.elName = ((VirtualIO) compoundable).name;
-        this.outputs = JSONAvailable.GetOutputsHashCodes(compoundable);
+        this.outputs = GetOutputsHashCodes(compoundable.getOutputs());
         this.hashCode = compoundable.hashCode();
     }
 
     /**
-     *  Get all hashCodes of outputs from element
-     * @param element Source UiElement
-     * @return Linked list of hashCodes
+     * Generate list of hashCodes of CompoundElement outputs
+     * @param element Source CompoundElement
+     * @return Integer LinkedList with hashCodes of outputs
      */
-    private static LinkedList<Integer> GetOutputsHashCodes(Drawable element){
-        LinkedList<Integer> list = new LinkedList<>();
-        for (SignalReceiver output:element.getGate().getOutputs()) {
-            list.add(output.hashCode());
-        }
-        return list;
-    }
     private static LinkedList<Integer> GetOutputsHashCodes(CompoundElement element){
         LinkedList<Integer> list = new LinkedList<>();
-        for (Drawable virtualIO:element.getElements()) {
+        for (Drawable virtualIO:element.getElements())
             for (SignalReceiver output:((VirtualIO)virtualIO.uiElem).getOutputs())
                 list.add(output.hashCode());
-        }
         return list;
     }
 
-    private static LinkedList<Integer> GetOutputsHashCodes(Compoundable compoundable){
+    /**
+     * Generate list of hashCodes of outputs
+     * @param outputs Set of outputs
+     * @return Integer LinkedList with hashCodes
+     */
+    private static LinkedList<Integer> GetOutputsHashCodes(HashSet<SignalReceiver> outputs){
         LinkedList<Integer> list = new LinkedList<>();
-        for (SignalReceiver output: compoundable.getOutputs()) {
+        for(SignalReceiver output: outputs)
             list.add(output.hashCode());
-        }
         return list;
     }
-
 
     public String getGateType() {return gateType;}
-    public Integer getHashCode(){
-        return hashCode;
-    }
-
-    public LinkedList<Integer> getOutputs(){
-        return outputs;
-    }
-
-    public String getElName(){
-        return elName;
-    }
-
-    public PVector getPosition(){
-        return position;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
+    public Integer getHashCode() {return hashCode;}
+    public LinkedList<Integer> getOutputs() {return outputs;}
+    public String getElName() {return elName;}
+    public PVector getPosition() {return position;}
+    public Color getColor() {return color; }
     public String getMessage() {return message;}
-
-    public LinkedList<JSONAvailable> getLogic() { return logic; }
+    public LinkedList<JSONAvailable> getLogic() {return logic;}
 }
