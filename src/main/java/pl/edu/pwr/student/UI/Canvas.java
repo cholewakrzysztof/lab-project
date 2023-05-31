@@ -461,7 +461,6 @@ public class Canvas extends PApplet {
         GateCreator.registerGate(name, gate);
         if (form != null)
             buildForm();
-
     }
 
     private void buildForm(){

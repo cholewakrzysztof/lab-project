@@ -42,7 +42,6 @@ public class DataReader {
         while(myReader.hasNextLine()){
             JSONAvailable source = generateJSONAvailableFromJSON(myReader.nextLine());
             Integer id = source.getHashCode();
-            GateCreator.initGates();
             String gateType = source.getGateType().toUpperCase();
             if(gateType.equals("COMPOUNDGATE")){
                 //handle compoundgate
@@ -56,7 +55,6 @@ public class DataReader {
 
                 for (JSONAvailable logicPart: source.getLogic()) {
                     Integer idTMP = logicPart.getHashCode();
-//                    GateCreator.initGates();
                     String gateTypeTMP = logicPart.getGateType();
                     UiAvailable elementTMP = GateCreator.create(gateTypeTMP);
                     if(Objects.equals(gateTypeTMP, "VirtualIO")){
@@ -65,10 +63,10 @@ public class DataReader {
 
                     schemaTMP.put(idTMP,logicPart);
                     gatesTMP.put(idTMP,(Compoundable) elementTMP);
-//                    if(elementTMP instanceof VirtualIO){
-//                        gates.put(idTMP,elementTMP);
-//                        schema.put(idTMP,logicPart);
-//                    }
+                    if(elementTMP instanceof VirtualIO){
+                        gates.put(idTMP,elementTMP);
+                        schema.put(idTMP,logicPart);
+                    }
                 }
 
                 connectElements(new HashMap<>(gatesTMP), schemaTMP);
@@ -136,7 +134,7 @@ public class DataReader {
         HashMap<Integer, Compoundable> gates = new HashMap<>();
         HashMap<Integer, JSONAvailable> schema = new HashMap<>();
 
-        GateCreator.initGates();
+
         for (JSONAvailable logicPart: source.getLogic()) {
             Integer id = logicPart.getHashCode();
             String gateType = logicPart.getGateType();
@@ -192,8 +190,10 @@ public class DataReader {
                 }
             }else{
                 for (Integer hashCode: value.getOutputs()) {
-                    if(gates.containsKey(hashCode))
-                        gate.connection((SignalReceiver) gates.get(hashCode));
+                    if(gates.containsKey(hashCode)) {
+                        SignalReceiver sr = (SignalReceiver) gates.get(hashCode);
+                        gate.connection(sr);
+                    }
 
                 }
             }
