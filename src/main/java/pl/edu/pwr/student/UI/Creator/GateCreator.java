@@ -61,6 +61,9 @@ public class GateCreator {
     }
 
     public static void registerGate(String name, CompoundGate gate) {
-        possibleGates.put(name, gate);
+        GateCreator.possibleGates.put(name, gate);
+    }
+    public static boolean isRegistered(String name){
+        return GateCreator.possibleGates.containsKey(name);
     }
 }

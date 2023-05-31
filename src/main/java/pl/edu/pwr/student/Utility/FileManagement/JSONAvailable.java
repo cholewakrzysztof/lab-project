@@ -5,11 +5,15 @@ import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
 import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
+import pl.edu.pwr.student.UI.Blocks.CompoundElement;
 import pl.edu.pwr.student.UI.Blocks.Drawable;
+import pl.edu.pwr.student.UI.Blocks.UiElement;
+import pl.edu.pwr.student.UI.UiAvailable;
 import processing.core.PVector;
 
 import java.awt.*;
 import java.util.LinkedList;
+import java.util.Objects;
 
 /**
  * Representation of object based on UIElement that can be safe and create from file
@@ -60,20 +64,35 @@ public class JSONAvailable {
      * @param element Source UiElement element for new object
      */
     public JSONAvailable(Drawable element){
-        this.gateType = ((Compoundable) element.getGate()).getClass().getSimpleName();
+        Class<?> classType;
+        if(element.getGate()==null){
+            classType=CompoundGate.class;
+        }
+        else{
+            classType = element.getGate().getClass();
+        }
+        this.gateType = classType.getSimpleName();
         this.position = element.position;
-        if(element.getGate().getClass()== CompoundGate.class){
+        this.elName = element.elName;
+        if(classType.equals(CompoundGate.class)){
             logic = new LinkedList<>();
-            for (Compoundable compoundable:((CompoundGate) element.getGate()).getGates()) {
+            for (Compoundable compoundable:((CompoundGate)element.uiElem).getGates()) {
                 logic.add(new JSONAvailable(compoundable));
             }
+            this.hashCode = element.uiElem.hashCode();
+            //TODO
+            //Zrobić getoutputhashcodes dla compoundgate
+            this.outputs = JSONAvailable.GetOutputsHashCodes((CompoundElement)element);
         }else{
             this.outputs = JSONAvailable.GetOutputsHashCodes(element);
+            this.hashCode = element.getGate().hashCode();
         }
-        this.elName = element.elName;
-        if(((Compoundable) element.getGate()).isIO())
-            this.elName = ((VirtualIO) element.getGate()).name;
-        this.hashCode = element.getGate().hashCode();
+
+        if(element.getGate() instanceof Compoundable)
+            if(((Compoundable)element.getGate()).isIO())
+                this.elName = ((VirtualIO) element.getGate()).name;
+
+
         /*TODO
         * Add special fields like color for LED, interval for Clock
         * */
@@ -87,6 +106,7 @@ public class JSONAvailable {
         this.elName = compoundGate.name;
         this.hashCode = compoundGate.hashCode();
         this.message = compoundGate.message;
+        this.outputs = new LinkedList<>();
     }
 
     public JSONAvailable(Compoundable compoundable){
@@ -107,6 +127,14 @@ public class JSONAvailable {
         LinkedList<Integer> list = new LinkedList<>();
         for (SignalReceiver output:element.getGate().getOutputs()) {
             list.add(output.hashCode());
+        }
+        return list;
+    }
+    private static LinkedList<Integer> GetOutputsHashCodes(CompoundElement element){
+        LinkedList<Integer> list = new LinkedList<>();
+        for (Drawable virtualIO:element.getElements()) {
+            for (SignalReceiver output:((VirtualIO)virtualIO.uiElem).getOutputs())
+                list.add(output.hashCode());
         }
         return list;
     }

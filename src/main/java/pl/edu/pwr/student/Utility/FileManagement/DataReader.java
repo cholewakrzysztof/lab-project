@@ -5,6 +5,8 @@ import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
 import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Output.*;
+import pl.edu.pwr.student.UI.Blocks.CompoundElement;
+import pl.edu.pwr.student.UI.Blocks.Drawable;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.Creator.GateCreator;
 import pl.edu.pwr.student.UI.UiAvailable;
@@ -35,16 +37,60 @@ public class DataReader {
         HashMap<Integer, UiAvailable> gates = new HashMap<>();
         HashMap<Integer,JSONAvailable> schema = new HashMap<>();
 
+        UiAvailable element;
+
         while(myReader.hasNextLine()){
             JSONAvailable source = generateJSONAvailableFromJSON(myReader.nextLine());
             Integer id = source.getHashCode();
             GateCreator.initGates();
-            String gateType = source.getGateType();
-            UiAvailable element = GateCreator.create(gateType);
-            if(Objects.equals(gateType, "VirtualIO")){
-                ((VirtualIO) element).name = source.getElName();
+            String gateType = source.getGateType().toUpperCase();
+            if(gateType.equals("COMPOUNDGATE")){
+                //handle compoundgate
+
+                String message = source.getMessage();
+                String name = source.getElName();
+
+                HashMap<Integer, Compoundable> gatesTMP = new HashMap<>();
+                HashMap<Integer, JSONAvailable> schemaTMP = new HashMap<>();
+
+
+                for (JSONAvailable logicPart: source.getLogic()) {
+                    Integer idTMP = logicPart.getHashCode();
+                    GateCreator.initGates();
+                    String gateTypeTMP = logicPart.getGateType();
+                    UiAvailable elementTMP = GateCreator.create(gateTypeTMP);
+                    if(Objects.equals(gateTypeTMP, "VirtualIO")){
+                        ((VirtualIO) elementTMP).name = logicPart.getElName();
+                    }
+
+                    schemaTMP.put(idTMP,logicPart);
+                    gatesTMP.put(idTMP,(Compoundable) elementTMP);
+//                    if(elementTMP instanceof VirtualIO){
+//                        gates.put(idTMP,elementTMP);
+//                        schema.put(idTMP,logicPart);
+//                    }
+                }
+
+                connectElements(new HashMap<>(gatesTMP), schemaTMP);
+                CompoundGate compoundGate = new CompoundGate(name, message, new HashSet<>(gatesTMP.values()));
+
+
+                if(!GateCreator.isRegistered(compoundGate.name)){
+                    canvas.registerCompoundGate(compoundGate.name, compoundGate.message, compoundGate);
+                }
+                element = GateCreator.create(compoundGate.name);
+                Drawable drawable = new CompoundElement(compoundGate.name, canvas, source.getPosition(), element);
+                canvas.addElement(drawable);
+
+            }else{
+                element = GateCreator.create(gateType);
+                if(Objects.equals(gateType, "VIRTUALIO")){
+                    ((VirtualIO) element).name = source.getElName();
+                }
+                canvas.getElements().add(new UiElement(gateType, canvas, source.getPosition(), element));
+
             }
-            canvas.getElements().add(new UiElement(gateType, canvas, source.getPosition(), element));
+
             gates.put(id, element);
             schema.put(id, source);
         }
@@ -82,16 +128,16 @@ public class DataReader {
 
         Scanner myReader = new Scanner(file);
         String json = myReader.nextLine();
-        JSONAvailable jsonAvailable = generateJSONAvailableFromJSON(json);
+        JSONAvailable source = generateJSONAvailableFromJSON(json);
 
-        String message = jsonAvailable.getMessage();
-        String name = jsonAvailable.getElName();
+        String message = source.getMessage();
+        String name = source.getElName();
 
         HashMap<Integer, Compoundable> gates = new HashMap<>();
         HashMap<Integer, JSONAvailable> schema = new HashMap<>();
 
 
-        for (JSONAvailable logicPart: jsonAvailable.getLogic()) {
+        for (JSONAvailable logicPart: source.getLogic()) {
             Integer id = logicPart.getHashCode();
             GateCreator.initGates();
             String gateType = logicPart.getGateType();
@@ -109,7 +155,8 @@ public class DataReader {
         try {
             CompoundGate compoundGate = new CompoundGate(name, message, new HashSet<>(gates.values()));
 
-            canvas.registerCompoundGate(compoundGate.name, compoundGate.message, compoundGate);
+            if(!GateCreator.isRegistered(compoundGate.name))
+                canvas.registerCompoundGate(compoundGate.name, compoundGate.message, compoundGate);
         } catch (Exception e) {
             canvas.showPopup("CompoundGate cannot have more than one gate with the same name");
         }
@@ -137,11 +184,18 @@ public class DataReader {
         for(Map.Entry<Integer, JSONAvailable> entry : schema.entrySet()) {
             JSONAvailable value = entry.getValue();
             UiAvailable gate = gates.get(entry.getKey());
-            for (Integer hashCode: value.getOutputs()) {
-                for (Map.Entry<Integer, UiAvailable> candidate : gates.entrySet()) {
-                    if(Objects.equals(hashCode, candidate.getKey())){
-                        gate.connection((SignalReceiver) candidate.getValue());
+            if(gate instanceof CompoundGate){
+                for(Compoundable compoundable:((CompoundGate) gate).getGates()){
+                    for (Integer hashCode: value.getOutputs()) {
+                        //if(gates.containsKey(hashCode))
+                            //odpowiednio połączyć
                     }
+                }
+            }else{
+                for (Integer hashCode: value.getOutputs()) {
+                    if(gates.containsKey(hashCode))
+                        gate.connection((SignalReceiver) gates.get(hashCode));
+
                 }
             }
         }

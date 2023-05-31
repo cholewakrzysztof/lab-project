@@ -30,7 +30,7 @@ public abstract class Drawable {
     /**
      * The gate represented by this element.
      */
-    protected final UiAvailable uiElem;
+    public final UiAvailable uiElem;
 
     /**
      * The color associated with this element.

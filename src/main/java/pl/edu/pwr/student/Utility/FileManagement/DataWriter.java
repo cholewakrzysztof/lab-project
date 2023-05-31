@@ -30,7 +30,7 @@ public class DataWriter {
 
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(directory.getAbsoluteFile() + "\\" + System.currentTimeMillis() + ".gss"));
         for (Drawable uiElement: canvas.getElements()) {
-            bufferedWriter.write(DataWriter.generateJSONFromUIElement((Drawable) uiElement));
+            bufferedWriter.write(DataWriter.generateJSONFromUIElement(uiElement));
             bufferedWriter.newLine();
         }
         bufferedWriter.close();
@@ -86,5 +86,7 @@ public class DataWriter {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(new JSONAvailable(element));
     }
+
+
 
 }

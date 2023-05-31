@@ -153,12 +153,7 @@ public class CompoundElement extends Drawable {
                 return d.getGate();
             }
         }
-
-        if (super.over(v)){
-            return uiElem;
-        }
-
-        return null;
+        return uiElem;
     }
 
     @Override
