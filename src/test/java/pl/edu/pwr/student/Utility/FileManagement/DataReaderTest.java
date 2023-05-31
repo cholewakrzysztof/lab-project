@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.AND;
+import pl.edu.pwr.student.UI.Blocks.Drawable;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.UiElement;
 import processing.core.PVector;
@@ -34,7 +35,7 @@ class DataReaderTest {
             );
         }
 
-        uiElement = new UiElement("AND",canvas,new PVector(0f,0f),new AND());
+        uiElement = new Drawable("AND",canvas,new PVector(0f,0f),new AND());
         canvas.getElements().add(uiElement);
     }
     @AfterAll

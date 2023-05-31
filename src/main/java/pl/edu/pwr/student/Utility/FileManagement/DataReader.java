@@ -56,7 +56,7 @@ public class DataReader {
 
                 for (JSONAvailable logicPart: source.getLogic()) {
                     Integer idTMP = logicPart.getHashCode();
-                    GateCreator.initGates();
+//                    GateCreator.initGates();
                     String gateTypeTMP = logicPart.getGateType();
                     UiAvailable elementTMP = GateCreator.create(gateTypeTMP);
                     if(Objects.equals(gateTypeTMP, "VirtualIO")){
@@ -136,10 +136,9 @@ public class DataReader {
         HashMap<Integer, Compoundable> gates = new HashMap<>();
         HashMap<Integer, JSONAvailable> schema = new HashMap<>();
 
-
+        GateCreator.initGates();
         for (JSONAvailable logicPart: source.getLogic()) {
             Integer id = logicPart.getHashCode();
-            GateCreator.initGates();
             String gateType = logicPart.getGateType();
             UiAvailable element = GateCreator.create(gateType);
             if(Objects.equals(gateType, "VirtualIO")){
