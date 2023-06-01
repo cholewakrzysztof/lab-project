@@ -1,5 +1,6 @@
 package pl.edu.pwr.student.UI;
 
+import pl.edu.pwr.student.Examples.Register;
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.Delay;
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
 import pl.edu.pwr.student.Gates.CompoundGate;
@@ -14,12 +15,14 @@ import pl.edu.pwr.student.UI.Blocks.Drawable;
 import pl.edu.pwr.student.UI.Blocks.UiElement;
 import pl.edu.pwr.student.UI.Buttons.*;
 import pl.edu.pwr.student.UI.Creator.GateCreator;
+import pl.edu.pwr.student.Utility.FileManagement.DataReader;
 import pl.edu.pwr.student.Utility.FileManagement.DataWriter;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PApplet;
 import processing.core.PVector;
 import processing.event.MouseEvent;
 import uibooster.UiBooster;
+import uibooster.components.WaitingDialog;
 import uibooster.model.Form;
 import uibooster.model.ListElement;
 import uibooster.model.UiBoosterOptions;
@@ -62,7 +65,7 @@ public class Canvas extends PApplet {
     /**
      * The set of all elements on the canvas.
      */
-    private final Set<Drawable> elements = new HashSet<>();
+    private final List<Drawable> elements = new ArrayList<>();
 
     /**
      * The list of all buttons.
@@ -100,20 +103,29 @@ public class Canvas extends PApplet {
      * Constructor
      */
     public Canvas () {
-        booster = new UiBooster(UiBoosterOptions.Theme.DARK_THEME);
+        try {
+            booster = new UiBooster(UiBoosterOptions.Theme.DARK_THEME);
 
-        GateCreator.initGates();
-        initForm();
+            WaitingDialog dialog = booster.showWaitingDialog("Starting", "Please wait");
 
-        // Set up the canvas
-        String[] processingArgs = {"Gates-Simulation"};
-        this.runSketch(processingArgs);
+            GateCreator.initGates();
+            initForm();
 
-        ShapeLoader.loadShapes(this);
+            // Set up the canvas
+            String[] processingArgs = {"Gates-Simulation"};
+            this.runSketch(processingArgs);
 
-        initButtons();
+            ShapeLoader.loadShapes(this);
 
-        windowResizable(true);
+            initButtons();
+
+            windowResizable(true);
+
+            dialog.setMessage("Ready");
+            dialog.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -159,8 +171,8 @@ public class Canvas extends PApplet {
     public void draw() {
         background(255);
 
-        for (Drawable g : elements) {
-            g.run();
+        for (int i = 0; i < elements.size(); i++) {
+            elements.get(i).run();
         }
 
         if (elements.isEmpty()) {
@@ -323,8 +335,8 @@ public class Canvas extends PApplet {
         if (state == 0) {
             if (selectedElement != null) {
                 selectedElement.updatePosition (new PVector(
-                        mouseX / ShapeLoader.scale - ShapeLoader.size/2f + offset.x,
-                        mouseY / ShapeLoader.scale - ShapeLoader.size/2f + offset.y
+                    mouseX / ShapeLoader.scale - ShapeLoader.size/2f + offset.x,
+                    mouseY / ShapeLoader.scale - ShapeLoader.size/2f + offset.y
                 ));
             } else {
                 if (startingMousePosition == null) {
@@ -357,11 +369,13 @@ public class Canvas extends PApplet {
      */
     @Override
     public void mouseWheel(MouseEvent event) {
-        if (event.getCount() > 0) {
-            ShapeLoader.decrementScale();
-        } else {
-            ShapeLoader.incrementScale();
+        for (Drawable g : elements) {
+            if (g.over(new PVector(mouseX, mouseY))) {
+                g.rotation(event.getCount());
+                return;
+            }
         }
+        ShapeLoader.scale(event.getCount());
     }
 
     /**
@@ -398,9 +412,9 @@ public class Canvas extends PApplet {
 
     /**
      * Gets set of all elements
-     * @return set of elements
+     * @return list of elements
      */
-    public Set<Drawable> getElements() {
+    public List<Drawable> getElements() {
         return elements;
     }
 
@@ -447,7 +461,8 @@ public class Canvas extends PApplet {
     public void registerCompoundGate(String name, String message, CompoundGate gate) {
         gatesList.add(new ListElement(name, message, ""));
         GateCreator.registerGate(name, gate);
-        buildForm();
+        if (form != null)
+            buildForm();
     }
 
     private void buildForm(){
@@ -459,20 +474,31 @@ public class Canvas extends PApplet {
     }
 
     private void initForm(){
-        gatesList = new ArrayList<>();
-        gatesList.add(new ListElement("AND", "Logical Conjunction",""));
-        gatesList.add(new ListElement("NAND", "Logical Alternative denial",""));
-        gatesList.add(new ListElement("OR", "Logical Disjunction", ""));
-        gatesList.add(new ListElement("NOR", "Logical Joint denial",""));
-        gatesList.add(new ListElement("XOR", "Logical Exclusive or",""));
-        gatesList.add(new ListElement("XNOR", "Logical Biconditional",""));
-        gatesList.add(new ListElement("NOT", "Inverter", ""));
-        gatesList.add(new ListElement("SPEAKER", "Speaker", ""));
-        gatesList.add(new ListElement("LED", "Diode", ""));
-        gatesList.add(new ListElement("SWITCH", "1 or 0 state", ""));
-        gatesList.add(new ListElement("CLOCK", "Changes states", ""));
-        gatesList.add(new ListElement("DELAY", "Buffer", ""));
-        gatesList.add(new ListElement("VIRTUALIO", "Input or output for CompoundGate", ""));
+        try {
+            gatesList = new ArrayList<>();
+            gatesList.add(new ListElement("AND", "Logical Conjunction", ""));
+            gatesList.add(new ListElement("NAND", "Logical Alternative denial", ""));
+            gatesList.add(new ListElement("OR", "Logical Disjunction", ""));
+            gatesList.add(new ListElement("NOR", "Logical Joint denial", ""));
+            gatesList.add(new ListElement("XOR", "Logical Exclusive or", ""));
+            gatesList.add(new ListElement("XNOR", "Logical Biconditional", ""));
+            gatesList.add(new ListElement("NOT", "Inverter", ""));
+            gatesList.add(new ListElement("SPEAKER", "Speaker", ""));
+            gatesList.add(new ListElement("LED", "Diode", ""));
+            gatesList.add(new ListElement("SWITCH", "1 or 0 state", ""));
+            gatesList.add(new ListElement("CLOCK", "Changes states", ""));
+            gatesList.add(new ListElement("DELAY", "Buffer", ""));
+            gatesList.add(new ListElement("VIRTUALIO", "Input or output for CompoundGate", ""));
+            registerCompoundGate("DLatch", "", Register.createDLatch());
+            registerCompoundGate("Register", "", Register.createRegister());
+            registerCompoundGate("SRLatch", "", Register.createSRLatch());
+            registerCompoundGate("4bitRegister", "", Register.create4bitRegister());
+            registerCompoundGate("ETDFlipFlop", "", Register.createETDFlipFlop());
+
+            DataReader.initCompoundGates(new File("gates"), this);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void initButtons(){
@@ -483,6 +509,13 @@ public class Canvas extends PApplet {
         buttons.add(new SaveButton(this));
         buttons.add(new LoadButton(this));
         buttons.add(new AddButton(this));
+    }
+
+    public Form saveCompoundGateDialog(){
+        return booster.createForm("Compound Gate Creator")
+                .addTextArea("Name of the gate", 1)
+                .addTextArea("Message for the gate", 1)
+                .show();
     }
 
     /**

@@ -57,9 +57,13 @@ public class GateCreator {
         possibleGates.put("CLOCK", new Clock());
         possibleGates.put("DELAY", new Delay());
         possibleGates.put("VIRTUALIO", new VirtualIO());
+        possibleGates.put("VirtualIO", new VirtualIO());
     }
 
     public static void registerGate(String name, CompoundGate gate) {
-        possibleGates.put(name, gate);
+        GateCreator.possibleGates.put(name, gate);
+    }
+    public static boolean isRegistered(String name){
+        return GateCreator.possibleGates.containsKey(name);
     }
 }

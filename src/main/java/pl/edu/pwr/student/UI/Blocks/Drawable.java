@@ -11,6 +11,10 @@ import processing.core.PVector;
 
 import java.awt.*;
 
+import static processing.core.PApplet.cos;
+import static processing.core.PApplet.sin;
+import static processing.core.PConstants.PI;
+
 public abstract class Drawable {
     /**
      * The position of this element.
@@ -30,12 +34,15 @@ public abstract class Drawable {
     /**
      * The gate represented by this element.
      */
-    protected final UiAvailable uiElem;
+    public final UiAvailable uiElem;
 
     /**
      * The color associated with this element.
      */
     public Color color = new Color(0, 255, 0);
+    public float xMove;
+    public float yMove;
+    public float rotation = 0;
 
     /**
      * Creates a new UI element object with the specified parameters.
@@ -54,11 +61,13 @@ public abstract class Drawable {
      * specifies the gate represented by the UI element, as a UiAvailable object.
      * </p>
      */
-    public Drawable(String type, Canvas s, PVector v, UiAvailable uiElem) {
+    public Drawable(String type, Canvas s, PVector v, UiAvailable uiElem, float rotation) {
         position = v.copy();
         elName = type;
         sketch = s;
         this.uiElem = uiElem;
+        this.rotation = rotation;
+        calcMovement();
     }
 
     /**
@@ -74,11 +83,13 @@ public abstract class Drawable {
      * </p>
      */
     public Drawable(JSONAvailable jsonAvailable, Canvas s) {
-        position = jsonAvailable.position;
-        elName = jsonAvailable.elName;
+        position = jsonAvailable.getPosition();
+        elName = jsonAvailable.getElName();
         sketch = s;
-        uiElem = GateCreator.create(jsonAvailable.elName);
-        sketch.addElement(new UiElement(jsonAvailable.elName, sketch, jsonAvailable.position, uiElem));
+        uiElem = GateCreator.create(jsonAvailable.getElName());
+        sketch.addElement(new UiElement(jsonAvailable.getElName(), sketch, jsonAvailable.getPosition(), uiElem));
+        rotation = jsonAvailable.getRotation();
+        calcMovement();
     }
 
     /**
@@ -98,17 +109,27 @@ public abstract class Drawable {
      */
     public abstract void run();
 
+
+
     /**
      * Determines whether the mouse is currently over the element.
      *
      * @param v the mouse position as a PVector
      * @return true if the mouse is over the element, false otherwise
      */
-    public boolean over(PVector v) {
-        return (position.x-sketch.getOffset().x)*ShapeLoader.scale <= v.x &&
-                (position.x-sketch.getOffset().x + ShapeLoader.size)*ShapeLoader.scale >= v.x &&
-                (position.y-sketch.getOffset().y)*ShapeLoader.scale <= v.y &&
-                (position.y-sketch.getOffset().y + ShapeLoader.size)*ShapeLoader.scale >= v.y;
+    public boolean over(PVector v)  {
+        return (Math.abs((v.x/ShapeLoader.scale-position.x+sketch.getOffset().x-ShapeLoader.size/2f)*cos(rotation*PI)+(v.y/ShapeLoader.scale-position.y+sketch.getOffset().y-ShapeLoader.size/2f)*sin(rotation*PI))-ShapeLoader.size/2f) < 0 &&
+                (Math.abs((v.y/ShapeLoader.scale-position.y+sketch.getOffset().y-ShapeLoader.size/2f)*cos(rotation*PI)-(v.x/ShapeLoader.scale-position.x+sketch.getOffset().x-ShapeLoader.size/2f)*sin(rotation*PI))-ShapeLoader.size/2f) < 0;
+    }
+
+    public void rotation(int direction) {
+        rotation = (rotation - direction * 0.01f) % 2;
+        calcMovement();
+    }
+
+    private void calcMovement() {
+        xMove = (7*sin(rotation*PI+PI/4)/10f-1/2f);
+        yMove = (7*cos(rotation*PI+PI/4)/10f-1/2f);
     }
 
     public abstract void updatePosition(PVector pVector);

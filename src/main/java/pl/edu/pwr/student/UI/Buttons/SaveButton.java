@@ -27,6 +27,11 @@ public class SaveButton extends Button {
      */
     @Override
     public void click() {
+        if (sketch.getElements().size() <= 0){
+            sketch.showPopup("Nothing to save!");
+            return;
+        }
+
         try {
             DataWriter.saveToFile(sketch, sketch.getDirectory());
         } catch (IOException e) {

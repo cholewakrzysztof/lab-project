@@ -9,15 +9,20 @@ import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.UiAvailable;
 import pl.edu.pwr.student.Utility.FileManagement.JSONAvailable;
 import pl.edu.pwr.student.Utility.ShapeLoader;
+import processing.core.PShape;
 import processing.core.PVector;
 
 import java.awt.*;
 import java.util.ArrayList;
 
+import static processing.core.PApplet.*;
+import static processing.core.PConstants.PI;
+
 /**
  * This is a class definition for a UiElement class, which represents every element on a canvas.
  */
 public class UiElement extends Drawable {
+
     /**
      * Creates a new UI element object with the specified parameters.
      *
@@ -36,7 +41,29 @@ public class UiElement extends Drawable {
      * </p>
      */
     public UiElement(String type, Canvas s, PVector v, UiAvailable uiElem) {
-        super(type, s, v, uiElem);
+        super(type, s, v, uiElem, 0f);
+    }
+
+    /**
+     * Creates a new UI element object with the specified parameters.
+     *
+     * @param type The name of the UI element.
+     * @param s The Processing sketch used to render the UI element.
+     * @param v The position of the UI element on the canvas, specified as a PVector object.
+     * @param uiElem The gate represented by the UI element, specified as a UiAvailable object.
+     * @param rotation rotation of the element
+     *
+     * <p>
+     * The {@code UiElement} constructor creates a new UI element object with the specified
+     * properties. The {@code type} parameter specifies the name of the UI element, such as
+     * "button" or "checkbox". The {@code s} parameter specifies the Processing sketch used to
+     * render the UI element. The {@code v} parameter specifies the position of the UI element
+     * on the canvas, as a PVector object with x and y coordinates. The {@code uiElem} parameter
+     * specifies the gate represented by the UI element, as a UiAvailable object.
+     * </p>
+     */
+    public UiElement(String type, Canvas s, PVector v, UiAvailable uiElem, float rotation) {
+        super(type, s, v, uiElem, rotation);
     }
 
     /**
@@ -77,7 +104,13 @@ public class UiElement extends Drawable {
 
         if (over(new PVector(sketch.mouseX, sketch.mouseY))){
             sketch.fill(0, 30);
-            sketch.square((position.x-sketch.getOffset().x)*ShapeLoader.scale,(position.y-sketch.getOffset().y)*ShapeLoader.scale,ShapeLoader.size*ShapeLoader.scale);
+
+            PShape square = sketch.createShape(sketch.RECT, 0,0, ShapeLoader.size, ShapeLoader.size);
+            square.rotate(rotation*PI);
+            square.translate(xMove*ShapeLoader.size*ShapeLoader.scale, yMove*ShapeLoader.size*ShapeLoader.scale);
+            square.scale(ShapeLoader.scale);
+
+            sketch.shape(square, (position.x-sketch.getOffset().x)*ShapeLoader.scale,(position.y-sketch.getOffset().y)*ShapeLoader.scale);
         }
 
 
@@ -102,19 +135,20 @@ public class UiElement extends Drawable {
         } else if (uiElem instanceof Switch) {
             if (uiElem.getState()){
                 sketch.shape(
-                        ShapeLoader.getShape("SWITCH-TRUE"),
+                        ShapeLoader.getShape("SWITCH-TRUE", rotation, xMove*ShapeLoader.size*ShapeLoader.scale, yMove*ShapeLoader.size*ShapeLoader.scale),
                         (position.x-sketch.getOffset().x)*ShapeLoader.scale,
                         (position.y-sketch.getOffset().y)*ShapeLoader.scale
                 );
             } else {
                 sketch.shape(
-                        ShapeLoader.getShape("SWITCH-FALSE"),
+                        ShapeLoader.getShape("SWITCH-FALSE", rotation, xMove*ShapeLoader.size*ShapeLoader.scale, yMove*ShapeLoader.size*ShapeLoader.scale),
                         (position.x-sketch.getOffset().x)*ShapeLoader.scale,
                         (position.y-sketch.getOffset().y)*ShapeLoader.scale
                 );
             }
         } else {
-            sketch.shape(ShapeLoader.getShape(elName),
+
+            sketch.shape(ShapeLoader.getShape(elName, rotation, xMove*ShapeLoader.size*ShapeLoader.scale, yMove*ShapeLoader.size*ShapeLoader.scale),
                     (position.x-sketch.getOffset().x)*ShapeLoader.scale,
                     (position.y-sketch.getOffset().y)*ShapeLoader.scale
             );
@@ -123,12 +157,17 @@ public class UiElement extends Drawable {
         if (uiElem instanceof LED) {
             if (uiElem.getState()){
                 if (color == null) color = new Color(0, 255, 0);
+
                 sketch.stroke(color.getRGB());
                 sketch.fill(color.getRGB());
-                sketch.circle(
-                        (position.x-sketch.getOffset().x)*ShapeLoader.scale + ShapeLoader.size *(ShapeLoader.scale)/2,
-                        (position.y-sketch.getOffset().y)*ShapeLoader.scale + (ShapeLoader.size-10)*ShapeLoader.scale/2,
-                        ShapeLoader.size*ShapeLoader.scale/2
+                PShape circle = sketch.createShape(sketch.ELLIPSE, 0,0, ShapeLoader.size/2f, ShapeLoader.size/2f);
+                circle.translate(ShapeLoader.size*ShapeLoader.scale/2f, ShapeLoader.size*ShapeLoader.scale/2f);
+                circle.scale(ShapeLoader.scale);
+
+                sketch.shape(
+                        circle,
+                    (position.x-sketch.getOffset().x)*ShapeLoader.scale + (sin(rotation*PI))/10f*ShapeLoader.size*ShapeLoader.scale,
+                    (position.y-sketch.getOffset().y)*ShapeLoader.scale + (-cos(rotation*PI))/10f*ShapeLoader.size*ShapeLoader.scale
                 );
             }
         }
@@ -152,6 +191,7 @@ public class UiElement extends Drawable {
                 }
             }
         }
+        sketch.stroke(0, 0, 0);
     }
 
     @Override
@@ -185,25 +225,25 @@ public class UiElement extends Drawable {
                 i++;
             }
 
-            float startx = (position.x-sketch.getOffset().x)*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale;
-            float starty = (position.y-sketch.getOffset().y)*ShapeLoader.scale + ShapeLoader.size/2f*ShapeLoader.scale;
-            float endx = (u.position.x-sketch.getOffset().x)*ShapeLoader.scale;
-            float endy = (u.position.y-sketch.getOffset().y)*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
-            if (startx <= endx){
-                float midx = (startx+endx)/2 + ShapeLoader.size*ShapeLoader.scale*pos/i;
-                sketch.line(startx, starty, midx, starty);
-                sketch.line(midx, starty, midx, endy);
-                sketch.line(midx, endy, endx, endy);
-            } else {
-                float padding;
-                float midy;
-                if (starty <= (u.position.y-sketch.getOffset().y) + ShapeLoader.size*1.5f*ShapeLoader.scale && starty >= (u.position.y-sketch.getOffset().y) - ShapeLoader.size/2f*ShapeLoader.scale) {
-                    padding = ShapeLoader.size*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
-                    midy = (starty+endy)/2+padding;
-                } else {
-                    midy = (starty+endy)/2;
-                    padding = ShapeLoader.size*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
-                }
+                    float startx = (position.x-sketch.getOffset().x)*ShapeLoader.scale + (cos(rotation*PI)+1)/2f*ShapeLoader.size*ShapeLoader.scale;
+                    float starty = (position.y-sketch.getOffset().y)*ShapeLoader.scale + (sin(rotation*PI)+1)/2f*ShapeLoader.size*ShapeLoader.scale;
+                    float endx = (u.position.x-sketch.getOffset().x + (sin(u.rotation*PI)*(1-2f*pos/i)-cos(u.rotation*PI)+1)/2*ShapeLoader.size)*ShapeLoader.scale;
+                    float endy = (u.position.y-sketch.getOffset().y + ((cos(u.rotation*PI)*(2f*pos/i -1)-sin(u.rotation*PI)+1)/2)*ShapeLoader.size)*ShapeLoader.scale;
+                    if (startx <= endx){
+                        float midx = (startx+endx)/2 + (float) (ShapeLoader.size * pos) /i;
+                        sketch.line(startx, starty, midx, starty);
+                        sketch.line(midx, starty, midx, endy);
+                        sketch.line(midx, endy, endx, endy);
+                    } else {
+                        float padding;
+                        float midy;
+                        if (starty <= (u.position.y-sketch.getOffset().y) + ShapeLoader.size*2f*ShapeLoader.scale && starty >= (u.position.y-sketch.getOffset().y) - ShapeLoader.size/2f*ShapeLoader.scale) {
+                            padding = ShapeLoader.size*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
+                            midy = (starty+endy)/2+padding;
+                        } else {
+                            midy = (starty+endy)/2;
+                            padding = ShapeLoader.size*ShapeLoader.scale + ShapeLoader.size*ShapeLoader.scale*pos/i;
+                        }
 
                 sketch.line(startx, starty, startx+padding, starty);
                 sketch.line(startx+padding, starty, startx+padding, midy);

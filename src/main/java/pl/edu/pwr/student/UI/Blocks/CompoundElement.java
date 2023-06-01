@@ -19,7 +19,7 @@ public class CompoundElement extends Drawable {
     private final Set<Drawable> elements = new HashSet<>();
 
     public CompoundElement(String type, Canvas s, PVector v, UiAvailable uiElem) {
-        super(type, s, v, uiElem);
+        super(type, s, v, uiElem, 0f);
         initElements();
     }
 
@@ -153,12 +153,7 @@ public class CompoundElement extends Drawable {
                 return d.getGate();
             }
         }
-
-        if (super.over(v)){
-            return uiElem;
-        }
-
-        return null;
+        return uiElem;
     }
 
     @Override
