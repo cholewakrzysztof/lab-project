@@ -349,11 +349,13 @@ public class Canvas extends PApplet {
      */
     @Override
     public void mouseWheel(MouseEvent event) {
-        if (event.getCount() > 0) {
-            ShapeLoader.decrementScale();
-        } else {
-            ShapeLoader.incrementScale();
+        for (UiElement g : elements) {
+            if (g.over(new PVector(mouseX, mouseY))) {
+                g.rotation(event.getCount());
+                return;
+            }
         }
+        ShapeLoader.scale(event.getCount());
     }
 
     /**
@@ -407,7 +409,6 @@ public class Canvas extends PApplet {
     /**
      * Gets file to save to or load from
      * @return file
-     * @param title title of the file
      */
     public File getFile() {
         return booster.showFileSelection("Get file to save to: .gss", "gss");
