@@ -1,23 +1,24 @@
 package pl.edu.pwr.student.Utility.FileManagement;
 
-
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.UI.Blocks.Drawable;
 import pl.edu.pwr.student.UI.Canvas;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
 import java.util.HashSet;
+import java.util.Objects;
 
 /**
  * Class responsible for safe HashSet of UI elements to files
  */
 public class DataWriter {
     /**
+     * Save current canvas into file
      * @param canvas source of UI elements to safe
      * @param directory path to place where file will be saved
      */
@@ -35,6 +36,13 @@ public class DataWriter {
         bufferedWriter.close();
     }
 
+    /**
+     * Create new file with schema of CompoundGate and then read this
+     * @param canvas Source of elements
+     * @param name Name of CompoundGate
+     * @param message Message of CompoundGate
+     * @throws IOException of manage files
+     */
     public static void saveToFileCompoundGate(Canvas canvas, String name, String message) throws IOException {
         File directory = new File("gates");
 
@@ -54,22 +62,16 @@ public class DataWriter {
         HashSet<CompoundGate> compGates = new HashSet<>();
 
         for (Drawable drawable:canvas.getElements()) {
-            if(drawable.getGate()!=null)
-                if(drawable.getGate().getClass()== CompoundGate.class){
-                    compGates.add((CompoundGate) drawable.getGate());
-                }
-                else{
-                    basicGates.add((Compoundable) drawable.getGate());
-                }
+            if(Objects.equals(drawable.getGate().getClass(), CompoundGate.class)){
+                compGates.add((CompoundGate) drawable.getGate());
+            }
+            else{
+                basicGates.add((Compoundable) drawable.getGate());
+            }
         }
-
         CompoundGate compoundGate = new CompoundGate(name,message,basicGates,compGates);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(new JSONAvailable(compoundGate));
-        bufferedWriter.write(json);
-        bufferedWriter.newLine();
-
+        bufferedWriter.write(DataWriter.generateJSONFromCompoundGate(compoundGate));
 
         bufferedWriter.close();
         canvas.clear();
@@ -77,12 +79,24 @@ public class DataWriter {
     }
 
     /**
-     * @param element UI Element to convert
-     * @return JSON string representation of single UI Element
-     * @throws IOException something wrong with UI element
+     * Generate JSON string representation of Drawable object
+     * @param element Drawable element to convert
+     * @return JSON string representation of single Drawable object
+     * @throws JsonProcessingException when can't generate JSONAvailable
      */
-    public static String generateJSONFromUIElement(Drawable element) throws IOException {
+    public static String generateJSONFromUIElement(Drawable element) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(new JSONAvailable(element));
+    }
+
+    /**
+     * Generate JSON string representation of CompoundGate object
+     * @param compoundGate CompoundGate to convert
+     * @return JSON string representation of one CompoundGate
+     * @throws JsonProcessingException when can't generate JSONAvailable
+     */
+    public static String generateJSONFromCompoundGate(CompoundGate compoundGate) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(new JSONAvailable(compoundGate));
     }
 }
