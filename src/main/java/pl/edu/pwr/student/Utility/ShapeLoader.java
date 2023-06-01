@@ -4,6 +4,8 @@ import processing.core.PApplet;
 import processing.core.PShape;
 import java.util.HashMap;
 
+import static processing.core.PApplet.*;
+
 /**
  * Loads all shapes from resources/gates/ directory
  */
@@ -61,7 +63,6 @@ public class ShapeLoader {
         buttons.put("INTERACT", sketch.loadShape("buttons/INTERACT.svg"));
         buttons.put("SAVE", sketch.loadShape("buttons/SAVE.svg"));
         buttons.put("LOAD", sketch.loadShape("buttons/LOAD.svg"));
-        buttons.put("ADD", sketch.loadShape("buttons/ADD.svg"));
     }
 
     /**
@@ -79,9 +80,16 @@ public class ShapeLoader {
      * @param shape name of shape
      * @return PShape object
      */
-    public static PShape getShape(String shape){
-        PShape s = shapes.get(shape);
-        if (s != null) return s;
+    public static PShape getShape(String shape, float rotation, float x, float y){
+        PShape temp = shapes.get(shape);
+
+        if (temp != null) {
+            temp.resetMatrix();
+            temp.rotate(rotation*PI);
+            temp.translate(x, y);
+            temp.scale(scale);
+            return temp;
+        }
         return shapes.get("AND");
     }
 
@@ -95,20 +103,13 @@ public class ShapeLoader {
     }
 
     /**
-     * Increments scale of all shapes
-     */
-    public static void incrementScale() {
-        if (scale >= 3f) return;
-        scale += 0.1f;
-        resize();
-    }
-
-    /**
      * Decrements scale of all shapes
      */
-    public static void decrementScale() {
-        if (scale <= 0.2f) return;
-        scale -= 0.1f;
-        resize();
+    public static void scale(int direction) {
+        float temp = scale - direction * 0.1f;
+        if (temp > 0.2f && temp < 3f) scale = temp;
+
+
+//        resize();
     }
 }
