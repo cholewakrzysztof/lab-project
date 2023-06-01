@@ -219,11 +219,8 @@ public class UiElement {
      * @return true if the mouse is over the element, false otherwise
      */
     public boolean over(PVector v)  {
-        return (position.x-sketch.getOffset().x)*ShapeLoader.scale <= v.x &&
-            (position.x-sketch.getOffset().x + ShapeLoader.size)*ShapeLoader.scale >= v.x &&
-            (position.y-sketch.getOffset().y)*ShapeLoader.scale <= v.y &&
-            (position.y-sketch.getOffset().y + ShapeLoader.size)*ShapeLoader.scale >= v.y;
-
+        return (Math.abs((v.x/ShapeLoader.scale-position.x+sketch.getOffset().x-ShapeLoader.size/2f)*cos(rotation*PI)+(v.y/ShapeLoader.scale-position.y+sketch.getOffset().y-ShapeLoader.size/2f)*sin(rotation*PI))-ShapeLoader.size/2f) < 0 &&
+                (Math.abs((v.y/ShapeLoader.scale-position.y+sketch.getOffset().y-ShapeLoader.size/2f)*cos(rotation*PI)-(v.x/ShapeLoader.scale-position.x+sketch.getOffset().x-ShapeLoader.size/2f)*sin(rotation*PI))-ShapeLoader.size/2f) < 0;
     }
 
     public void rotation(int direction) {

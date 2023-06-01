@@ -103,7 +103,8 @@ public class ShapeLoader {
      */
     public static void scale(int direction) {
         float temp = scale - direction * 0.1f;
-        if (scale > 0.2f && scale < 3f) scale = temp;
+        if (temp > 0.2f && temp < 3f) scale = temp;
+
 
 //        resize();
     }
