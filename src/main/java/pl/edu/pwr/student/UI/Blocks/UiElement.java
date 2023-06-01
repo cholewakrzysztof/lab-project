@@ -41,7 +41,29 @@ public class UiElement extends Drawable {
      * </p>
      */
     public UiElement(String type, Canvas s, PVector v, UiAvailable uiElem) {
-        super(type, s, v, uiElem);
+        super(type, s, v, uiElem, 0f);
+    }
+
+    /**
+     * Creates a new UI element object with the specified parameters.
+     *
+     * @param type The name of the UI element.
+     * @param s The Processing sketch used to render the UI element.
+     * @param v The position of the UI element on the canvas, specified as a PVector object.
+     * @param uiElem The gate represented by the UI element, specified as a UiAvailable object.
+     * @param rotation rotation of the element
+     *
+     * <p>
+     * The {@code UiElement} constructor creates a new UI element object with the specified
+     * properties. The {@code type} parameter specifies the name of the UI element, such as
+     * "button" or "checkbox". The {@code s} parameter specifies the Processing sketch used to
+     * render the UI element. The {@code v} parameter specifies the position of the UI element
+     * on the canvas, as a PVector object with x and y coordinates. The {@code uiElem} parameter
+     * specifies the gate represented by the UI element, as a UiAvailable object.
+     * </p>
+     */
+    public UiElement(String type, Canvas s, PVector v, UiAvailable uiElem, float rotation) {
+        super(type, s, v, uiElem, rotation);
     }
 
     /**
@@ -230,26 +252,5 @@ public class UiElement extends Drawable {
                 sketch.line(endx-padding, endy, endx, endy);
             }
         }
-    }
-
-    /**
-     * Determines whether the mouse is currently over the element.
-     *
-     * @param v the mouse position as a PVector
-     * @return true if the mouse is over the element, false otherwise
-     */
-    public boolean over(PVector v)  {
-        return (Math.abs((v.x/ShapeLoader.scale-position.x+sketch.getOffset().x-ShapeLoader.size/2f)*cos(rotation*PI)+(v.y/ShapeLoader.scale-position.y+sketch.getOffset().y-ShapeLoader.size/2f)*sin(rotation*PI))-ShapeLoader.size/2f) < 0 &&
-                (Math.abs((v.y/ShapeLoader.scale-position.y+sketch.getOffset().y-ShapeLoader.size/2f)*cos(rotation*PI)-(v.x/ShapeLoader.scale-position.x+sketch.getOffset().x-ShapeLoader.size/2f)*sin(rotation*PI))-ShapeLoader.size/2f) < 0;
-    }
-
-    public void rotation(int direction) {
-        rotation = (rotation - direction * 0.01f) % 2;
-        calcMovement();
-    }
-
-    private void calcMovement() {
-        xMove = (7*sin(rotation*PI+PI/4)/10f-1/2f);
-        yMove = (7*cos(rotation*PI+PI/4)/10f-1/2f);
     }
 }

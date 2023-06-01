@@ -369,7 +369,7 @@ public class Canvas extends PApplet {
      */
     @Override
     public void mouseWheel(MouseEvent event) {
-        for (UiElement g : elements) {
+        for (Drawable g : elements) {
             if (g.over(new PVector(mouseX, mouseY))) {
                 g.rotation(event.getCount());
                 return;

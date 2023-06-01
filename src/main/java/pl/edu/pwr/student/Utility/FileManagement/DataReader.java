@@ -102,7 +102,7 @@ public class DataReader {
                 if(Objects.equals(gateType, "VIRTUALIO")){
                     ((VirtualIO) element).name = source.getElName();
                 }
-                canvas.getElements().add(new UiElement(gateType, canvas, source.getPosition(), element));
+                canvas.addElement(new UiElement(gateType, canvas, source.getPosition(), element, source.getRotation()));
 
                 gates.put(id, element);
                 schema.put(id, source);

@@ -43,6 +43,14 @@ public class ShapeLoader {
     public static void loadShapes(PApplet sketch){
         //dumb way cus it's working in JAR file
 
+        buttons.put("CONNECT", sketch.loadShape("buttons/CONNECT.svg"));
+        buttons.put("CREATE", sketch.loadShape("buttons/CREATE.svg"));
+        buttons.put("DELETE", sketch.loadShape("buttons/DELETE.svg"));
+        buttons.put("INTERACT", sketch.loadShape("buttons/INTERACT.svg"));
+        buttons.put("SAVE", sketch.loadShape("buttons/SAVE.svg"));
+        buttons.put("LOAD", sketch.loadShape("buttons/LOAD.svg"));
+        buttons.put("ADD", sketch.loadShape("buttons/ADD.svg"));
+
         shapes.put("AND", sketch.loadShape("elements/AND.svg"));
         shapes.put("OR", sketch.loadShape("elements/OR.svg"));
         shapes.put("XOR", sketch.loadShape("elements/XOR.svg"));
@@ -56,13 +64,6 @@ public class ShapeLoader {
         shapes.put("SWITCH-FALSE", sketch.loadShape("elements/SWITCH-FALSE.svg"));
         shapes.put("SPEAKER", sketch.loadShape("elements/SPEAKER.svg"));
         shapes.put("DELAY", sketch.loadShape("elements/DELAY.svg"));
-
-        buttons.put("CONNECT", sketch.loadShape("buttons/CONNECT.svg"));
-        buttons.put("CREATE", sketch.loadShape("buttons/CREATE.svg"));
-        buttons.put("DELETE", sketch.loadShape("buttons/DELETE.svg"));
-        buttons.put("INTERACT", sketch.loadShape("buttons/INTERACT.svg"));
-        buttons.put("SAVE", sketch.loadShape("buttons/SAVE.svg"));
-        buttons.put("LOAD", sketch.loadShape("buttons/LOAD.svg"));
     }
 
     /**

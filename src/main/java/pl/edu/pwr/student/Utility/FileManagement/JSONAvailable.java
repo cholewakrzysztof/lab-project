@@ -7,13 +7,10 @@ import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 import pl.edu.pwr.student.UI.Blocks.CompoundElement;
 import pl.edu.pwr.student.UI.Blocks.Drawable;
-import pl.edu.pwr.student.UI.Blocks.UiElement;
-import pl.edu.pwr.student.UI.UiAvailable;
 import processing.core.PVector;
 
 import java.awt.*;
 import java.util.LinkedList;
-import java.util.Objects;
 
 /**
  * Representation of object based on UIElement that can be safe and create from file
@@ -21,6 +18,8 @@ import java.util.Objects;
 public class JSONAvailable {
     @JsonProperty("message")
     private String message;
+    @JsonProperty("rotation")
+    private float rotation;
     @JsonProperty("gateType")
     private String gateType;
     /**
@@ -73,6 +72,7 @@ public class JSONAvailable {
         }
         this.gateType = classType.getSimpleName();
         this.position = element.position;
+        this.rotation = element.rotation;
         this.elName = element.elName;
         if(classType.equals(CompoundGate.class)){
             logic = new LinkedList<>();
@@ -172,4 +172,6 @@ public class JSONAvailable {
     public String getMessage() {return message;}
 
     public LinkedList<JSONAvailable> getLogic() { return logic; }
+
+    public float getRotation() { return rotation; }
 }
