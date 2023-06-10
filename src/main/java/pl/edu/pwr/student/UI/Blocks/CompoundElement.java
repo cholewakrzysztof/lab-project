@@ -11,7 +11,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static processing.core.PConstants.PI;
+
 public class CompoundElement extends Drawable {
+    private boolean swap = false;
 
     /**
      * The set of all elements of the CompoundGate.
@@ -76,8 +79,16 @@ public class CompoundElement extends Drawable {
             sketch.square((position.x-sketch.getOffset().x)*ShapeLoader.scale,(position.y-sketch.getOffset().y)*ShapeLoader.scale,ShapeLoader.size*ShapeLoader.scale);
         }
 
-        int out = ((CompoundGate)uiElem).getOutputKeys().length;
-        int in = ((CompoundGate)uiElem).getInputKeys().length;
+        int out;
+        int in;
+
+        if (swap){
+            in = ((CompoundGate)uiElem).getOutputKeys().length;
+            out = ((CompoundGate)uiElem).getInputKeys().length;
+        } else {
+            out = ((CompoundGate)uiElem).getOutputKeys().length;
+            in = ((CompoundGate)uiElem).getInputKeys().length;
+        }
 
         sketch.line(
         (position.x-sketch.getOffset().x + ShapeLoader.size)*ShapeLoader.scale,
@@ -119,8 +130,18 @@ public class CompoundElement extends Drawable {
     public void updatePosition(PVector v) {
         position = v;
 
-        List<String> outs = List.of(((CompoundGate) uiElem).getOutputKeys());
-        List<String> ins = List.of(((CompoundGate) uiElem).getInputKeys());
+        List<String> outs;
+        List<String> ins;
+
+
+        if (swap){
+            ins = List.of(((CompoundGate) uiElem).getOutputKeys());
+            outs = List.of(((CompoundGate) uiElem).getInputKeys());
+        } else {
+            outs = List.of(((CompoundGate) uiElem).getOutputKeys());
+            ins = List.of(((CompoundGate) uiElem).getInputKeys());
+        }
+
         for (Drawable d : elements){
             int out = outs.indexOf(d.elName);
             if (out >= 0) {
@@ -190,5 +211,18 @@ public class CompoundElement extends Drawable {
 
     public Set<Drawable> getElements() {
         return elements;
+    }
+
+    public void toggleIOSide() {
+        for(Drawable el : elements){
+            el.rotation = el.rotation%2;
+        }
+
+        swap = !swap;
+        updatePosition(position);
+    }
+
+    public boolean getSwap() {
+        return swap;
     }
 }

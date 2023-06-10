@@ -306,6 +306,13 @@ public class Canvas extends PApplet {
                         ((VirtualIO) g.getGate()).setName(
                                 temp.getByLabel("Name").asString()
                         );
+                    } else if (g.getGate() instanceof CompoundGate) {
+                        booster.showConfirmDialog(
+                            "Swap Inputs with Outputs",
+                            "IO sides",
+                            () -> ((CompoundElement)g).toggleIOSide(),
+                            ()->{}
+                        );
                     }
                 }
             }
@@ -402,7 +409,7 @@ public class Canvas extends PApplet {
      * @return file
      */
     public File getFile() {
-        return booster.showFileSelection("Get file to save to: .gss", "gss");
+        return booster.showFileSelection("Get file to load from: .gss", "gss");
     }
 
     /**

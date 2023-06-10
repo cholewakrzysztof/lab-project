@@ -19,6 +19,8 @@ import java.util.LinkedList;
 public class JSONAvailable {
     @JsonProperty("message")
     private String message;
+    @JsonProperty("swap")
+    private boolean swap;
     @JsonProperty("rotation")
     private float rotation;
     @JsonProperty("gateType")
@@ -82,6 +84,7 @@ public class JSONAvailable {
             }
             this.hashCode = element.uiElem.hashCode();
             this.outputs = GetOutputsHashCodes((CompoundElement)element);
+            this.swap = ((CompoundElement)element).getSwap();
         }else{
             this.outputs = GetOutputsHashCodes(element.getGate().getOutputs());
             this.hashCode = element.getGate().hashCode();
@@ -99,7 +102,7 @@ public class JSONAvailable {
 
     public JSONAvailable(CompoundGate compoundGate){
         logic = new LinkedList<>();
-        for (Compoundable compoundable:(compoundGate.getGates())){
+        for (Compoundable compoundable: compoundGate.getGates()){
             logic.add(new JSONAvailable(compoundable));
         }
         this.elName = compoundGate.name;
@@ -151,4 +154,5 @@ public class JSONAvailable {
     public String getMessage() {return message;}
     public LinkedList<JSONAvailable> getLogic() {return logic;}
     public float getRotation() { return rotation; }
+    public boolean getSwap() { return swap; }
 }

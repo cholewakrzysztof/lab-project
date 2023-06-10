@@ -48,7 +48,11 @@ public class DataReader {
                 CompoundGate CG;
                 if (GateCreator.isRegistered(source.getElName())){
                     CG = (CompoundGate)GateCreator.create(source.getElName());
-                    Drawable drawable = new CompoundElement(source.getElName(), canvas, source.getPosition(), CG);
+                    CompoundElement drawable = new CompoundElement(source.getElName(), canvas, source.getPosition(), CG);
+
+                    if (source.getSwap()) {
+                        drawable.toggleIOSide();
+                    }
                     canvas.addElement(drawable);
                 } else {
                     String message = source.getMessage();
@@ -77,7 +81,10 @@ public class DataReader {
                     canvas.registerCompoundGate(compoundGate.name, compoundGate.message, compoundGate);
 
                     CG = (CompoundGate)GateCreator.create(compoundGate.name);
-                    Drawable drawable = new CompoundElement(compoundGate.name, canvas, source.getPosition(), CG);
+                    CompoundElement drawable = new CompoundElement(compoundGate.name, canvas, source.getPosition(), CG);
+                    if (source.getSwap()) {
+                        drawable.toggleIOSide();
+                    }
                     canvas.addElement(drawable);
                 }
 
