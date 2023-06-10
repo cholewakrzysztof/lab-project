@@ -1,6 +1,7 @@
 package pl.edu.pwr.student.UI.Buttons;
 
 import pl.edu.pwr.student.UI.Canvas;
+import pl.edu.pwr.student.UI.CanvasState;
 import processing.core.PVector;
 
 /**
@@ -27,14 +28,14 @@ public class ConnectButton extends Button {
     public void run() {
         sketch.stroke(0);
         if (over(new PVector(sketch.mouseX, sketch.mouseY))){
-            if (sketch.getState() == 2 || sketch.getState() == 4){
+            if (CanvasState.getState() == 2 || CanvasState.getState() == 4){
                 sketch.fill(0,255,0,30);
                 sketch.square(position.x,position.y,48);
             } else {
                 sketch.fill(0, 30);
                 sketch.square(position.x,position.y,48);
             }
-        } else if(sketch.getState() == 2 || sketch.getState() == 4){
+        } else if(CanvasState.getState() == 2 || CanvasState.getState() == 4){
             sketch.fill(0,255,0,20);
             sketch.square(position.x,position.y,48);
         } else {
@@ -50,7 +51,7 @@ public class ConnectButton extends Button {
      */
     @Override
     public void click() {
-        sketch.setState(2);
+        CanvasState.setState(2);
         sketch.hideForm();
     }
 }

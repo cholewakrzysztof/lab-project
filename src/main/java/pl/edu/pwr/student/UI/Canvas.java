@@ -43,21 +43,6 @@ public class Canvas extends PApplet {
     private Form form;
 
     /**
-     * The state of the canvas. It can have the following values:
-     * 0 - interacting with elements
-     * 1 - creating new elements
-     * 2 - adding or removing a new output
-     * 3 - deleting elements
-     * 4 - connecting elements.
-     */
-    private int state;
-
-    /**
-     * The last state of the canvas.
-     */
-    private int lastState;
-
-    /**
      * The UiBooster object used for UI interactions.
      */
     private final UiBooster booster;
@@ -208,7 +193,7 @@ public class Canvas extends PApplet {
         }
 
 
-        switch (state) {
+        switch (CanvasState.getState()) {
             case 0 -> {
                 for (Drawable g : elements) {
                     if (g.over(new PVector(mouseX, mouseY))) {
@@ -240,10 +225,10 @@ public class Canvas extends PApplet {
             case 2 -> {
                 for (Drawable g : elements) {
                     if (g.over(new PVector(mouseX, mouseY))) {
-                        setState(4);
+                        CanvasState.setState(4);
                         connecting = g.getOutput();
                         if (connecting == null || connecting instanceof CompoundGate || connecting instanceof BasicReceiver) {
-                            state = lastState;
+                            CanvasState.lastState();
                             connecting = null;
                             showPopup("This gate cannot have output");
                         }
@@ -269,7 +254,7 @@ public class Canvas extends PApplet {
                             } catch (Exception e) {
                                 showPopup("This gate cannot have input");
                             }
-                            state = lastState;
+                            CanvasState.lastState();
                             connecting = null;
                         }
                         break;
@@ -284,7 +269,7 @@ public class Canvas extends PApplet {
      */
     @Override
     public void mouseClicked(){
-        if (state == 0) {
+        if (CanvasState.getState() == 0) {
             for (Drawable g : elements) {
                 if(g.over(new PVector(mouseX, mouseY))){
                     if (g.getGate() instanceof Switch) {
@@ -332,7 +317,7 @@ public class Canvas extends PApplet {
      */
     @Override
     public void mouseDragged() {
-        if (state == 0) {
+        if (CanvasState.getState() == 0) {
             if (selectedElement != null) {
                 selectedElement.updatePosition (new PVector(
                     mouseX / ShapeLoader.scale - ShapeLoader.size/2f + offset.x,
@@ -354,7 +339,7 @@ public class Canvas extends PApplet {
      */
     @Override
     public void mouseReleased() {
-        if (state == 0) {
+        if (CanvasState.getState() == 0) {
             selectedElement = null;
             if (startingMousePosition != null){
                 tempOffset.x = offset.x;
@@ -390,24 +375,6 @@ public class Canvas extends PApplet {
      */
     public void showForm() {
         form.show();
-    }
-
-
-    /**
-     * Sets state of the canvas
-     * @param state state
-     */
-    public void setState(int state) {
-        lastState = this.state;
-        this.state = state;
-    }
-
-    /**
-     * Gets state of the canvas
-     * @return state
-     */
-    public int getState() {
-        return state;
     }
 
     /**
