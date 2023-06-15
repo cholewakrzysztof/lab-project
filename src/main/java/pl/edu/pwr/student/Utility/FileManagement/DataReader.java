@@ -6,7 +6,6 @@ import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
 import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Output.*;
 import pl.edu.pwr.student.UI.Blocks.CompoundElement;
-import pl.edu.pwr.student.UI.Blocks.Drawable;
 import pl.edu.pwr.student.UI.Canvas;
 import pl.edu.pwr.student.UI.Creator.GateCreator;
 import pl.edu.pwr.student.UI.UiAvailable;

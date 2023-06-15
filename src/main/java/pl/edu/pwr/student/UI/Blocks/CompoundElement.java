@@ -11,8 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static processing.core.PConstants.PI;
-
 public class CompoundElement extends Drawable {
     private boolean swap = false;
 
