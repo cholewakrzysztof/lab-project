@@ -12,10 +12,17 @@ import java.util.HashSet;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GateCreatorTest {
+    /**
+     * Setup GateCreator class before test
+     */
     @BeforeEach
     void setCreator(){
         GateCreator.initGates();
     }
+
+    /**
+     * Check instance of created object
+     */
     @Test
     void create() {
         UiAvailable gate = GateCreator.create("AND");
@@ -24,6 +31,9 @@ class GateCreatorTest {
         assertFalse(gate instanceof OR);
     }
 
+    /**
+     * Test list of initialized gates
+     */
     @Test
     void initGates() {
         GateCreator.initGates();
@@ -35,6 +45,9 @@ class GateCreatorTest {
         assertFalse(GateCreator.isRegistered("/NOT."));
     }
 
+    /**
+     * Test if CompoundGate with specific name is register
+     */
     @Test
     void registerGate() {
         CompoundGate cg = new CompoundGate("cg","",new HashSet<>());
@@ -43,6 +56,9 @@ class GateCreatorTest {
         assertTrue(GateCreator.isRegistered("cg"));
     }
 
+    /**
+     * Test if gate with specific name is register
+     */
     @Test
     void isRegistered() {
         assertTrue(GateCreator.isRegistered("SWITCH"));

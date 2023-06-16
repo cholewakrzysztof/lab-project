@@ -23,7 +23,9 @@ class DataWriterTest {
     static String directory = "";
     private String serialVer = "0.0.1";
 
-
+    /**
+     * Set canvas before test
+     */
     @BeforeEach
     void setUp() {
         try {

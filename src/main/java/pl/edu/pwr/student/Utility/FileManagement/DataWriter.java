@@ -6,6 +6,8 @@ import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.UI.Blocks.Drawable;
 import pl.edu.pwr.student.UI.Canvas;
+import pl.edu.pwr.student.UI.Creator.GateCreator;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -49,14 +51,18 @@ public class DataWriter {
         if (!directory.exists()) {
             directory.mkdir();
         }
+
+        if(name.length()==0)
+            name = "Custom_gate";
+        if(GateCreator.isRegistered(name))
+            name+=System.currentTimeMillis();
+        if(message.length()==0)
+            message = "Custom_gate_message";
+
         File file = new File(directory.getAbsoluteFile() + "\\" + name + ".gss");
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
 
-        if(name.length()==0){
-            name = "Custom_gate";
-        }
-        if(message.length()==0)
-            message = "Custom_gate_message";
+
 
         HashSet<Compoundable> basicGates = new HashSet<>();
         HashSet<CompoundGate> compGates = new HashSet<>();
