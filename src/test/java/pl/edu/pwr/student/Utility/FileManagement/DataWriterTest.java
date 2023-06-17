@@ -13,20 +13,19 @@ import pl.edu.pwr.student.UI.Blocks.UiElement;
 import processing.core.PVector;
 import uibooster.UiBooster;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 class DataWriterTest {
     Canvas canvas;
     static String path = "PlikTestowy.gss";
     static String directory = "";
+    private String serialVer = "0.0.1";
 
-
+    /**
+     * Set canvas before test
+     */
     @BeforeEach
     void setUp() {
         try {
@@ -47,10 +46,13 @@ class DataWriterTest {
      * Clear project folder after tests
      */
     @AfterAll
-    static void clearFolder(){
-        File f = new File(path);
-        if(f.exists())
-            f.delete();
+    static void clearFolder() throws IOException {
+        for (File f : (new File((new File(directory)).getCanonicalPath()).listFiles())){
+            String name = f.getName().substring(f.getName().length()-3);
+            if(name.equals("gss")){
+                f.delete();
+            }
+        }
     }
 
     /**
@@ -59,12 +61,25 @@ class DataWriterTest {
      */
     @Test
     void saveToFile() throws IOException {
-        DataWriter.saveToFile(canvas, new File(directory));
+
+        File directory = new File(this.directory);
+        this.path = directory.getCanonicalPath();
+
+        DataWriter.saveToFile(canvas, new File(path));
+
+        for (File f : (new File(path).listFiles())){
+            String name = f.getName().substring(f.getName().length()-3);
+            if(name.equals("gss")){
+                path = f.getName();
+            }
+        }
+        Integer hashCode = (new JSONAvailable(canvas.getElements().get(0))).getHashCode();
         Scanner myReader = new Scanner(new File(path));
 
         String json  = myReader.nextLine();
+        myReader.close();
 
-        assertEquals("{\"message\":null,\"gateType\":\"AND\",\"position\":{\"x\":290.0,\"y\":172.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":[],\"hashCode\":1787826193,\"color\":null,\"logic\":null}",json);
+        assertEquals("{\"serialVer\":\""+serialVer+"\",\"message\":null,\"swap\":false,\"rotation\":0.0,\"gateType\":\"AND\",\"position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":[],\"hashCode\":"+hashCode+",\"color\":null,\"logic\":null}",json);
     }
 
     /**

@@ -16,7 +16,9 @@ import java.util.LinkedList;
 /**
  * Representation of object based on UIElement that can be safe and create from file
  */
-public class JSONAvailable {
+public class JSONAvailable{
+    @JsonProperty("serialVer")
+    private String serialVer = "0.0.1";
     @JsonProperty("message")
     private String message;
     @JsonProperty("swap")

@@ -16,7 +16,7 @@ class CompoundGateTest {
     private NOR norUp = new NOR();
     private NOR norDown = new NOR();
 
-    /*
+    /**
      * Create gate SRLatch from examples
      */
     @BeforeEach
@@ -34,15 +34,15 @@ class CompoundGateTest {
         simWait(50);
     }
 
-    /*
+    /**
      * Test gate work input 0 and 0
      */
     @Test
     public void testWorkCase1() {
         simWait(100);
-        assertTrue(out.getState()); //zmienione na true bo tak się zawsze wywala a nwm czy tak ma być nie chce mi się sprawdzać, przechodzi
+        assertTrue(out.getState());
     }
-    /*
+    /**
      * Test gate work input 0 and 1
      */
     @Test
@@ -51,7 +51,7 @@ class CompoundGateTest {
         simWait(50);
         assertFalse(out.getState());
     }
-    /*
+    /**
      * Test gate work input 1 and 0
      */
     @Test
@@ -60,7 +60,4 @@ class CompoundGateTest {
         simWait(50);
         assertTrue(out.getState());
     }
-    /*
-     *
-     */
 }

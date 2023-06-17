@@ -22,7 +22,7 @@ class DataReaderTest {
     static String path = "PlikTestowy.gss";
 
     /**
-     * Create new canva and add one basic gate AND
+     * Create new canvas and add one basic gate AND
      */
     @BeforeEach
     void setUp() {
@@ -39,6 +39,10 @@ class DataReaderTest {
         drawableElement = new UiElement("AND",canvas,new PVector(0f,0f), AbstractGateFactory.create("AND"));
         canvas.addElement(drawableElement);
     }
+
+    /**
+     * After all tests delete files created within tests
+     */
     @AfterAll
     static void clearFolder(){
         File f = new File(path);
