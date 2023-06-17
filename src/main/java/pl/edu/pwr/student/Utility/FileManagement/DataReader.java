@@ -7,7 +7,7 @@ import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.IO.Output.*;
 import pl.edu.pwr.student.UI.Blocks.CompoundElement;
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.UI.Creator.GateCreator;
+import pl.edu.pwr.student.UI.Creator.AbstractGateFactory;
 import pl.edu.pwr.student.UI.UiAvailable;
 import pl.edu.pwr.student.UI.Blocks.UiElement;
 
@@ -45,8 +45,8 @@ public class DataReader {
             String gateType = source.getGateType().toUpperCase();
             if(gateType.equals("COMPOUNDGATE")){
                 CompoundGate CG;
-                if (GateCreator.isRegistered(source.getElName())){
-                    CG = (CompoundGate)GateCreator.create(source.getElName());
+                if (AbstractGateFactory.isRegistered(source.getElName())){
+                    CG = (CompoundGate) AbstractGateFactory.create(source.getElName());
                     CompoundElement drawable = new CompoundElement(source.getElName(), canvas, source.getPosition(), CG);
 
                     if (source.getSwap()) {
@@ -64,7 +64,7 @@ public class DataReader {
                     for (JSONAvailable logicPart: source.getLogic()) {
                         Integer idTMP = logicPart.getHashCode();
                         String gateTypeTMP = logicPart.getGateType();
-                        UiAvailable elementTMP = GateCreator.create(gateTypeTMP);
+                        UiAvailable elementTMP = AbstractGateFactory.create(gateTypeTMP);
                         if(Objects.equals(gateTypeTMP, "VirtualIO")){
                             ((VirtualIO) elementTMP).name = logicPart.getElName();
                         }
@@ -79,7 +79,7 @@ public class DataReader {
 
                     canvas.registerCompoundGate(compoundGate.name, compoundGate.message, compoundGate);
 
-                    CG = (CompoundGate)GateCreator.create(compoundGate.name);
+                    CG = (CompoundGate) AbstractGateFactory.create(compoundGate.name);
                     CompoundElement drawable = new CompoundElement(compoundGate.name, canvas, source.getPosition(), CG);
                     if (source.getSwap()) {
                         drawable.toggleIOSide();
@@ -102,7 +102,7 @@ public class DataReader {
                 }
 
             } else {
-                element = GateCreator.create(gateType);
+                element = AbstractGateFactory.create(gateType);
                 if(Objects.equals(gateType, "VIRTUALIO")){
                     ((VirtualIO) element).name = source.getElName();
                 }
@@ -158,7 +158,7 @@ public class DataReader {
         for (JSONAvailable logicPart: source.getLogic()) {
             Integer id = logicPart.getHashCode();
             String gateType = logicPart.getGateType();
-            UiAvailable element = GateCreator.create(gateType);
+            UiAvailable element = AbstractGateFactory.create(gateType);
             if(Objects.equals(gateType, "VirtualIO")){
                 ((VirtualIO) element).name = logicPart.getElName();
             }
@@ -172,7 +172,7 @@ public class DataReader {
         try {
             CompoundGate compoundGate = new CompoundGate(name, message, new HashSet<>(gates.values()));
 
-            if(!GateCreator.isRegistered(compoundGate.name))
+            if(!AbstractGateFactory.isRegistered(compoundGate.name))
                 canvas.registerCompoundGate(compoundGate.name, compoundGate.message, compoundGate);
         } catch (Exception e) {
             canvas.showPopup("CompoundGate cannot have more than one gate with the same name");

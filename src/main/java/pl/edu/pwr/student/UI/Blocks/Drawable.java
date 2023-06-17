@@ -3,7 +3,7 @@ package pl.edu.pwr.student.UI.Blocks;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.UI.Creator.GateCreator;
+import pl.edu.pwr.student.UI.Creator.AbstractGateFactory;
 import pl.edu.pwr.student.UI.UiAvailable;
 import pl.edu.pwr.student.Utility.FileManagement.JSONAvailable;
 import pl.edu.pwr.student.Utility.ShapeLoader;
@@ -27,7 +27,7 @@ public abstract class Drawable {
     public final String elName;
 
     /**
-     * The Processing sketch associated with this element.
+     * The {@link Canvas} associated with this element.
      */
     public final Canvas sketch;
 
@@ -40,8 +40,10 @@ public abstract class Drawable {
      * The color associated with this element.
      */
     public Color color = new Color(0, 255, 0);
-    public float xMove;
-    public float yMove;
+
+    /**
+     * The color associated with this element.
+     */
     public float rotation = 0;
 
     /**
@@ -67,7 +69,6 @@ public abstract class Drawable {
         sketch = s;
         this.uiElem = uiElem;
         this.rotation = rotation;
-        calcMovement();
     }
 
     /**
@@ -86,10 +87,9 @@ public abstract class Drawable {
         position = jsonAvailable.getPosition();
         elName = jsonAvailable.getElName();
         sketch = s;
-        uiElem = GateCreator.create(jsonAvailable.getElName());
+        uiElem = AbstractGateFactory.create(jsonAvailable.getElName());
         sketch.addElement(new UiElement(jsonAvailable.getElName(), sketch, jsonAvailable.getPosition(), uiElem));
         rotation = jsonAvailable.getRotation();
-        calcMovement();
     }
 
     /**
@@ -122,24 +122,41 @@ public abstract class Drawable {
                 (Math.abs((v.y/ShapeLoader.scale-position.y+sketch.getOffset().y-ShapeLoader.size/2f)*cos(rotation*PI)-(v.x/ShapeLoader.scale-position.x+sketch.getOffset().x-ShapeLoader.size/2f)*sin(rotation*PI))-ShapeLoader.size/2f) < 0;
     }
 
-    public void rotation(int direction) {
+    /**
+     * changes the rotation of the element by the specified amount.
+     *
+     * @param direction >0 if rotate right, <0 if rotate left
+     */
+    public void rotate(int direction) {
         rotation = (rotation - direction * 0.01f) % 2;
-        calcMovement();
     }
 
-    private void calcMovement() {
-        xMove = (7*sin(rotation*PI+PI/4)/10f-1/2f);
-        yMove = (7*cos(rotation*PI+PI/4)/10f-1/2f);
-    }
-
+    /**
+     * Updates the position of the element.
+     */
     public abstract void updatePosition(PVector pVector);
 
+    /**
+     * Returns the object associated with this element.
+     *
+     * @return the {@link UiAvailable} object associated with this element
+     */
     public UiAvailable getGate(){
         return uiElem;
     }
 
+    /**
+     * Returns the {@link UiAvailable} object associated with input of this element
+     *
+     * @return the {@link UiAvailable} object associated with input of this element
+     */
     public abstract UiAvailable getInput();
 
+    /**
+     * Returns the {@link UiAvailable} object associated with output of this element
+     *
+     * @return the {@link UiAvailable} object associated with output of this element
+     */
     public abstract UiAvailable getOutput();
 
 }

@@ -7,23 +7,23 @@ import processing.core.PVector;
 import java.io.IOException;
 
 /**
- * Represents a button for creating new elements on the canvas.
- * Extends the abstract Button class.
+ * Represents a button for creating new elements on the {@link Canvas}.
+ * Extends the abstract {@link Button} class.
  */
 public class SaveButton extends Button {
 
     /**
-     * Constructs a new SaveButton object.
+     * Constructs a new {@link SaveButton} object.
      *
-     * @param s The Processing sketch that this button is a part of.
+     * @param s The {@link Canvas} that this button is a part of.
      */
     public SaveButton(Canvas s) {
         super(s, "SAVE", new PVector(250,10));
     }
 
     /**
-     * Handles the click event of the SaveButton element.
-     * Overrides the click method of the Button class.
+     * Handles the click event of the {@link SaveButton} element.
+     * Overrides the click method of the {@link Button} class.
      */
     @Override
     public void click() {

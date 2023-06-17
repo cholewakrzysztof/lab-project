@@ -1,6 +1,6 @@
 package pl.edu.pwr.student.Utility;
 
-import processing.core.PApplet;
+import pl.edu.pwr.student.UI.Canvas;
 import processing.core.PShape;
 import java.util.HashMap;
 
@@ -37,12 +37,10 @@ public class ShapeLoader {
     public static final int size = 50;
 
     /**
-     * Loads all shapes from resources/gates/ directory
-     * @param sketch PApplet object
+     * Loads all shapes from resources/gates/ directory to {@link pl.edu.pwr.student.UI.Canvas}
+     * @param sketch Canvas object
      */
-    public static void loadShapes(PApplet sketch){
-        //dumb way cus it's working in JAR file
-
+    public static void loadShapes(Canvas sketch){
         buttons.put("CONNECT", sketch.loadShape("buttons/CONNECT.svg"));
         buttons.put("CREATE", sketch.loadShape("buttons/CREATE.svg"));
         buttons.put("DELETE", sketch.loadShape("buttons/DELETE.svg"));
@@ -79,6 +77,9 @@ public class ShapeLoader {
     /**
      * Returns shape by name
      * @param shape name of shape
+     * @param rotation rotation of shape
+     * @param x x position of shape
+     * @param y y position of shape
      * @return PShape object
      */
     public static PShape getShape(String shape, float rotation, float x, float y){
@@ -95,7 +96,7 @@ public class ShapeLoader {
     }
 
     /**
-     * Returns button by name
+     * Returns button shape by name
      * @param button name of shape
      * @return PShape object
      */
@@ -104,7 +105,8 @@ public class ShapeLoader {
     }
 
     /**
-     * Decrements scale of all shapes
+     * Changes scale of all shapes
+     * @param direction >0 for zoom in, <0 for zoom out
      */
     public static void scale(int direction) {
         float temp = scale - direction * 0.1f;

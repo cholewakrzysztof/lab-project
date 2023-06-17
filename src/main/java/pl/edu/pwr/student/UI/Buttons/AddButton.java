@@ -12,22 +12,23 @@ import java.util.List;
 
 /**
  * Represents a button for creating new elements on the canvas.
- * Extends the abstract Button class.
+ * Extends the abstract {@link Button} class.
  */
 public class AddButton extends Button {
 
     /**
-     * Constructs a new SaveButton object.
+     * Constructs a new {@link SaveButton} object.
      *
-     * @param s The Processing sketch that this button is a part of.
+     * @param s The {@link Canvas} that this button is a part of.
      */
     public AddButton(Canvas s) {
         super(s, "ADD", new PVector(370,10));
     }
 
     /**
-     * Handles the click event of the SaveButton element.
-     * Overrides the click method of the Button class.
+     * Handles the click event of the {@link SaveButton} element.
+     * Overrides the click method of the {@link Button} class.
+     * @throws IOException
      */
     @Override
     public void click() throws IOException {

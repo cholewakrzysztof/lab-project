@@ -7,7 +7,7 @@ import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.AND;
 import pl.edu.pwr.student.UI.Blocks.Drawable;
 import pl.edu.pwr.student.UI.Blocks.UiElement;
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.UI.Creator.GateCreator;
+import pl.edu.pwr.student.UI.Creator.AbstractGateFactory;
 import processing.core.PVector;
 import uibooster.UiBooster;
 
@@ -36,7 +36,7 @@ class DataReaderTest {
             );
         }
 
-        drawableElement = new UiElement("AND",canvas,new PVector(0f,0f), GateCreator.create("AND"));
+        drawableElement = new UiElement("AND",canvas,new PVector(0f,0f), AbstractGateFactory.create("AND"));
         canvas.addElement(drawableElement);
     }
     @AfterAll
