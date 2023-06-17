@@ -1,12 +1,13 @@
 package pl.edu.pwr.student.IO.Input;
 
+import pl.edu.pwr.student.IO.UserUsable;
 import pl.edu.pwr.student.Simulation;
 import pl.edu.pwr.student.UI.UiAvailable;
 
 /**
  * Class that represents a clock logical element with configurable high and low times.
  */
-public class Clock extends SignalSender implements Runnable, UiAvailable {
+public class Clock extends SignalSender implements Runnable, UiAvailable, UserUsable {
     /**
      * Creates a new clock element.
      * @param millisecondsOn the duration for which the clock will be on, in milliseconds.
@@ -14,6 +15,11 @@ public class Clock extends SignalSender implements Runnable, UiAvailable {
      */
     public Clock(long millisecondsOn, long millisecondsOff) {
         this.setIntervals(millisecondsOn, millisecondsOff);
+
+        thread = new Thread(this);
+    }
+    public Clock() {
+        this.setIntervals(1000, 1000);
 
         thread = new Thread(this);
     }
@@ -38,15 +44,14 @@ public class Clock extends SignalSender implements Runnable, UiAvailable {
 
     /**
      * Toggle the power state of the clock.
-     * @return the power state of the clock after being toggled.
      */
-    public boolean toggle() {
+    public void react() {
         power = !power;
 
         if (power)
             thread.start();
 
-        return power;
+//        return power;
     }
 
     /**

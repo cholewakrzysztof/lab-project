@@ -3,6 +3,7 @@ package pl.edu.pwr.student.UI;
 import pl.edu.pwr.student.IO.Input.SignalSender;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -24,8 +25,8 @@ public interface UiAvailable {
      *
      * @return a HashSet of SignalSender objects representing the inputs of this element.
      */
-    default HashSet<SignalSender> getInputs() {
-        return new HashSet<>();
+    default ArrayList<SignalSender> getInputs() {
+        return new ArrayList<>();
     }
 
     /**
@@ -33,7 +34,9 @@ public interface UiAvailable {
      *
      * @return true if the element is "on" or "active", false if it is "off" or "inactive".
      */
-    boolean getState();
+    default boolean getState(){
+        return false;
+    }
 
     /**
      * Disconnects all inputs from this element.

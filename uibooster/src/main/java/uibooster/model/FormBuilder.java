@@ -346,6 +346,19 @@ public class FormBuilder {
     }
 
     /**
+     * Adds a list with more complex elements to the form.
+     *
+     * @param label    expects the label for this input element
+     * @param elements expects a list of objects with type ListElement
+     */
+    public FormBuilder addList(String label, ArrayList<ListElement> elements) {
+        ListElement[] elementsArray = new ListElement[elements.size()];
+        elementsArray = elements.toArray(elementsArray);
+        addElement(new ListFormElement(label, elementsArray));
+        return this;
+    }
+
+    /**
      * Adds table with custom data to the form.
      *
      * @param label      expects the label for this input element

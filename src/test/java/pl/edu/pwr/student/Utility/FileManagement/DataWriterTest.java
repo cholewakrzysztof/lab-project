@@ -5,24 +5,27 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.Gates.BasicGates.MultipleInput.AND;
+import pl.edu.pwr.student.UI.Blocks.Drawable;
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.UI.UiAvailable;
-import pl.edu.pwr.student.UI.UiElement;
+import pl.edu.pwr.student.UI.Blocks.UiElement;
 import processing.core.PVector;
 import uibooster.UiBooster;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 class DataWriterTest {
     Canvas canvas;
     static String path = "PlikTestowy.gss";
+    static String directory = "";
+    private String serialVer = "0.0.1";
 
-
+    /**
+     * Set canvas before test
+     */
     @BeforeEach
     void setUp() {
         try {
@@ -35,18 +38,21 @@ class DataWriterTest {
             );
         }
 
-        UiElement uiElement1 = new UiElement("AND",canvas,new PVector(0f,0f),new AND());
-        canvas.getElements().add(uiElement1);
+        Drawable drawable = new UiElement("AND",canvas,new PVector(0f,0f),new AND());
+        canvas.addElement(drawable);
     }
 
     /**
      * Clear project folder after tests
      */
     @AfterAll
-    static void clearFolder(){
-        File f = new File(path);
-        if(f.exists())
-            f.delete();
+    static void clearFolder() throws IOException {
+        for (File f : (new File((new File(directory)).getCanonicalPath()).listFiles())){
+            String name = f.getName().substring(f.getName().length()-3);
+            if(name.equals("gss")){
+                f.delete();
+            }
+        }
     }
 
     /**
@@ -55,13 +61,25 @@ class DataWriterTest {
      */
     @Test
     void saveToFile() throws IOException {
+
+        File directory = new File(this.directory);
+        this.path = directory.getCanonicalPath();
+
         DataWriter.saveToFile(canvas, new File(path));
+
+        for (File f : (new File(path).listFiles())){
+            String name = f.getName().substring(f.getName().length()-3);
+            if(name.equals("gss")){
+                path = f.getName();
+            }
+        }
+        Integer hashCode = (new JSONAvailable(canvas.getElements().get(0))).getHashCode();
         Scanner myReader = new Scanner(new File(path));
 
-        Pattern pattern = Pattern.compile("\\{\"position\":\\{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":\\[],\"hashCode\":\\d*,\"color\":null}", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(myReader.next());
+        String json  = myReader.nextLine();
+        myReader.close();
 
-        assertTrue(matcher.matches());
+        assertEquals("{\"serialVer\":\""+serialVer+"\",\"message\":null,\"swap\":false,\"rotation\":0.0,\"gateType\":\"AND\",\"position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":[],\"hashCode\":"+hashCode+",\"color\":null,\"logic\":null}",json);
     }
 
     /**
@@ -69,11 +87,11 @@ class DataWriterTest {
      */
     @Test
     void generateJSONfromUIElement_AND() {
-        UiAvailable gate = new AND();
+        Compoundable gate = new AND();
         UiElement uiElement = new UiElement("AND",canvas,new PVector(0f,0f),gate);
         String jsonString;
         try{
-            jsonString = DataWriter.generateJSONfromUIElement(uiElement);
+            jsonString = DataWriter.generateJSONFromUIElement(uiElement);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -205,7 +205,7 @@ public class Register {
         register.output("output2").connection(o2);
         register.output("output3").connection(o3);
 
-        clock.toggle();
+        clock.react();
 
         store.press(250);
         Simulation.simWait(500);
@@ -249,10 +249,10 @@ public class Register {
         o2.toggle();
         o3.toggle();
 
-        clock.toggle();
+        clock.react();
     }
 
-    private static CompoundGate create4bitRegister() {
+    public static CompoundGate create4bitRegister() {
         HashSet<Compoundable> gates = new HashSet<>();
         HashSet<CompoundGate> compoundGates = new HashSet<>();
 
@@ -312,10 +312,10 @@ public class Register {
         compoundGates.add(r3);
         compoundGates.add(r4);
 
-        return new CompoundGate(gates, compoundGates);
+        return new CompoundGate("4bitRegister", "4bitRegister", gates, compoundGates);
     }
 
-    private static CompoundGate createRegister() {
+    public static CompoundGate createRegister() {
         HashSet<CompoundGate> compoundGates = new HashSet<>();
         HashSet<Compoundable> gates = new HashSet<>();
 
@@ -362,10 +362,10 @@ public class Register {
 
         compoundGates.add(dFlipFlop);
 
-        return new CompoundGate(gates, compoundGates);
+        return new CompoundGate("Register","Register", gates, compoundGates);
     }
 
-    private static CompoundGate createETDFlipFlop() {
+    public static CompoundGate createETDFlipFlop() {
         HashSet<Compoundable> gates = new HashSet<>();
         HashSet<CompoundGate> compoundGates = new HashSet<>();
 
@@ -396,10 +396,10 @@ public class Register {
         compoundGates.add(dLatch1);
         compoundGates.add(dLatch2);
 
-        return new CompoundGate(gates, compoundGates);
+        return new CompoundGate("ETDFlipFlop","ETDFlipFlop", gates, compoundGates);
     }
 
-    private static CompoundGate createDLatch() {
+    public static CompoundGate createDLatch() {
         HashSet<Compoundable> gates = new HashSet<>();
         HashSet<CompoundGate> compoundGates = new HashSet<>();
 
@@ -431,10 +431,10 @@ public class Register {
         gates.add(out);
         compoundGates.add(srLatch);
 
-        return new CompoundGate(gates, compoundGates);
+        return new CompoundGate("DLatch","DLatch", gates, compoundGates);
     }
 
-    private static CompoundGate createSRLatch() {
+    public static CompoundGate createSRLatch() {
         HashSet<Compoundable> gates = new HashSet<>();
 
         NOR top = new NOR();
@@ -457,6 +457,6 @@ public class Register {
         gates.add(reset);
         gates.add(out);
 
-        return new CompoundGate(gates);
+        return new CompoundGate("SRLatch", "SRLatch", gates);
     }
 }

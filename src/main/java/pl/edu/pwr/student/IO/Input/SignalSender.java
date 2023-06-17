@@ -1,5 +1,6 @@
 package pl.edu.pwr.student.IO.Input;
 
+import pl.edu.pwr.student.Gates.CreatableInstance;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
 
 import java.util.ConcurrentModificationException;
@@ -8,7 +9,7 @@ import java.util.HashSet;
 /**
  * Class representing a signal sender in a circuit.
  */
-public abstract class SignalSender {
+public abstract class SignalSender implements CreatableInstance {
     /**
      * Default constructor
      */

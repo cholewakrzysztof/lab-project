@@ -1,7 +1,7 @@
 package pl.edu.pwr.student.UI.Buttons;
 
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.UI.UiElement;
+import pl.edu.pwr.student.UI.Blocks.UiElement;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PShape;
 import processing.core.PVector;
@@ -24,7 +24,7 @@ public abstract class Button extends UiElement {
 
 
     /**
-     * Shape of button
+     * Holds {@link PShape} of button
      */
     protected final PShape shape;
 
@@ -58,6 +58,8 @@ public abstract class Button extends UiElement {
 
     /**
      * Method to be executed when the button is clicked
+     *
+     * @throws IOException
      */
     public abstract void click() throws IOException;
 

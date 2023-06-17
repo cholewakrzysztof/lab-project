@@ -27,7 +27,7 @@ class DebugLEDTest {
      */
     @Test
     public void testSetON() {
-        FirstInput.toggle();
+        FirstInput.react();
         assertTrue(LED.getState());
     }
     /*
@@ -36,7 +36,7 @@ class DebugLEDTest {
     @Test
     public void testChangeFrequencySuccess() {
         LED.changeUpdateFreq(2);
-        FirstInput.toggle();
+        FirstInput.react();
         assertTrue(LED.getState());
     }
     /*

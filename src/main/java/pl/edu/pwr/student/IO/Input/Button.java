@@ -1,9 +1,11 @@
 package pl.edu.pwr.student.IO.Input;
 
+import pl.edu.pwr.student.IO.UserUsable;
+
 /**
  * Represents a button that a user can press.
  */
-public class Button extends SignalSender {
+public class Button extends SignalSender implements UserUsable {
     /**
      * Default constructor
      */
@@ -25,5 +27,10 @@ public class Button extends SignalSender {
     public void release() {
         state = false;
         sendUpdate();
+    }
+
+    @Override
+    public void react() {
+        // Do nothing
     }
 }

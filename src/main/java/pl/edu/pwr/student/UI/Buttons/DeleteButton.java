@@ -1,39 +1,40 @@
 package pl.edu.pwr.student.UI.Buttons;
 
 import pl.edu.pwr.student.UI.Canvas;
+import pl.edu.pwr.student.UI.CanvasState;
 import processing.core.PVector;
 
 /**
- * Represents a button for creating new elements on the canvas.
- * Extends the abstract Button class.
+ * Represents a {@link Button} for creating new elements on the {@link Canvas}.
+ * Extends the abstract {@link Button} class.
  */
 public class DeleteButton extends Button {
 
     /**
-     * Constructs a new DeleteButton object.
+     * Constructs a new {@link DeleteButton} object.
      *
-     * @param s The Processing sketch that this button is a part of.
+     * @param s The {@link Canvas} that this {@link Button} is a part of.
      */
     public DeleteButton(Canvas s) {
         super(s, "DELETE", new PVector(190,10));
     }
 
     /**
-     * Draws the DeleteButton element on the canvas.
-     * Overrides the run method of the UiElement class.
+     * Draws the {@link DeleteButton} element on the {@link Canvas}.
+     * Overrides the run method of the {@link pl.edu.pwr.student.UI.Blocks.UiElement} class.
      */
     @Override
     public void run() {
         sketch.stroke(0);
         if (over(new PVector(sketch.mouseX, sketch.mouseY))){
-            if (sketch.getState() == 3){
+            if (CanvasState.getState() == CanvasState.States.DELETING){
                 sketch.fill(0,255,0,30);
                 sketch.square(position.x,position.y,48);
             } else {
                 sketch.fill(0, 30);
                 sketch.square(position.x,position.y,48);
             }
-        } else if(sketch.getState() == 3){
+        } else if(CanvasState.getState() == CanvasState.States.DELETING){
             sketch.fill(0,255,0,20);
             sketch.square(position.x,position.y,48);
         } else {
@@ -44,12 +45,12 @@ public class DeleteButton extends Button {
     }
 
     /**
-     * Handles the click event of the DeleteButton element.
-     * Overrides the click method of the Button class.
+     * Handles the click event of the {@link DeleteButton} element.
+     * Overrides the click method of the {@link Button} class.
      */
     @Override
     public void click() {
-        sketch.setState(3);
+        CanvasState.setState(CanvasState.States.DELETING);
         sketch.hideForm();
     }
 }

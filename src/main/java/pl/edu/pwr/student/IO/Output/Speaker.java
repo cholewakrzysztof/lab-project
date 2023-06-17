@@ -1,5 +1,6 @@
 package pl.edu.pwr.student.IO.Output;
 
+import pl.edu.pwr.student.IO.UserUsable;
 import pl.edu.pwr.student.UI.UiAvailable;
 import processing.core.PApplet;
 import processing.sound.SinOsc;
@@ -7,7 +8,7 @@ import processing.sound.SinOsc;
 /**
  * Class that makes a sound as long as its state is on.
  */
-public class Speaker extends BasicReceiver implements UiAvailable {
+public class Speaker extends BasicReceiver implements UiAvailable, UserUsable {
     /**
      * Default constructor.
      */
@@ -34,7 +35,7 @@ public class Speaker extends BasicReceiver implements UiAvailable {
     /**
      * Method that stars and stops emitting sound based on the state of the input of this element.
      */
-    protected void react() {
+    public void react() {
         if (state)
             sine.play();
         else

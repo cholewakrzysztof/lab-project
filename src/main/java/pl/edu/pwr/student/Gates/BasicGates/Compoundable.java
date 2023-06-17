@@ -1,32 +1,21 @@
 package pl.edu.pwr.student.Gates.BasicGates;
 
+import pl.edu.pwr.student.Gates.CreatableInstance;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
+import pl.edu.pwr.student.UI.UiAvailable;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 
 /**
  * An interface for gates that can be used in a compound gate.
  */
-public interface Compoundable {
+public interface Compoundable extends CreatableInstance, UiAvailable {
     /**
      * Returns the set of {@link SignalReceiver} of the gate.
      *
      * @return the set of {@link SignalReceiver} of the gate.
      */
     HashSet<SignalReceiver> getOutputs();
-
-    /**
-     * Returns a new instance of the gate.
-     *
-     * @return a new instance of the gate.
-     */
-    default Compoundable getNewInstance() {
-        try {
-            return this.getClass().getDeclaredConstructor().newInstance();
-        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException ignored) {}
-        return null;
-    }
 
     /**
      * Connects a {@link SignalReceiver} to the output of the gate.

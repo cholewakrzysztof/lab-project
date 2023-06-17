@@ -1,40 +1,41 @@
 package pl.edu.pwr.student.UI.Buttons;
 
 import pl.edu.pwr.student.UI.Canvas;
+import pl.edu.pwr.student.UI.CanvasState;
 import processing.core.PVector;
 
 /**
- * Represents a button for creating new elements on the canvas.
- * Extends the abstract Button class.
+ * Represents a button for creating new elements on the {@link Canvas}.
+ * Extends the abstract {@link Button} class.
  */
 public class ConnectButton extends Button {
 
 
     /**
-     * Constructs a new ConnectButton object.
+     * Constructs a new {@link ConnectButton} object.
      *
-     * @param s The Processing sketch that this button is a part of.
+     * @param s The {@link Canvas} that this button is a part of.
      */
     public ConnectButton(Canvas s) {
         super(s,"CONNECT", new PVector(130,10));
     }
 
     /**
-     * Draws the ConnectButton element on the canvas.
-     * Overrides the run method of the UiElement class.
+     * Draws the {@link ConnectButton} element on the {@link Canvas}.
+     * Overrides the run method of the {@link pl.edu.pwr.student.UI.Blocks.UiElement} class.
      */
     @Override
     public void run() {
         sketch.stroke(0);
         if (over(new PVector(sketch.mouseX, sketch.mouseY))){
-            if (sketch.getState() == 2 || sketch.getState() == 4){
+            if (CanvasState.getState() == CanvasState.States.OUTPUT || CanvasState.getState() == CanvasState.States.CONNECTING){
                 sketch.fill(0,255,0,30);
                 sketch.square(position.x,position.y,48);
             } else {
                 sketch.fill(0, 30);
                 sketch.square(position.x,position.y,48);
             }
-        } else if(sketch.getState() == 2 || sketch.getState() == 4){
+        } else if(CanvasState.getState() == CanvasState.States.OUTPUT || CanvasState.getState() == CanvasState.States.CONNECTING){
             sketch.fill(0,255,0,20);
             sketch.square(position.x,position.y,48);
         } else {
@@ -45,12 +46,12 @@ public class ConnectButton extends Button {
     }
 
     /**
-     * Handles the click event of the ConnectButton element.
-     * Overrides the click method of the Button class.
+     * Handles the click event of the {@link ConnectButton} element.
+     * Overrides the click method of the {@link Button} class.
      */
     @Override
     public void click() {
-        sketch.setState(2);
+        CanvasState.setState(CanvasState.States.OUTPUT);
         sketch.hideForm();
     }
 }

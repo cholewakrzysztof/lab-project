@@ -1,6 +1,5 @@
 package pl.edu.pwr.student;
 
-import pl.edu.pwr.student.Examples.*;
 import pl.edu.pwr.student.UI.Canvas;
 import uibooster.UiBooster;
 
@@ -10,12 +9,13 @@ import uibooster.UiBooster;
 public class Simulation {
 
     /**
-     * Private constructor to prevent creating instances of this class
+     * Private constructor to prevent creating instances of this class.
      */
     private Simulation(){}
 
     /**
-     * Private constructor to prevent creating instances of this class
+     * Static method that calls a try-catch block with Thread.sleep().
+     * Created so that there's no need to create a try-catch every time you want a thread to wait.
      *
      * @param milliseconds - time to wait in milliseconds
      */
@@ -26,7 +26,7 @@ public class Simulation {
     }
 
     /**
-     * Main method of the application
+     * Main method of the application.
      * @param args - arguments passed to the application
      */
     public static void main(String[] args) {
@@ -39,28 +39,5 @@ public class Simulation {
                     e
             );
         }
-
-
-//        // CODE EXAMPLES BELOW
-//
-//        // Synchronous
-//        DLatch.simulate();
-//        simWait(1000);
-//        System.out.print("\n\n");
-//
-//        // Asynchronous
-//        SRLatch.simulate();
-//        simWait(1000);
-//        System.out.print("\n\n");
-//
-//        // Feedback loop
-//        CustomClock.simulate();
-//        simWait(1000);
-//        System.out.print("\n\n");
-//
-//        // Compound Gate 4 bit register
-//        Register.simulate();
-//        simWait(1000);
-//        System.out.println("\n\n");
     }
 }

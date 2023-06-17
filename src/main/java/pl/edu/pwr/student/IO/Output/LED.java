@@ -1,5 +1,6 @@
 package pl.edu.pwr.student.IO.Output;
 
+import pl.edu.pwr.student.IO.UserUsable;
 import pl.edu.pwr.student.Simulation;
 import pl.edu.pwr.student.UI.UiAvailable;
 
@@ -7,13 +8,13 @@ import pl.edu.pwr.student.UI.UiAvailable;
  * OBSOLETE - SHOULD BE CHANGED TO BE USED IN THE UI
  * OLD FUNCTIONALITY MOVED TO {@link DebugLED}
  */
-public class LED extends BasicReceiver implements Runnable, UiAvailable {
+public class LED extends BasicReceiver implements Runnable, UiAvailable, UserUsable {
     private final String name;
     private long milliseconds;
     private boolean power = false;
     private final Thread thread;
 
-    public void toggle() {
+    public void react() {
         if (milliseconds < 1) {
             power = false;
             return;
@@ -35,7 +36,7 @@ public class LED extends BasicReceiver implements Runnable, UiAvailable {
         milliseconds = updateMilliseconds;
 
         if (milliseconds < 1)
-            toggle();
+            react();
     }
     public LED(String name, long updateMilliseconds) {
         this.name = name;
@@ -43,7 +44,12 @@ public class LED extends BasicReceiver implements Runnable, UiAvailable {
 
         thread = new Thread(this);
     }
-    public void react() {}
+    public LED() {
+        this.name = "";
+        milliseconds = 0;
+
+        thread = new Thread(this);
+    }
 
     @Override
     public void connection(SignalReceiver receiver) {
