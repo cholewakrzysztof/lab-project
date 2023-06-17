@@ -4,9 +4,12 @@ pl.edu.pwr.student.Gates
 pl.edu.pwr.student.Gates.BasicGates
 pl.edu.pwr.student.Gates.BasicGates.MultipleInput
 pl.edu.pwr.student.Gates.BasicGates.SingleInput
+pl.edu.pwr.student.IO
 pl.edu.pwr.student.IO.Input
 pl.edu.pwr.student.IO.Output
 pl.edu.pwr.student.UI
+pl.edu.pwr.student.UI.Blocks
 pl.edu.pwr.student.UI.Buttons
 pl.edu.pwr.student.UI.Creator
 pl.edu.pwr.student.Utility
+pl.edu.pwr.student.Utility.FileManagement
