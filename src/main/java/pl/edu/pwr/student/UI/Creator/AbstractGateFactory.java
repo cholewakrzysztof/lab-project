@@ -18,17 +18,20 @@ import java.util.HashMap;
 /**
  * Creates gate, saves it to proper place and performs necessary actions
  */
-public class GateCreator {
+public abstract class AbstractGateFactory {
 
+    /**
+     * Map of all possible gates
+     */
     private static HashMap<String, CreatableInstance> possibleGates;
 
     /**
-     * Constructor of GateCreator
+     * Constructor of {@link AbstractGateFactory}
      */
-    public GateCreator() {}
+    private AbstractGateFactory() {}
 
     /**
-     * Creates gate, saves it to proper place and performs necessary actions
+     * Creates {@link UiAvailable}, saves it to proper place and performs necessary actions
      *
      * @param type - type of gate
      */
@@ -42,6 +45,9 @@ public class GateCreator {
         return ci;
     }
 
+    /**
+     * Initializes map of {@link UiAvailable}
+     */
     public static void initGates() {
         possibleGates = new HashMap<>();
         possibleGates.put("AND", new AND());
@@ -60,10 +66,23 @@ public class GateCreator {
         possibleGates.put("VirtualIO", new VirtualIO());
     }
 
+    /**
+     * Registers gate in map of {@link UiAvailable}
+     *
+     * @param name - name of gate
+     * @param gate - gate to register
+     */
     public static void registerGate(String name, CompoundGate gate) {
-        GateCreator.possibleGates.put(name, gate);
+        AbstractGateFactory.possibleGates.put(name, gate);
     }
+
+    /**
+     * Checks if gate is registered
+     *
+     * @param name - name of gate
+     * @return true if gate is registered, false otherwise
+     */
     public static boolean isRegistered(String name){
-        return GateCreator.possibleGates.containsKey(name);
+        return AbstractGateFactory.possibleGates.containsKey(name);
     }
 }

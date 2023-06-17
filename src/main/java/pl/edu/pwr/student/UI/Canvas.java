@@ -14,7 +14,7 @@ import pl.edu.pwr.student.UI.Blocks.CompoundElement;
 import pl.edu.pwr.student.UI.Blocks.Drawable;
 import pl.edu.pwr.student.UI.Blocks.UiElement;
 import pl.edu.pwr.student.UI.Buttons.*;
-import pl.edu.pwr.student.UI.Creator.GateCreator;
+import pl.edu.pwr.student.UI.Creator.AbstractGateFactory;
 import pl.edu.pwr.student.Utility.FileManagement.DataReader;
 import pl.edu.pwr.student.Utility.FileManagement.DataWriter;
 import pl.edu.pwr.student.Utility.ShapeLoader;
@@ -32,48 +32,48 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Class representing the Processing canvas.
+ * Class representing the Processing {@link PApplet}.
  * Handles drawing and interactions with elements.
  */
 public class Canvas extends PApplet {
 
     /**
-     * Form with the list of gates.
+     * {@link Form} with the list of gates.
      */
     private Form form;
 
     /**
-     * The UiBooster object used for UI interactions.
+     * The {@link UiBooster} object used for UI interactions.
      */
     private final UiBooster booster;
 
     /**
-     * The set of all elements on the canvas.
+     * The set of all {@link Drawable} on the {@link Canvas}.
      */
     private final List<Drawable> elements = new ArrayList<>();
 
     /**
-     * The list of all buttons.
+     * The list of all {@link Button}.
      */
     private final ArrayList<Button> buttons = new ArrayList<>();
 
     /**
-     * The selected element on the canvas.
+     * The selected {@link Drawable} on the {@link Canvas}.
      */
     private Drawable selectedElement = null;
 
     /**
-     * The selected element on the canvas.
+     * The selected {@link UiAvailable} on the {@link Canvas} waiting to be connected.
      */
     private UiAvailable connecting = null;
 
     /**
-     * Holds the offset of canvas.
+     * Holds the offset of {@link Canvas}.
      */
     private final PVector offset = new PVector(0, 0);
 
     /**
-     * Holds the temporary offset of canvas, used in math.
+     * Holds the temporary offset of {@link Canvas}, used in math.
      */
     private final PVector tempOffset = new PVector(0, 0);
 
@@ -82,10 +82,13 @@ public class Canvas extends PApplet {
      */
     private PVector startingMousePosition;
 
+    /**
+     * Holds list of all possible gates.
+     */
     private ArrayList<ListElement> gatesList;
 
     /**
-     * Constructor
+     * Constructor initializing the UI.
      */
     public Canvas () {
         try {
@@ -93,7 +96,7 @@ public class Canvas extends PApplet {
 
             WaitingDialog dialog = booster.showWaitingDialog("Starting", "Please wait");
 
-            GateCreator.initGates();
+            AbstractGateFactory.initGates();
             initForm();
 
             // Set up the canvas
@@ -181,8 +184,9 @@ public class Canvas extends PApplet {
      */
     @Override
     public void mousePressed() {
+        PVector mouse = new PVector(mouseX, mouseY);
         for (int i = 0; i < buttons.size(); i++) {
-            if(buttons.get(i).over(new PVector(mouseX, mouseY))) {
+            if(buttons.get(i).over(mouse)) {
                 try {
                     buttons.get(i).click();
                 } catch (IOException e) {
@@ -194,24 +198,24 @@ public class Canvas extends PApplet {
 
 
         switch (CanvasState.getState()) {
-            case 0 -> {
+            case CanvasState.States.INTERACTING -> {
                 for (Drawable g : elements) {
-                    if (g.over(new PVector(mouseX, mouseY))) {
+                    if (g.over(mouse)) {
                         selectedElement = g;
                         break;
                     }
                 }
             }
-            case 1 -> {
+            case CanvasState.States.CREATING -> {
                 ListElement selected = (ListElement) form.getByLabel("Select Gate").getValue();
                 if (selected != null) {
-                    PVector mouse = new PVector(
+                    mouse = new PVector(
                             mouseX / ShapeLoader.scale - ShapeLoader.size/2f + offset.x,
                             mouseY / ShapeLoader.scale - ShapeLoader.size/2f + offset.y
                     );
 
                     try {
-                        UiAvailable temp = GateCreator.create(selected.getTitle());
+                        UiAvailable temp = AbstractGateFactory.create(selected.getTitle());
                         if (temp instanceof CompoundGate){
                             elements.add(new CompoundElement(selected.getTitle(), this, mouse, temp));
                         } else {
@@ -222,9 +226,9 @@ public class Canvas extends PApplet {
                     }
                 }
             }
-            case 2 -> {
+            case CanvasState.States.OUTPUT -> {
                 for (Drawable g : elements) {
-                    if (g.over(new PVector(mouseX, mouseY))) {
+                    if (g.over(mouse)) {
                         CanvasState.setState(4);
                         connecting = g.getOutput();
                         if (connecting == null || connecting instanceof CompoundGate || connecting instanceof BasicReceiver) {
@@ -236,18 +240,18 @@ public class Canvas extends PApplet {
                     }
                 }
             }
-            case 3 -> {
+            case CanvasState.States.DELETING -> {
                 for (Drawable g : elements) {
-                    if (g.over(new PVector(mouseX, mouseY))) {
+                    if (g.over(mouse)) {
                         g.getGate().fullDisconnect();
                         elements.remove(g);
                         break;
                     }
                 }
             }
-            case 4 -> {
+            case CanvasState.States.CONNECTING -> {
                 for (Drawable g : elements) {
-                    if (g.over(new PVector(mouseX, mouseY))) {
+                    if (g.over(mouse)) {
                         if (connecting != null) {
                             try {
                                 connecting.connection((SignalReceiver) g.getInput());
@@ -269,9 +273,10 @@ public class Canvas extends PApplet {
      */
     @Override
     public void mouseClicked(){
-        if (CanvasState.getState() == 0) {
+        if (CanvasState.getState() == CanvasState.States.INTERACTING) {
+            PVector mouse = new PVector(mouseX, mouseY);
             for (Drawable g : elements) {
-                if(g.over(new PVector(mouseX, mouseY))){
+                if(g.over(mouse)){
                     if (g.getGate() instanceof Switch) {
                         ((Switch) g.getGate()).react();
                     } else if (g.getGate() instanceof LED){
@@ -324,7 +329,7 @@ public class Canvas extends PApplet {
      */
     @Override
     public void mouseDragged() {
-        if (CanvasState.getState() == 0) {
+        if (CanvasState.getState() == CanvasState.States.INTERACTING) {
             if (selectedElement != null) {
                 selectedElement.updatePosition (new PVector(
                     mouseX / ShapeLoader.scale - ShapeLoader.size/2f + offset.x,
@@ -346,7 +351,7 @@ public class Canvas extends PApplet {
      */
     @Override
     public void mouseReleased() {
-        if (CanvasState.getState() == 0) {
+        if (CanvasState.getState() == CanvasState.States.INTERACTING) {
             selectedElement = null;
             if (startingMousePosition != null){
                 tempOffset.x = offset.x;
@@ -361,9 +366,10 @@ public class Canvas extends PApplet {
      */
     @Override
     public void mouseWheel(MouseEvent event) {
+        PVector mouse = new PVector(mouseX, mouseY);
         for (Drawable g : elements) {
-            if (g.over(new PVector(mouseX, mouseY))) {
-                g.rotation(event.getCount());
+            if (g.over(mouse)) {
+                g.rotate(event.getCount());
                 return;
             }
         }
@@ -397,7 +403,7 @@ public class Canvas extends PApplet {
     }
 
     /**
-    * Gets offset of the canvas
+    * Gets offset of the {@link Canvas}
      * @return offset
     */
     public PVector getOffset() {
@@ -405,7 +411,7 @@ public class Canvas extends PApplet {
     }
 
     /**
-     * Gets file to save to or load from
+     * Gets file to load from
      * @return file
      */
     public File getFile() {
@@ -413,8 +419,8 @@ public class Canvas extends PApplet {
     }
 
     /**
-     * Gets file to save to or load from
-     * @return file
+     * Gets directory to save to
+     * @return directory
      */
     public File getDirectory() {
         return booster.showDirectorySelection();
@@ -432,13 +438,23 @@ public class Canvas extends PApplet {
         );
     }
 
+    /**
+     * Registers {@link CompoundGate} to the list of gates
+     *
+     * @param name - name of the gate
+     * @param message - message to show
+     * @param gate - gate to register
+     */
     public void registerCompoundGate(String name, String message, CompoundGate gate) {
         gatesList.add(new ListElement(name, message, ""));
-        GateCreator.registerGate(name, gate);
+        AbstractGateFactory.registerGate(name, gate);
         if (form != null)
             buildForm();
     }
 
+    /**
+     * Builds form
+     */
     private void buildForm(){
         form = booster
             .createForm("Gates")
@@ -447,6 +463,9 @@ public class Canvas extends PApplet {
             .hide();
     }
 
+    /**
+     * Initializes form
+     */
     private void initForm(){
         try {
             gatesList = new ArrayList<>();
@@ -475,6 +494,9 @@ public class Canvas extends PApplet {
         }
     }
 
+    /**
+     * Initializes buttons
+     */
     private void initButtons(){
         buttons.add(new InteractionButton(this));
         buttons.add(new CreateButton(this));
@@ -485,6 +507,10 @@ public class Canvas extends PApplet {
         buttons.add(new AddButton(this));
     }
 
+    /**
+     * Shows dialog to save compound gate
+     * @return form
+     */
     public Form saveCompoundGateDialog(){
         return booster.createForm("Compound Gate Creator")
                 .addTextArea("Name of the gate", 1)
@@ -493,7 +519,7 @@ public class Canvas extends PApplet {
     }
 
     /**
-     * Clear all HashSets of canvas
+     * Clears all HashSets of canvas
      */
     public void clear(){
         elements.clear();
