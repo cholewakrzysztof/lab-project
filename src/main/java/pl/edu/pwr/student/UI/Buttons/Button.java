@@ -59,7 +59,7 @@ public abstract class Button extends UiElement {
     /**
      * Method to be executed when the button is clicked
      *
-     * @throws IOException
+     * @throws IOException if an I/O error occurs
      */
     public abstract void click() throws IOException;
 

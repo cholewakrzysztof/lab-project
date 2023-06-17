@@ -34,6 +34,7 @@ public abstract class AbstractGateFactory {
      * Creates {@link UiAvailable}, saves it to proper place and performs necessary actions
      *
      * @param type - type of gate
+     * @return created {@link UiAvailable}
      */
     public static UiAvailable create(String type) {
         UiAvailable ci = (UiAvailable) possibleGates.get(type).getNewInstance();

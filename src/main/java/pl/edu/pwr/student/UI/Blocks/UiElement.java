@@ -72,6 +72,8 @@ public class UiElement extends Drawable {
      * @param jsonAvailable Object created from file
      * @param s The {@link Canvas} used to render the {@link UiElement}.
      *
+     * @throws Exception if JSONAvailable has bad name
+     *
      * <p>
      * The {@code UiElement} constructor creates a new UI element object with the specified
      * properties. The {@code jsonAvailable} is a middle version of object between JSON string and UIElement.

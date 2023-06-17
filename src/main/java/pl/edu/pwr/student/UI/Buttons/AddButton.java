@@ -28,7 +28,7 @@ public class AddButton extends Button {
     /**
      * Handles the click event of the {@link SaveButton} element.
      * Overrides the click method of the {@link Button} class.
-     * @throws IOException
+     * @throws IOException if an I/O error occurs.
      */
     @Override
     public void click() throws IOException {

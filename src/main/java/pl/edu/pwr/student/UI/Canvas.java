@@ -398,6 +398,10 @@ public class Canvas extends PApplet {
         return elements;
     }
 
+    /**
+     * Adds element to the list of elements
+     * @param element - element to add
+     */
     public void addElement(Drawable element) {
         elements.add(element);
     }

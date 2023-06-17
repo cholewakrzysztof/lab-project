@@ -15,6 +15,9 @@ import static processing.core.PApplet.cos;
 import static processing.core.PApplet.sin;
 import static processing.core.PConstants.PI;
 
+/**
+ * Represents a element that can be interacted with by the user.
+ */
 public abstract class Drawable {
     /**
      * The position of this element.
@@ -53,6 +56,7 @@ public abstract class Drawable {
      * @param s The Processing sketch used to render the UI element.
      * @param v The position of the UI element on the canvas, specified as a PVector object.
      * @param uiElem The gate represented by the UI element, specified as a UiAvailable object.
+     * @param rotation The rotation of the UI element, specified as a float.
      *
      * <p>
      * The {@code UiElement} constructor creates a new UI element object with the specified
@@ -125,7 +129,7 @@ public abstract class Drawable {
     /**
      * changes the rotation of the element by the specified amount.
      *
-     * @param direction >0 if rotate right, <0 if rotate left
+     * @param direction higher than 0 if rotate right, lower than 0 if rotate left
      */
     public void rotate(int direction) {
         rotation = (rotation - direction * 0.01f) % 2;
@@ -133,6 +137,8 @@ public abstract class Drawable {
 
     /**
      * Updates the position of the element.
+     *
+     * @param pVector the new position of the element as a PVector
      */
     public abstract void updatePosition(PVector pVector);
 

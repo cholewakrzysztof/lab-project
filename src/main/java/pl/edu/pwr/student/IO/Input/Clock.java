@@ -18,6 +18,10 @@ public class Clock extends SignalSender implements Runnable, UiAvailable, UserUs
 
         thread = new Thread(this);
     }
+
+    /**
+     * Creates a new clock element with default timings of 1 second on and 1 second off.
+     */
     public Clock() {
         this.setIntervals(1000, 1000);
 

@@ -106,7 +106,7 @@ public class ShapeLoader {
 
     /**
      * Changes scale of all shapes
-     * @param direction >0 for zoom in, <0 for zoom out
+     * @param direction higher than 0 for zoom in, lower than 0 for zoom out
      */
     public static void scale(int direction) {
         float temp = scale - direction * 0.1f;

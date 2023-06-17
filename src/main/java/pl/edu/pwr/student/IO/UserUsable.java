@@ -5,5 +5,9 @@ package pl.edu.pwr.student.IO;
  * Interactions include but are not limited to: toggling on and off, or changing the properties of the element(such as color, pitch, frequency, etc.)
  */
 public interface UserUsable {
+
+    /**
+     * Reacts to the user interaction with the element.
+     */
     void react();
 }
