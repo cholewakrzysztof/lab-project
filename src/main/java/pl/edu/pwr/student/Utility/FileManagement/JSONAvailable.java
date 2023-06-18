@@ -2,9 +2,14 @@ package pl.edu.pwr.student.Utility.FileManagement;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.Delay;
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
 import pl.edu.pwr.student.Gates.CompoundGate;
+import pl.edu.pwr.student.IO.Input.Clock;
+import pl.edu.pwr.student.IO.Input.Switch;
+import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.IO.Output.SignalReceiver;
+import pl.edu.pwr.student.IO.Output.Speaker;
 import pl.edu.pwr.student.UI.Blocks.CompoundElement;
 import pl.edu.pwr.student.UI.Blocks.Drawable;
 import processing.core.PVector;
@@ -95,6 +100,18 @@ public class JSONAvailable{
         if(element.getGate() instanceof Compoundable)
             if(((Compoundable)element.getGate()).isIO())
                 this.elName = ((VirtualIO) element.getGate()).name;
+
+        if(element.getGate() instanceof LED){}
+
+        if(element.getGate() instanceof Speaker){}
+
+        if(element.getGate() instanceof Switch){}
+
+        if(element.getGate() instanceof Clock){}
+
+        if(element.getGate() instanceof Delay){}
+
+
 
 
         /*TODO
