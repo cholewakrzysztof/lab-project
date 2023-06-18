@@ -24,6 +24,11 @@ import static processing.core.PConstants.PI;
 public class UiElement extends Drawable {
 
     /**
+     * The color associated with this element.
+     */
+    public Color color = new Color(0, 255, 0);
+
+    /**
      * Creates a new {@link UiElement} object with the specified parameters.
      *
      * @param type The name of the {@link UiElement}.

@@ -9,8 +9,6 @@ import pl.edu.pwr.student.Utility.FileManagement.JSONAvailable;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PVector;
 
-import java.awt.*;
-
 import static processing.core.PApplet.cos;
 import static processing.core.PApplet.sin;
 import static processing.core.PConstants.PI;
@@ -38,11 +36,6 @@ public abstract class Drawable {
      * The gate represented by this element.
      */
     public final UiAvailable uiElem;
-
-    /**
-     * The color associated with this element.
-     */
-    public Color color = new Color(0, 255, 0);
 
     /**
      * The color associated with this element.

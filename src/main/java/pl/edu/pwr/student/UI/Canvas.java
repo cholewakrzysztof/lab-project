@@ -280,7 +280,7 @@ public class Canvas extends PApplet {
                     if (g.getGate() instanceof Switch) {
                         ((Switch) g.getGate()).react();
                     } else if (g.getGate() instanceof LED){
-                        g.color = booster.showColorPicker("Choose color of LED", "Color picking");
+                        ((UiElement)g).color = booster.showColorPicker("Choose color of LED", "Color picking");
                     } else if (g.getGate() instanceof Clock){
                         Form temp = booster.createForm("Clock")
                                 .addSlider("On time", 100, 10000, 1000, 10000, 1000)
