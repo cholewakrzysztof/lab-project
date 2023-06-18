@@ -24,7 +24,7 @@ public abstract class Button extends UiElement {
 
 
     /**
-     * Shape of button
+     * Holds {@link PShape} of button
      */
     protected final PShape shape;
 
@@ -58,6 +58,8 @@ public abstract class Button extends UiElement {
 
     /**
      * Method to be executed when the button is clicked
+     *
+     * @throws IOException if an I/O error occurs
      */
     public abstract void click() throws IOException;
 

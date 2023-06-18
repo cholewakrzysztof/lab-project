@@ -3,18 +3,19 @@ package pl.edu.pwr.student.UI.Blocks;
 import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.LED;
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.UI.Creator.GateCreator;
+import pl.edu.pwr.student.UI.Creator.AbstractGateFactory;
 import pl.edu.pwr.student.UI.UiAvailable;
 import pl.edu.pwr.student.Utility.FileManagement.JSONAvailable;
 import pl.edu.pwr.student.Utility.ShapeLoader;
 import processing.core.PVector;
 
-import java.awt.*;
-
 import static processing.core.PApplet.cos;
 import static processing.core.PApplet.sin;
 import static processing.core.PConstants.PI;
 
+/**
+ * Represents a element that can be interacted with by the user.
+ */
 public abstract class Drawable {
     /**
      * The position of this element.
@@ -27,7 +28,7 @@ public abstract class Drawable {
     public final String elName;
 
     /**
-     * The Processing sketch associated with this element.
+     * The {@link Canvas} associated with this element.
      */
     public final Canvas sketch;
 
@@ -39,9 +40,6 @@ public abstract class Drawable {
     /**
      * The color associated with this element.
      */
-    public Color color = new Color(0, 255, 0);
-    public float xMove;
-    public float yMove;
     public float rotation = 0;
 
     /**
@@ -51,6 +49,7 @@ public abstract class Drawable {
      * @param s The Processing sketch used to render the UI element.
      * @param v The position of the UI element on the canvas, specified as a PVector object.
      * @param uiElem The gate represented by the UI element, specified as a UiAvailable object.
+     * @param rotation The rotation of the UI element, specified as a float.
      *
      * <p>
      * The {@code UiElement} constructor creates a new UI element object with the specified
@@ -67,7 +66,6 @@ public abstract class Drawable {
         sketch = s;
         this.uiElem = uiElem;
         this.rotation = rotation;
-        calcMovement();
     }
 
     /**
@@ -86,10 +84,9 @@ public abstract class Drawable {
         position = jsonAvailable.getPosition();
         elName = jsonAvailable.getElName();
         sketch = s;
-        uiElem = GateCreator.create(jsonAvailable.getElName());
+        uiElem = AbstractGateFactory.create(jsonAvailable.getElName());
         sketch.addElement(new UiElement(jsonAvailable.getElName(), sketch, jsonAvailable.getPosition(), uiElem));
         rotation = jsonAvailable.getRotation();
-        calcMovement();
     }
 
     /**
@@ -122,24 +119,43 @@ public abstract class Drawable {
                 (Math.abs((v.y/ShapeLoader.scale-position.y+sketch.getOffset().y-ShapeLoader.size/2f)*cos(rotation*PI)-(v.x/ShapeLoader.scale-position.x+sketch.getOffset().x-ShapeLoader.size/2f)*sin(rotation*PI))-ShapeLoader.size/2f) < 0;
     }
 
-    public void rotation(int direction) {
+    /**
+     * changes the rotation of the element by the specified amount.
+     *
+     * @param direction higher than 0 if rotate right, lower than 0 if rotate left
+     */
+    public void rotate(int direction) {
         rotation = (rotation - direction * 0.01f) % 2;
-        calcMovement();
     }
 
-    private void calcMovement() {
-        xMove = (7*sin(rotation*PI+PI/4)/10f-1/2f);
-        yMove = (7*cos(rotation*PI+PI/4)/10f-1/2f);
-    }
-
+    /**
+     * Updates the position of the element.
+     *
+     * @param pVector the new position of the element as a PVector
+     */
     public abstract void updatePosition(PVector pVector);
 
+    /**
+     * Returns the object associated with this element.
+     *
+     * @return the {@link UiAvailable} object associated with this element
+     */
     public UiAvailable getGate(){
         return uiElem;
     }
 
+    /**
+     * Returns the {@link UiAvailable} object associated with input of this element
+     *
+     * @return the {@link UiAvailable} object associated with input of this element
+     */
     public abstract UiAvailable getInput();
 
+    /**
+     * Returns the {@link UiAvailable} object associated with output of this element
+     *
+     * @return the {@link UiAvailable} object associated with output of this element
+     */
     public abstract UiAvailable getOutput();
 
 }

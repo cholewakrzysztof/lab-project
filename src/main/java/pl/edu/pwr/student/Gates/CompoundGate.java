@@ -37,6 +37,7 @@ public class CompoundGate implements CreatableInstance, UiAvailable {
      *
      * @param name name of compound gate
      * @param gates the gates to include in the compound gate
+     * @param message message to display when hovering over the gate
      */
     public CompoundGate(final String name, final String message, @NotNull final HashSet<Compoundable> gates) {
         this.name = name;
@@ -50,6 +51,7 @@ public class CompoundGate implements CreatableInstance, UiAvailable {
      * @param name name of compound gate
      * @param basicGates basic gates to include in the compound gate
      * @param compGates compound gates to include in the compound gate
+     * @param message message to display when hovering over the gate
      */
     public CompoundGate(final String name, final String message, final HashSet<Compoundable> basicGates, @NotNull final HashSet<CompoundGate> compGates) {
         this.name = name;

@@ -24,12 +24,17 @@ import static processing.core.PConstants.PI;
 public class UiElement extends Drawable {
 
     /**
-     * Creates a new UI element object with the specified parameters.
+     * The color associated with this element.
+     */
+    public Color color = new Color(0, 255, 0);
+
+    /**
+     * Creates a new {@link UiElement} object with the specified parameters.
      *
-     * @param type The name of the UI element.
-     * @param s The Processing sketch used to render the UI element.
-     * @param v The position of the UI element on the canvas, specified as a PVector object.
-     * @param uiElem The gate represented by the UI element, specified as a UiAvailable object.
+     * @param type The name of the {@link UiElement}.
+     * @param s The {@link Canvas} used to render the {@link UiElement}.
+     * @param v The position of the {@link UiElement} on the canvas, specified as a {@link PVector} object.
+     * @param uiElem The gate represented by the {@link UiElement}, specified as a {@link UiAvailable} object.
      *
      * <p>
      * The {@code UiElement} constructor creates a new UI element object with the specified
@@ -45,7 +50,7 @@ public class UiElement extends Drawable {
     }
 
     /**
-     * Creates a new UI element object with the specified parameters.
+     * Creates a new {@link UiElement} object with the specified parameters.
      *
      * @param type The name of the UI element.
      * @param s The Processing sketch used to render the UI element.
@@ -67,10 +72,12 @@ public class UiElement extends Drawable {
     }
 
     /**
-     * Creates a new UI element from JSONAvaible object
+     * Creates a new UI element from {@link JSONAvailable} object
      *
      * @param jsonAvailable Object created from file
-     * @param s The Processing sketch used to render the UI element.
+     * @param s The {@link Canvas} used to render the {@link UiElement}.
+     *
+     * @throws Exception if JSONAvailable has bad name
      *
      * <p>
      * The {@code UiElement} constructor creates a new UI element object with the specified
@@ -83,7 +90,7 @@ public class UiElement extends Drawable {
     }
 
     /**
-     * Renders the UI element on the canvas and displays any connected signals.
+     * Renders the {@link UiElement} on the {@link Canvas} and displays any connected signals.
      *
      * <p>
      * The {@code run} method is responsible for rendering the UI element on the canvas
@@ -107,7 +114,7 @@ public class UiElement extends Drawable {
 
             PShape square = sketch.createShape(sketch.RECT, 0,0, ShapeLoader.size, ShapeLoader.size);
             square.rotate(rotation*PI);
-            square.translate(xMove*ShapeLoader.size*ShapeLoader.scale, yMove*ShapeLoader.size*ShapeLoader.scale);
+            square.translate((7*sin(rotation*PI+PI/4)/10f-1/2f)*ShapeLoader.size*ShapeLoader.scale, (7*cos(rotation*PI+PI/4)/10f-1/2f)*ShapeLoader.size*ShapeLoader.scale);
             square.scale(ShapeLoader.scale);
 
             sketch.shape(square, (position.x-sketch.getOffset().x)*ShapeLoader.scale,(position.y-sketch.getOffset().y)*ShapeLoader.scale);
@@ -135,20 +142,20 @@ public class UiElement extends Drawable {
         } else if (uiElem instanceof Switch) {
             if (uiElem.getState()){
                 sketch.shape(
-                        ShapeLoader.getShape("SWITCH-TRUE", rotation, xMove*ShapeLoader.size*ShapeLoader.scale, yMove*ShapeLoader.size*ShapeLoader.scale),
+                        ShapeLoader.getShape("SWITCH-TRUE", rotation, (7*sin(rotation*PI+PI/4)/10f-1/2f)*ShapeLoader.size*ShapeLoader.scale, (7*cos(rotation*PI+PI/4)/10f-1/2f)*ShapeLoader.size*ShapeLoader.scale),
                         (position.x-sketch.getOffset().x)*ShapeLoader.scale,
                         (position.y-sketch.getOffset().y)*ShapeLoader.scale
                 );
             } else {
                 sketch.shape(
-                        ShapeLoader.getShape("SWITCH-FALSE", rotation, xMove*ShapeLoader.size*ShapeLoader.scale, yMove*ShapeLoader.size*ShapeLoader.scale),
+                        ShapeLoader.getShape("SWITCH-FALSE", rotation, (7*sin(rotation*PI+PI/4)/10f-1/2f)*ShapeLoader.size*ShapeLoader.scale, (7*cos(rotation*PI+PI/4)/10f-1/2f)*ShapeLoader.size*ShapeLoader.scale),
                         (position.x-sketch.getOffset().x)*ShapeLoader.scale,
                         (position.y-sketch.getOffset().y)*ShapeLoader.scale
                 );
             }
         } else {
 
-            sketch.shape(ShapeLoader.getShape(elName, rotation, xMove*ShapeLoader.size*ShapeLoader.scale, yMove*ShapeLoader.size*ShapeLoader.scale),
+            sketch.shape(ShapeLoader.getShape(elName, rotation, (7*sin(rotation*PI+PI/4)/10f-1/2f)*ShapeLoader.size*ShapeLoader.scale, (7*cos(rotation*PI+PI/4)/10f-1/2f)*ShapeLoader.size*ShapeLoader.scale),
                     (position.x-sketch.getOffset().x)*ShapeLoader.scale,
                     (position.y-sketch.getOffset().y)*ShapeLoader.scale
             );
@@ -194,21 +201,35 @@ public class UiElement extends Drawable {
         sketch.stroke(0, 0, 0);
     }
 
+    /**
+     * Updates the position of the element on the {@link Canvas}.
+     */
     @Override
     public void updatePosition(PVector pVector) {
         position = pVector;
     }
 
+    /**
+     * Gets the {@link UiAvailable} that is input to this element.
+     * @return the {@link UiAvailable} that is input to this element.
+     */
     @Override
     public UiAvailable getInput() {
         return getGate();
     }
 
+    /**
+     * Gets the {@link UiAvailable} that is output from this element.
+     * @return the {@link UiAvailable} that is output from this element.
+     */
     @Override
     public UiAvailable getOutput() {
         return getGate();
     }
 
+    /**
+     * Method for drawing the signal lines to connected elements.
+     */
     private void drawLines(SignalReceiver s, Drawable u) {
         if (u.uiElem.equals(s)) {
             ArrayList<SignalSender> inputs = ((UiAvailable) s).getInputs();

@@ -6,7 +6,7 @@ import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
 import pl.edu.pwr.student.Gates.CompoundGate;
 import pl.edu.pwr.student.UI.Blocks.Drawable;
 import pl.edu.pwr.student.UI.Canvas;
-import pl.edu.pwr.student.UI.Creator.GateCreator;
+import pl.edu.pwr.student.UI.Creator.AbstractGateFactory;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -54,7 +54,7 @@ public class DataWriter {
 
         if(name.length()==0)
             name = "Custom_gate";
-        if(GateCreator.isRegistered(name))
+        if(AbstractGateFactory.isRegistered(name))
             name+=System.currentTimeMillis();
         if(message.length()==0)
             message = "Custom_gate_message";
