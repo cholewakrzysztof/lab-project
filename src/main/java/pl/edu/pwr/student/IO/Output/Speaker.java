@@ -16,12 +16,18 @@ public class Speaker extends BasicReceiver implements UiAvailable, UserUsable {
         sine = new SinOsc(new PApplet());
         sine.amp(0.1f);
         sine.freq(250);
+        freq = 250;
     }
 
     /**
      * Variable that stores the emitted sound configuration.
      */
     private final SinOsc sine;
+
+    /**
+     * Variable added just to simplify saving to file
+     */
+    private Integer freq;
     
     /**
      * Connects speaker's output(there isn't one) to another object's input.
@@ -43,6 +49,13 @@ public class Speaker extends BasicReceiver implements UiAvailable, UserUsable {
     }
 
     public void setFrequency(Integer frequency) {
+        freq = frequency;
         sine.freq(frequency);
     }
+
+    /**
+     * Simple getter
+     * @return frequency of sin
+     */
+    public Integer getFreq(){return freq;}
 }
