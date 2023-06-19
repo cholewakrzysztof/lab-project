@@ -1,7 +1,0 @@
-.idea
-.gradle
-.project
-.classpath
-
-**/build
-/bin/
