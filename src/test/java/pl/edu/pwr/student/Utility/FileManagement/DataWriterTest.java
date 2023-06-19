@@ -21,7 +21,7 @@ class DataWriterTest {
     Canvas canvas;
     static String path = "PlikTestowy.gss";
     static String directory = "";
-    private String serialVer = "0.0.1";
+    private String serialVer = "0.1.5";
 
     /**
      * Set canvas before test
@@ -79,7 +79,7 @@ class DataWriterTest {
         String json  = myReader.nextLine();
         myReader.close();
 
-        assertEquals("{\"serialVer\":\""+serialVer+"\",\"message\":null,\"swap\":false,\"rotation\":0.0,\"gateType\":\"AND\",\"position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":[],\"hashCode\":"+hashCode+",\"color\":null,\"logic\":null}",json);
+        assertEquals("{\"serialVer\":\""+serialVer+"\",\"message\":null,\"swap\":false,\"rotation\":0.0,\"gateType\":\"AND\",\"position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"elName\":\"AND\",\"outputs\":[],\"hashCode\":"+hashCode+",\"color\":0,\"freq\":null,\"intervalOn\":0,\"intervalOff\":0,\"delay\":0,\"state\":false,\"logic\":null}",json);
     }
 
     /**

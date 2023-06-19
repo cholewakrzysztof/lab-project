@@ -84,4 +84,16 @@ public class Clock extends SignalSender implements Runnable, UiAvailable, UserUs
             Simulation.simWait(intervalOff);
         }
     }
+
+    /**
+     * Simple getter
+     * @return milliseconds of ON state
+     */
+    public long getIntervalOn(){return intervalOn;}
+
+    /**
+     * Simple getter
+     * @return millisecond of OFF state
+     */
+    public long getIntervalOff(){return intervalOff;}
 }

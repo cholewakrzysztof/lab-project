@@ -45,4 +45,9 @@ public class Delay extends BasicPassThrough {
             this.sendUpdate();
         }
     }
+    /**
+     * Simple getter
+     * @return milliseconds of delay
+     */
+    public long getMilliseconds(){return milliseconds;}
 }

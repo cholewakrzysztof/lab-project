@@ -2,8 +2,11 @@ package pl.edu.pwr.student.Utility.FileManagement;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import pl.edu.pwr.student.Gates.BasicGates.Compoundable;
+import pl.edu.pwr.student.Gates.BasicGates.SingleInput.Delay;
 import pl.edu.pwr.student.Gates.BasicGates.SingleInput.VirtualIO;
 import pl.edu.pwr.student.Gates.CompoundGate;
+import pl.edu.pwr.student.IO.Input.Clock;
+import pl.edu.pwr.student.IO.Input.Switch;
 import pl.edu.pwr.student.IO.Output.*;
 import pl.edu.pwr.student.UI.Blocks.CompoundElement;
 import pl.edu.pwr.student.UI.Canvas;
@@ -11,6 +14,7 @@ import pl.edu.pwr.student.UI.Creator.AbstractGateFactory;
 import pl.edu.pwr.student.UI.UiAvailable;
 import pl.edu.pwr.student.UI.Blocks.UiElement;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -76,7 +80,6 @@ public class DataReader {
                     connectElements(new HashMap<>(gatesTMP), schemaTMP);
                     CompoundGate compoundGate = new CompoundGate(name, message, new HashSet<>(gatesTMP.values()));
 
-
                     canvas.registerCompoundGate(compoundGate.name, compoundGate.message, compoundGate);
 
                     CG = (CompoundGate) AbstractGateFactory.create(compoundGate.name);
@@ -86,7 +89,6 @@ public class DataReader {
                     }
                     canvas.addElement(drawable);
                 }
-
 
                 for (JSONAvailable logicPart: source.getLogic()) {
                     if(Objects.equals(logicPart.getGateType(), "VirtualIO")){
@@ -106,7 +108,10 @@ public class DataReader {
                 if(Objects.equals(gateType, "VIRTUALIO")){
                     ((VirtualIO) element).name = source.getElName();
                 }
-                canvas.addElement(new UiElement(gateType, canvas, source.getPosition(), element, source.getRotation()));
+
+                UiElement uiElement= new UiElement(gateType, canvas, source.getPosition(), element, source.getRotation());
+                setSpecialProperty(uiElement,source);
+                canvas.addElement(uiElement);
 
                 gates.put(id, element);
                 schema.put(id, source);
@@ -212,5 +217,28 @@ public class DataReader {
                         gate.connection((SignalReceiver) gates.get(hashCode));
             }
         }
+    }
+
+    /**
+     * Set special property of Output element
+     * @param element element to change
+     * @param source source of data
+     */
+    private static void setSpecialProperty(UiElement element, JSONAvailable source){
+        if(element.getGate() instanceof LED)
+            element.color = new Color(source.getColor());
+
+        if(element.getGate() instanceof Speaker)
+            ((Speaker) element.getGate()).setFrequency(source.getFreq());
+
+        if(element.getGate() instanceof Switch)
+            if(!source.getState())
+                ((Switch) element.getGate()).react();
+
+        if(element.getGate() instanceof Clock)
+            ((Clock) element.getGate()).setIntervals(source.getIntervalOn(),source.getIntervalOff());
+
+        if(element.getGate() instanceof Delay)
+            ((Delay) element.getGate()).setDelay(source.getDelay());
     }
 }
