@@ -26,14 +26,14 @@ public class CreateButton extends Button {
     public void run() {
         sketch.stroke(0);
         if (over(new PVector(sketch.mouseX, sketch.mouseY))){
-            if (CanvasState.getState() == CanvasState.States.CREATING){
+            if (CanvasState.getState() == CanvasState.State.CREATING){
                 sketch.fill(0,255,0,30);
                 sketch.square(position.x,position.y,48);
             } else {
                 sketch.fill(0, 30);
                 sketch.square(position.x,position.y,48);
             }
-        } else if(CanvasState.getState() == CanvasState.States.CREATING){
+        } else if(CanvasState.getState() == CanvasState.State.CREATING){
             sketch.fill(0,255,0,20);
             sketch.square(position.x,position.y,48);
         } else {
@@ -49,7 +49,7 @@ public class CreateButton extends Button {
      */
     @Override
     public void click() {
-        CanvasState.setState(CanvasState.States.CREATING);
+        CanvasState.setState(CanvasState.State.CREATING);
         sketch.showForm();
     }
 }
