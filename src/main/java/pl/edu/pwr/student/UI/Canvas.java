@@ -198,7 +198,7 @@ public class Canvas extends PApplet {
 
 
         switch (CanvasState.getState()) {
-            case CanvasState.States.INTERACTING -> {
+            case INTERACTING -> {
                 for (Drawable g : elements) {
                     if (g.over(mouse)) {
                         selectedElement = g;
@@ -206,7 +206,7 @@ public class Canvas extends PApplet {
                     }
                 }
             }
-            case CanvasState.States.CREATING -> {
+            case CREATING -> {
                 ListElement selected = (ListElement) form.getByLabel("Select Gate").getValue();
                 if (selected != null) {
                     mouse = new PVector(
@@ -226,10 +226,10 @@ public class Canvas extends PApplet {
                     }
                 }
             }
-            case CanvasState.States.OUTPUT -> {
+            case OUTPUT -> {
                 for (Drawable g : elements) {
                     if (g.over(mouse)) {
-                        CanvasState.setState(4);
+                        CanvasState.setState(CanvasState.State.CONNECTING);
                         connecting = g.getOutput();
                         if (connecting == null || connecting instanceof CompoundGate || connecting instanceof BasicReceiver) {
                             CanvasState.lastState();
@@ -240,7 +240,7 @@ public class Canvas extends PApplet {
                     }
                 }
             }
-            case CanvasState.States.DELETING -> {
+            case DELETING -> {
                 for (Drawable g : elements) {
                     if (g.over(mouse)) {
                         g.getGate().fullDisconnect();
@@ -249,7 +249,7 @@ public class Canvas extends PApplet {
                     }
                 }
             }
-            case CanvasState.States.CONNECTING -> {
+            case CONNECTING -> {
                 for (Drawable g : elements) {
                     if (g.over(mouse)) {
                         if (connecting != null) {
@@ -273,7 +273,7 @@ public class Canvas extends PApplet {
      */
     @Override
     public void mouseClicked(){
-        if (CanvasState.getState() == CanvasState.States.INTERACTING) {
+        if (CanvasState.getState() == CanvasState.State.INTERACTING) {
             PVector mouse = new PVector(mouseX, mouseY);
             for (Drawable g : elements) {
                 if(g.over(mouse)){
@@ -329,7 +329,7 @@ public class Canvas extends PApplet {
      */
     @Override
     public void mouseDragged() {
-        if (CanvasState.getState() == CanvasState.States.INTERACTING) {
+        if (CanvasState.getState() == CanvasState.State.INTERACTING) {
             if (selectedElement != null) {
                 selectedElement.updatePosition (new PVector(
                     mouseX / ShapeLoader.scale - ShapeLoader.size/2f + offset.x,
@@ -351,7 +351,7 @@ public class Canvas extends PApplet {
      */
     @Override
     public void mouseReleased() {
-        if (CanvasState.getState() == CanvasState.States.INTERACTING) {
+        if (CanvasState.getState() == CanvasState.State.INTERACTING) {
             selectedElement = null;
             if (startingMousePosition != null){
                 tempOffset.x = offset.x;

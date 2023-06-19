@@ -7,18 +7,18 @@ public abstract class CanvasState {
     /**
      * The state of the canvas.
      */
-    private static int state = 0;
+    private static State state = State.INTERACTING;
 
     /**
      * The last state of the canvas.
      */
-    private static int lastState = 0;
+    private static State lastState = State.INTERACTING;
 
     /**
      * Sets state of the {@link pl.edu.pwr.student.UI.Canvas}
      * @param state state
      */
-    public static void setState(int state) {
+    public static void setState(State state) {
         lastState = CanvasState.state;
         CanvasState.state = state;
     }
@@ -27,7 +27,7 @@ public abstract class CanvasState {
      * Gets  of the {@link pl.edu.pwr.student.UI.Canvas}
      * @return state
      */
-    public static int getState() {
+    public static State getState() {
         return state;
     }
 
@@ -47,11 +47,11 @@ public abstract class CanvasState {
      * 3 - deleting elements
      * 4 - connecting elements.
      */
-    public static class States {
-        public static final int INTERACTING = 0;
-        public static final int CREATING = 1;
-        public static final int OUTPUT = 2;
-        public static final int DELETING = 3;
-        public static final int CONNECTING = 4;
+    public enum State {
+        INTERACTING,
+        CREATING,
+        OUTPUT,
+        DELETING,
+        CONNECTING
     }
 }

@@ -27,14 +27,14 @@ public class DeleteButton extends Button {
     public void run() {
         sketch.stroke(0);
         if (over(new PVector(sketch.mouseX, sketch.mouseY))){
-            if (CanvasState.getState() == CanvasState.States.DELETING){
+            if (CanvasState.getState() == CanvasState.State.DELETING){
                 sketch.fill(0,255,0,30);
                 sketch.square(position.x,position.y,48);
             } else {
                 sketch.fill(0, 30);
                 sketch.square(position.x,position.y,48);
             }
-        } else if(CanvasState.getState() == CanvasState.States.DELETING){
+        } else if(CanvasState.getState() == CanvasState.State.DELETING){
             sketch.fill(0,255,0,20);
             sketch.square(position.x,position.y,48);
         } else {
@@ -50,7 +50,7 @@ public class DeleteButton extends Button {
      */
     @Override
     public void click() {
-        CanvasState.setState(CanvasState.States.DELETING);
+        CanvasState.setState(CanvasState.State.DELETING);
         sketch.hideForm();
     }
 }

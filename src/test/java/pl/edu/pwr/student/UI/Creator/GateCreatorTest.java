@@ -17,7 +17,7 @@ class GateCreatorTest {
      */
     @BeforeEach
     void setCreator(){
-        GateCreator.initGates();
+        AbstractGateFactory.initGates();
     }
 
     /**
@@ -25,7 +25,7 @@ class GateCreatorTest {
      */
     @Test
     void create() {
-        UiAvailable gate = GateCreator.create("AND");
+        UiAvailable gate = AbstractGateFactory.create("AND");
 
         assertTrue(gate instanceof AND);
         assertFalse(gate instanceof OR);
@@ -36,13 +36,13 @@ class GateCreatorTest {
      */
     @Test
     void initGates() {
-        GateCreator.initGates();
+        AbstractGateFactory.initGates();
 
-        assertTrue(GateCreator.isRegistered("AND"));
-        assertTrue(GateCreator.isRegistered("SWITCH"));
-        assertFalse(GateCreator.isRegistered("not"));
-        assertFalse(GateCreator.isRegistered(" NOT "));
-        assertFalse(GateCreator.isRegistered("/NOT."));
+        assertTrue(AbstractGateFactory.isRegistered("AND"));
+        assertTrue(AbstractGateFactory.isRegistered("SWITCH"));
+        assertFalse(AbstractGateFactory.isRegistered("not"));
+        assertFalse(AbstractGateFactory.isRegistered(" NOT "));
+        assertFalse(AbstractGateFactory.isRegistered("/NOT."));
     }
 
     /**
@@ -51,9 +51,9 @@ class GateCreatorTest {
     @Test
     void registerGate() {
         CompoundGate cg = new CompoundGate("cg","",new HashSet<>());
-        GateCreator.registerGate("cg",cg);
+        AbstractGateFactory.registerGate("cg",cg);
 
-        assertTrue(GateCreator.isRegistered("cg"));
+        assertTrue(AbstractGateFactory.isRegistered("cg"));
     }
 
     /**
@@ -61,7 +61,7 @@ class GateCreatorTest {
      */
     @Test
     void isRegistered() {
-        assertTrue(GateCreator.isRegistered("SWITCH"));
-        assertFalse(GateCreator.isRegistered("and"));
+        assertTrue(AbstractGateFactory.isRegistered("SWITCH"));
+        assertFalse(AbstractGateFactory.isRegistered("and"));
     }
 }
