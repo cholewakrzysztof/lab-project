@@ -159,9 +159,7 @@ public class Canvas extends PApplet {
     public void draw() {
         background(255);
 
-        for (int i = 0; i < elements.size(); i++) {
-            elements.get(i).run();
-        }
+        for (Drawable element : elements) element.run();
 
         if (elements.isEmpty()) {
             fill(0);
@@ -174,9 +172,7 @@ public class Canvas extends PApplet {
             );
         }
 
-        for (int i = 0; i < buttons.size(); i++) {
-            buttons.get(i).run();
-        }
+        for (Button button : buttons) button.run();
     }
 
     /**
@@ -185,10 +181,10 @@ public class Canvas extends PApplet {
     @Override
     public void mousePressed() {
         PVector mouse = new PVector(mouseX, mouseY);
-        for (int i = 0; i < buttons.size(); i++) {
-            if(buttons.get(i).over(mouse)) {
+        for (Button button : buttons) {
+            if (button.over(mouse)) {
                 try {
-                    buttons.get(i).click();
+                    button.click();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
