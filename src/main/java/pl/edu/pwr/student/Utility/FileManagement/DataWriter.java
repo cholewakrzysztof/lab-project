@@ -48,9 +48,8 @@ public class DataWriter {
     public static void saveToFileCompoundGate(Canvas canvas, String name, String message) throws IOException {
         File directory = new File("gates");
 
-        if (!directory.exists()) {
+        if (!directory.exists())
             directory.mkdir();
-        }
 
         if(name.length()==0)
             name = "Custom_gate";
@@ -59,23 +58,31 @@ public class DataWriter {
         if(message.length()==0)
             message = "Custom_gate_message";
 
-        File file = new File(directory.getAbsoluteFile() + "\\" + name + ".gss");
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
-
-
-
         HashSet<Compoundable> basicGates = new HashSet<>();
         HashSet<CompoundGate> compGates = new HashSet<>();
 
         for (Drawable drawable:canvas.getElements()) {
-            if(Objects.equals(drawable.getGate().getClass(), CompoundGate.class)){
+            if(Objects.equals(drawable.getGate().getClass(), CompoundGate.class))
                 compGates.add((CompoundGate) drawable.getGate());
-            }
-            else{
+            else
                 basicGates.add((Compoundable) drawable.getGate());
-            }
         }
-        CompoundGate compoundGate = new CompoundGate(name,message,basicGates,compGates);
+
+        CompoundGate compoundGate = null;
+
+        try {
+            compoundGate = new CompoundGate(name, message, basicGates, compGates);
+        } catch (Exception ignored) {}
+
+        File file;
+        BufferedWriter bufferedWriter;
+
+        if (compoundGate != null) {
+            file = new File(directory.getAbsoluteFile() + "\\" + name + ".gss");
+            bufferedWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
+        } else {
+            throw new RuntimeException("CompoundGate VirtualIO names are not unique");
+        }
 
         bufferedWriter.write(DataWriter.generateJSONFromCompoundGate(compoundGate));
 

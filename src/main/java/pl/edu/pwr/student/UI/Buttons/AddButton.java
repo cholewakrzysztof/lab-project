@@ -45,6 +45,10 @@ public class AddButton extends Button {
             }
         }
         Form form = sketch.saveCompoundGateDialog();
-        DataWriter.saveToFileCompoundGate(sketch, form.getByLabel("Name of the gate").asString(), form.getByLabel("Message for the gate").asString());
+        try {
+            DataWriter.saveToFileCompoundGate(sketch, form.getByLabel("Name of the gate").asString(), form.getByLabel("Message for the gate").asString());
+        } catch (RuntimeException e) {
+            sketch.showPopup("VirtualIO inputs/outputs must have unique names");
+        }
     }
 }
